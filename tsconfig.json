@@ -1,0 +1,37 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+
+    "baseUrl": "./",
+    "paths": {
+      "src/*": ["./src/*"],
+      // We define this path for all files/folders inside
+      // components folder:
+      "Components/*": ["./src/components/*"],
+      // We define this path for the index.ts file inside the
+      // components folder:
+      "Components": ["./src/components"],
+      "Images/*": ["./src/images/*"],
+      "Images": ["./src/images"]
+    }
+  },
+  "include": ["src", "src/lib.d.ts"],
+  "references": [{ "path": "./tsconfig.node.json" }]
+}
