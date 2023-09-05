@@ -29,7 +29,9 @@
       // components folder:
       "Components": ["./src/components"],
       "Images/*": ["./src/images/*"],
-      "Images": ["./src/images"]
+      "Images": ["./src/images"],
+      "Hooks/*": ["./src/hooks/*"],
+      "Hooks": ["./src/hooks"]
     }
   },
   "include": ["src", "src/lib.d.ts"],

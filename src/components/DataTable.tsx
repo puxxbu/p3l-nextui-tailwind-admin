@@ -18,6 +18,7 @@ import {
   Selection,
   ChipProps,
   SortDescriptor,
+  Spinner,
 } from '@nextui-org/react';
 import { useState, useEffect, useCallback } from 'react';
 
@@ -26,6 +27,8 @@ import { capitalize } from '../utils';
 
 import { mdiDotsVertical, mdiMagnify, mdiChevronDown, mdiPlus } from '@mdi/js';
 import Icon from '@mdi/react';
+
+import { dataUsers } from '../hooks/sampleData';
 
 const statusColorMap: Record<string, ChipProps['color']> = {
   active: 'success',
@@ -36,6 +39,7 @@ const statusColorMap: Record<string, ChipProps['color']> = {
 const INITIAL_VISIBLE_COLUMNS = ['name', 'role', 'status', 'actions'];
 
 type User = (typeof users)[0];
+
 const DataTable = () => {
   const [filterValue, setFilterValue] = React.useState('');
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(
@@ -50,6 +54,8 @@ const DataTable = () => {
     column: 'age',
     direction: 'ascending',
   });
+
+  const testData = dataUsers();
 
   const [page, setPage] = useState(1);
 
@@ -202,7 +208,7 @@ const DataTable = () => {
         <div className="flex items-end justify-between gap-3">
           <Input
             isClearable
-            className="w-full sm:max-w-[44%]"
+            className="sm:max-w-[44%] w-full"
             placeholder="Search by name..."
             startContent={<Icon path={mdiMagnify} size={1} />}
             value={filterValue}
@@ -308,7 +314,7 @@ const DataTable = () => {
 
   const bottomContent = React.useMemo(() => {
     return (
-      <div className="flex items-center justify-between py-2 px-2">
+      <div className="flex items-center justify-between px-2 py-2">
         <span className="w-[30%] text-small text-default-400">
           {selectedKeys === 'all'
             ? 'All items selected'
@@ -345,45 +351,49 @@ const DataTable = () => {
     );
   }, [selectedKeys, items.length, page, pages, hasSearchFilter]);
 
-  return (
-    <Table
-      aria-label="Example table with custom cells, pagination and sorting"
-      isHeaderSticky
-      bottomContent={bottomContent}
-      bottomContentPlacement="outside"
-      classNames={{
-        wrapper: 'max-h-[382px]',
-      }}
-      selectedKeys={selectedKeys}
-      selectionMode="multiple"
-      sortDescriptor={sortDescriptor}
-      topContent={topContent}
-      topContentPlacement="outside"
-      onSelectionChange={setSelectedKeys}
-      onSortChange={setSortDescriptor}
-    >
-      <TableHeader columns={headerColumns}>
-        {(column) => (
-          <TableColumn
-            key={column.uid}
-            align={column.uid === 'actions' ? 'center' : 'start'}
-            allowsSorting={column.sortable}
-          >
-            {column.name}
-          </TableColumn>
-        )}
-      </TableHeader>
-      <TableBody emptyContent={'No users found'} items={sortedItems}>
-        {(item) => (
-          <TableRow key={item.id}>
-            {(columnKey) => (
-              <TableCell>{renderCell(item, columnKey)}</TableCell>
-            )}
-          </TableRow>
-        )}
-      </TableBody>
-    </Table>
-  );
+  if (testData.isLoading) {
+    return <Spinner color="primary" />;
+  } else {
+    return (
+      <Table
+        aria-label="Example table with custom cells, pagination and sorting"
+        isHeaderSticky
+        bottomContent={bottomContent}
+        bottomContentPlacement="outside"
+        classNames={{
+          wrapper: 'max-h-[600px]',
+        }}
+        selectedKeys={selectedKeys}
+        selectionMode="multiple"
+        sortDescriptor={sortDescriptor}
+        topContent={topContent}
+        topContentPlacement="outside"
+        onSelectionChange={setSelectedKeys}
+        onSortChange={setSortDescriptor}
+      >
+        <TableHeader columns={headerColumns}>
+          {(column) => (
+            <TableColumn
+              key={column.uid}
+              align={column.uid === 'actions' ? 'center' : 'start'}
+              allowsSorting={column.sortable}
+            >
+              {column.name}
+            </TableColumn>
+          )}
+        </TableHeader>
+        <TableBody emptyContent={'No users found'} items={sortedItems}>
+          {(item) => (
+            <TableRow key={item.id}>
+              {(columnKey) => (
+                <TableCell>{renderCell(item, columnKey)}</TableCell>
+              )}
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
+    );
+  }
 };
 
 export default DataTable;

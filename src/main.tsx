@@ -4,11 +4,16 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import App from './App';
 import './index.css';
 import './satoshi.css';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <Router>
-      <App />
+      <QueryClientProvider client={queryClient}>
+        <App />
+      </QueryClientProvider>
     </Router>
   </React.StrictMode>
 );

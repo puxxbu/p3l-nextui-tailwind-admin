@@ -10,6 +10,7 @@ export default defineConfig({
     alias: {
       Components: path.resolve(__dirname, './src/components'),
       Images: path.resolve(__dirname, './src/images'),
+      Hooks: path.resolve(__dirname, './src/hooks'),
     },
   },
   plugins: [react(), tsconfigPaths()],

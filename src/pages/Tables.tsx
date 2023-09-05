@@ -11,9 +11,9 @@ const Tables = () => {
       <Breadcrumb pageName="Tables" />
 
       <div className="flex flex-col gap-10">
-        <TableOne />
+        {/* <TableOne />
         <TableTwo />
-        <TableThree />
+        <TableThree /> */}
         <DataTable />
       </div>
     </DefaultLayout>
