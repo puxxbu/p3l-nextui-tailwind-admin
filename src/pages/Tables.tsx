@@ -3,7 +3,7 @@ import TableOne from '../components/TableOne';
 import TableThree from '../components/TableThree';
 import TableTwo from '../components/TableTwo';
 import DefaultLayout from '../layout/DefaultLayout';
-import { DataTable, FetchDataTable } from 'Components';
+import { DataTable } from 'Components';
 
 const Tables = () => {
   return (
@@ -15,7 +15,6 @@ const Tables = () => {
         <TableTwo />
         <TableThree /> */}
         <DataTable />
-        {/* <FetchDataTable /> */}
       </div>
     </DefaultLayout>
   );
