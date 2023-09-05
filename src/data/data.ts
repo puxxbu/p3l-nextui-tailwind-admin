@@ -10,6 +10,15 @@ const columns = [
   { name: 'ACTIONS', uid: 'actions' },
 ];
 
+const columnsAlbum = [
+  { name: 'ID', uid: 'id', sortable: true },
+  { name: 'NAME', uid: 'name', sortable: true },
+  { name: 'YEAR', uid: 'year', sortable: true },
+  { name: 'TYPE', uid: 'type', sortable: true },
+  { name: 'TOTALCOUNT', uid: 'totalCount', sortable: true },
+  { name: 'ACTIONS', uid: 'actions' },
+];
+
 const statusOptions = [
   { name: 'Active', uid: 'active' },
   { name: 'Paused', uid: 'paused' },
@@ -219,4 +228,724 @@ const users = [
   },
 ];
 
-export { columns, users, statusOptions };
+const musics = {
+  data: {
+    artist: {
+      discography: {
+        albums: {
+          totalCount: 15,
+          items: [
+            {
+              releases: {
+                items: [
+                  {
+                    id: '6Ar5HxNWXtvraqs7FI7bYq',
+                    uri: 'spotify:album:6Ar5HxNWXtvraqs7FI7bYq',
+                    name: 'Suzume (Motion Picture Soundtrack)',
+                    type: 'ALBUM',
+                    date: {
+                      year: 2022,
+                      isoString: '2022-11-10T00:00:00Z',
+                    },
+                    coverArt: {
+                      sources: [
+                        {
+                          url: 'https://i.scdn.co/image/ab67616d00001e02bc16d1eefe86b079c8805f8f',
+                          width: 300,
+                          height: 300,
+                        },
+                        {
+                          url: 'https://i.scdn.co/image/ab67616d00004851bc16d1eefe86b079c8805f8f',
+                          width: 64,
+                          height: 64,
+                        },
+                        {
+                          url: 'https://i.scdn.co/image/ab67616d0000b273bc16d1eefe86b079c8805f8f',
+                          width: 640,
+                          height: 640,
+                        },
+                      ],
+                    },
+                    playability: {
+                      playable: true,
+                      reason: 'PLAYABLE',
+                    },
+                    sharingInfo: {
+                      shareId: 'cTNArLiRTqihJnY-_fQ-lw',
+                      shareUrl:
+                        'https://open.spotify.com/album/6Ar5HxNWXtvraqs7FI7bYq?si=cTNArLiRTqihJnY-_fQ-lw',
+                    },
+                    tracks: {
+                      totalCount: 29,
+                    },
+                  },
+                ],
+              },
+            },
+            {
+              releases: {
+                items: [
+                  {
+                    id: '3FyR41ewiOZHop9rFnOZ1m',
+                    uri: 'spotify:album:3FyR41ewiOZHop9rFnOZ1m',
+                    name: 'Original Soundtrack of "The Last Ten Years"',
+                    type: 'ALBUM',
+                    date: {
+                      year: 2022,
+                      isoString: '2022-03-04T00:00:00Z',
+                    },
+                    coverArt: {
+                      sources: [
+                        {
+                          url: 'https://i.scdn.co/image/ab67616d00001e025cafe314823ed27c06dbbdff',
+                          width: 300,
+                          height: 300,
+                        },
+                        {
+                          url: 'https://i.scdn.co/image/ab67616d000048515cafe314823ed27c06dbbdff',
+                          width: 64,
+                          height: 64,
+                        },
+                        {
+                          url: 'https://i.scdn.co/image/ab67616d0000b2735cafe314823ed27c06dbbdff',
+                          width: 640,
+                          height: 640,
+                        },
+                      ],
+                    },
+                    playability: {
+                      playable: true,
+                      reason: 'PLAYABLE',
+                    },
+                    sharingInfo: {
+                      shareId: 'AoKSrcnpQfOK2jk7ZmuHYQ',
+                      shareUrl:
+                        'https://open.spotify.com/album/3FyR41ewiOZHop9rFnOZ1m?si=AoKSrcnpQfOK2jk7ZmuHYQ',
+                    },
+                    tracks: {
+                      totalCount: 30,
+                    },
+                  },
+                ],
+              },
+            },
+            {
+              releases: {
+                items: [
+                  {
+                    id: '1fYi13JilVgZfmml6oTQt5',
+                    uri: 'spotify:album:1fYi13JilVgZfmml6oTQt5',
+                    name: 'FOREVER DAZE',
+                    type: 'ALBUM',
+                    date: {
+                      year: 2021,
+                      isoString: '2021-11-23T00:00:00Z',
+                    },
+                    coverArt: {
+                      sources: [
+                        {
+                          url: 'https://i.scdn.co/image/ab67616d00001e02bbd75075f28711876b9fee2b',
+                          width: 300,
+                          height: 300,
+                        },
+                        {
+                          url: 'https://i.scdn.co/image/ab67616d00004851bbd75075f28711876b9fee2b',
+                          width: 64,
+                          height: 64,
+                        },
+                        {
+                          url: 'https://i.scdn.co/image/ab67616d0000b273bbd75075f28711876b9fee2b',
+                          width: 640,
+                          height: 640,
+                        },
+                      ],
+                    },
+                    playability: {
+                      playable: true,
+                      reason: 'PLAYABLE',
+                    },
+                    sharingInfo: {
+                      shareId: 'ABq_eyLuQmm6KZwduB7OBw',
+                      shareUrl:
+                        'https://open.spotify.com/album/1fYi13JilVgZfmml6oTQt5?si=ABq_eyLuQmm6KZwduB7OBw',
+                    },
+                    tracks: {
+                      totalCount: 14,
+                    },
+                  },
+                ],
+              },
+            },
+            {
+              releases: {
+                items: [
+                  {
+                    id: '5xC3tDmG3LAyHh9wJf1Ujv',
+                    uri: 'spotify:album:5xC3tDmG3LAyHh9wJf1Ujv',
+                    name: '2+0+2+1+3+1+1= 10 years 10 songs',
+                    type: 'ALBUM',
+                    date: {
+                      year: 2021,
+                      isoString: '2021-03-11T00:00:00Z',
+                    },
+                    coverArt: {
+                      sources: [
+                        {
+                          url: 'https://i.scdn.co/image/ab67616d00001e02fe2cd19a9e444fefb9297197',
+                          width: 300,
+                          height: 300,
+                        },
+                        {
+                          url: 'https://i.scdn.co/image/ab67616d00004851fe2cd19a9e444fefb9297197',
+                          width: 64,
+                          height: 64,
+                        },
+                        {
+                          url: 'https://i.scdn.co/image/ab67616d0000b273fe2cd19a9e444fefb9297197',
+                          width: 640,
+                          height: 640,
+                        },
+                      ],
+                    },
+                    playability: {
+                      playable: true,
+                      reason: 'PLAYABLE',
+                    },
+                    sharingInfo: {
+                      shareId: 'n3T4O7U0Re-Xc4OBCVCNag',
+                      shareUrl:
+                        'https://open.spotify.com/album/5xC3tDmG3LAyHh9wJf1Ujv?si=n3T4O7U0Re-Xc4OBCVCNag',
+                    },
+                    tracks: {
+                      totalCount: 10,
+                    },
+                  },
+                ],
+              },
+            },
+            {
+              releases: {
+                items: [
+                  {
+                    id: '4hAlZU3JXoThQ3jnF4CGiZ',
+                    uri: 'spotify:album:4hAlZU3JXoThQ3jnF4CGiZ',
+                    name: 'Weathering With You -Complete Version-',
+                    type: 'ALBUM',
+                    date: {
+                      year: 2019,
+                      isoString: '2019-11-27T00:00:00Z',
+                    },
+                    coverArt: {
+                      sources: [
+                        {
+                          url: 'https://i.scdn.co/image/ab67616d00001e02512668c8cf31d12749a6fa40',
+                          width: 300,
+                          height: 300,
+                        },
+                        {
+                          url: 'https://i.scdn.co/image/ab67616d00004851512668c8cf31d12749a6fa40',
+                          width: 64,
+                          height: 64,
+                        },
+                        {
+                          url: 'https://i.scdn.co/image/ab67616d0000b273512668c8cf31d12749a6fa40',
+                          width: 640,
+                          height: 640,
+                        },
+                      ],
+                    },
+                    playability: {
+                      playable: true,
+                      reason: 'PLAYABLE',
+                    },
+                    sharingInfo: {
+                      shareId: 'R7kwriKVRX-f6gAXBLCsQQ',
+                      shareUrl:
+                        'https://open.spotify.com/album/4hAlZU3JXoThQ3jnF4CGiZ?si=R7kwriKVRX-f6gAXBLCsQQ',
+                    },
+                    tracks: {
+                      totalCount: 6,
+                    },
+                  },
+                ],
+              },
+            },
+            {
+              releases: {
+                items: [
+                  {
+                    id: '2BcCxJ3EWhsd4IyN8XJA3q',
+                    uri: 'spotify:album:2BcCxJ3EWhsd4IyN8XJA3q',
+                    name: 'Weathering With You',
+                    type: 'ALBUM',
+                    date: {
+                      year: 2019,
+                      isoString: '2019-07-19T00:00:00Z',
+                    },
+                    coverArt: {
+                      sources: [
+                        {
+                          url: 'https://i.scdn.co/image/ab67616d00001e023e2780c2283bbcb8f5d740d0',
+                          width: 300,
+                          height: 300,
+                        },
+                        {
+                          url: 'https://i.scdn.co/image/ab67616d000048513e2780c2283bbcb8f5d740d0',
+                          width: 64,
+                          height: 64,
+                        },
+                        {
+                          url: 'https://i.scdn.co/image/ab67616d0000b2733e2780c2283bbcb8f5d740d0',
+                          width: 640,
+                          height: 640,
+                        },
+                      ],
+                    },
+                    playability: {
+                      playable: true,
+                      reason: 'PLAYABLE',
+                    },
+                    sharingInfo: {
+                      shareId: '7DHCcwobT5KwuS-b377M1A',
+                      shareUrl:
+                        'https://open.spotify.com/album/2BcCxJ3EWhsd4IyN8XJA3q?si=7DHCcwobT5KwuS-b377M1A',
+                    },
+                    tracks: {
+                      totalCount: 31,
+                    },
+                  },
+                ],
+              },
+            },
+            {
+              releases: {
+                items: [
+                  {
+                    id: '59jm6kUIwtwx5tk6jWOUMv',
+                    uri: 'spotify:album:59jm6kUIwtwx5tk6jWOUMv',
+                    name: 'ANTI ANTI GENERATION',
+                    type: 'ALBUM',
+                    date: {
+                      year: 2018,
+                      isoString: '2018-12-12T00:00:00Z',
+                    },
+                    coverArt: {
+                      sources: [
+                        {
+                          url: 'https://i.scdn.co/image/ab67616d00001e022d65935e4296e6c890f61bc7',
+                          width: 300,
+                          height: 300,
+                        },
+                        {
+                          url: 'https://i.scdn.co/image/ab67616d000048512d65935e4296e6c890f61bc7',
+                          width: 64,
+                          height: 64,
+                        },
+                        {
+                          url: 'https://i.scdn.co/image/ab67616d0000b2732d65935e4296e6c890f61bc7',
+                          width: 640,
+                          height: 640,
+                        },
+                      ],
+                    },
+                    playability: {
+                      playable: true,
+                      reason: 'PLAYABLE',
+                    },
+                    sharingInfo: {
+                      shareId: 'oqnajkKVSdCS8QysAOXDiQ',
+                      shareUrl:
+                        'https://open.spotify.com/album/59jm6kUIwtwx5tk6jWOUMv?si=oqnajkKVSdCS8QysAOXDiQ',
+                    },
+                    tracks: {
+                      totalCount: 17,
+                    },
+                  },
+                ],
+              },
+            },
+            {
+              releases: {
+                items: [
+                  {
+                    id: '4msOF7XQKkdvBpvqmIONGW',
+                    uri: 'spotify:album:4msOF7XQKkdvBpvqmIONGW',
+                    name: 'Your Name. (Deluxe Edition / Original Motion Picture Soundtrack)',
+                    type: 'ALBUM',
+                    date: {
+                      year: 2017,
+                      isoString: '2017-03-10T00:00:00Z',
+                    },
+                    coverArt: {
+                      sources: [
+                        {
+                          url: 'https://i.scdn.co/image/ab67616d00001e02f4f17e78872b6ef3e62c1c95',
+                          width: 300,
+                          height: 300,
+                        },
+                        {
+                          url: 'https://i.scdn.co/image/ab67616d00004851f4f17e78872b6ef3e62c1c95',
+                          width: 64,
+                          height: 64,
+                        },
+                        {
+                          url: 'https://i.scdn.co/image/ab67616d0000b273f4f17e78872b6ef3e62c1c95',
+                          width: 640,
+                          height: 640,
+                        },
+                      ],
+                    },
+                    playability: {
+                      playable: true,
+                      reason: 'PLAYABLE',
+                    },
+                    sharingInfo: {
+                      shareId: 'pOF40cH6SnqVa6Nc7J4zmQ',
+                      shareUrl:
+                        'https://open.spotify.com/album/4msOF7XQKkdvBpvqmIONGW?si=pOF40cH6SnqVa6Nc7J4zmQ',
+                    },
+                    tracks: {
+                      totalCount: 26,
+                    },
+                  },
+                ],
+              },
+            },
+            {
+              releases: {
+                items: [
+                  {
+                    id: '5TZ0bVy0tqIriXse4qk1HY',
+                    uri: 'spotify:album:5TZ0bVy0tqIriXse4qk1HY',
+                    name: 'Human Bloom',
+                    type: 'ALBUM',
+                    date: {
+                      year: 2016,
+                      isoString: '2016-11-23T00:00:00Z',
+                    },
+                    coverArt: {
+                      sources: [
+                        {
+                          url: 'https://i.scdn.co/image/ab67616d00001e0285b0876389c92ac31f514593',
+                          width: 300,
+                          height: 300,
+                        },
+                        {
+                          url: 'https://i.scdn.co/image/ab67616d0000485185b0876389c92ac31f514593',
+                          width: 64,
+                          height: 64,
+                        },
+                        {
+                          url: 'https://i.scdn.co/image/ab67616d0000b27385b0876389c92ac31f514593',
+                          width: 640,
+                          height: 640,
+                        },
+                      ],
+                    },
+                    playability: {
+                      playable: true,
+                      reason: 'PLAYABLE',
+                    },
+                    sharingInfo: {
+                      shareId: '2HXdkSDzRa-petae4XvPqg',
+                      shareUrl:
+                        'https://open.spotify.com/album/5TZ0bVy0tqIriXse4qk1HY?si=2HXdkSDzRa-petae4XvPqg',
+                    },
+                    tracks: {
+                      totalCount: 15,
+                    },
+                  },
+                ],
+              },
+            },
+            {
+              releases: {
+                items: [
+                  {
+                    id: '4qApTp9557qYZzRLEih4uP',
+                    uri: 'spotify:album:4qApTp9557qYZzRLEih4uP',
+                    name: 'Your Name.',
+                    type: 'ALBUM',
+                    date: {
+                      year: 2016,
+                      isoString: '2016-08-24T00:00:00Z',
+                    },
+                    coverArt: {
+                      sources: [
+                        {
+                          url: 'https://i.scdn.co/image/ab67616d00001e02cbbbea7d8fcf057f65071a85',
+                          width: 300,
+                          height: 300,
+                        },
+                        {
+                          url: 'https://i.scdn.co/image/ab67616d00004851cbbbea7d8fcf057f65071a85',
+                          width: 64,
+                          height: 64,
+                        },
+                        {
+                          url: 'https://i.scdn.co/image/ab67616d0000b273cbbbea7d8fcf057f65071a85',
+                          width: 640,
+                          height: 640,
+                        },
+                      ],
+                    },
+                    playability: {
+                      playable: true,
+                      reason: 'PLAYABLE',
+                    },
+                    sharingInfo: {
+                      shareId: 'ZF-5AnOETYq18GOjavUVug',
+                      shareUrl:
+                        'https://open.spotify.com/album/4qApTp9557qYZzRLEih4uP?si=ZF-5AnOETYq18GOjavUVug',
+                    },
+                    tracks: {
+                      totalCount: 27,
+                    },
+                  },
+                ],
+              },
+            },
+            {
+              releases: {
+                items: [
+                  {
+                    id: '4akhlx4zsYqDDApjFP38m3',
+                    uri: 'spotify:album:4akhlx4zsYqDDApjFP38m3',
+                    name: 'Batsu to Maru to Tsumi to',
+                    type: 'ALBUM',
+                    date: {
+                      year: 2013,
+                      isoString: '2013-12-11T00:00:00Z',
+                    },
+                    coverArt: {
+                      sources: [
+                        {
+                          url: 'https://i.scdn.co/image/ab67616d00001e02270be367238574dc8dbf506c',
+                          width: 300,
+                          height: 300,
+                        },
+                        {
+                          url: 'https://i.scdn.co/image/ab67616d00004851270be367238574dc8dbf506c',
+                          width: 64,
+                          height: 64,
+                        },
+                        {
+                          url: 'https://i.scdn.co/image/ab67616d0000b273270be367238574dc8dbf506c',
+                          width: 640,
+                          height: 640,
+                        },
+                      ],
+                    },
+                    playability: {
+                      playable: true,
+                      reason: 'PLAYABLE',
+                    },
+                    sharingInfo: {
+                      shareId: 'ZSEOqmiTRbOKvvaJLqqaUg',
+                      shareUrl:
+                        'https://open.spotify.com/album/4akhlx4zsYqDDApjFP38m3?si=ZSEOqmiTRbOKvvaJLqqaUg',
+                    },
+                    tracks: {
+                      totalCount: 15,
+                    },
+                  },
+                ],
+              },
+            },
+            {
+              releases: {
+                items: [
+                  {
+                    id: '3b3tyPWcSOYy5SFC0bCUWP',
+                    uri: 'spotify:album:3b3tyPWcSOYy5SFC0bCUWP',
+                    name: 'Zettaizetsumei',
+                    type: 'ALBUM',
+                    date: {
+                      year: 2011,
+                      isoString: '2011-03-09T00:00:00Z',
+                    },
+                    coverArt: {
+                      sources: [
+                        {
+                          url: 'https://i.scdn.co/image/ab67616d00001e02c0c53dcf5bb71d127b8eab7f',
+                          width: 300,
+                          height: 300,
+                        },
+                        {
+                          url: 'https://i.scdn.co/image/ab67616d00004851c0c53dcf5bb71d127b8eab7f',
+                          width: 64,
+                          height: 64,
+                        },
+                        {
+                          url: 'https://i.scdn.co/image/ab67616d0000b273c0c53dcf5bb71d127b8eab7f',
+                          width: 640,
+                          height: 640,
+                        },
+                      ],
+                    },
+                    playability: {
+                      playable: true,
+                      reason: 'PLAYABLE',
+                    },
+                    sharingInfo: {
+                      shareId: 'ofkmMNSlSnqyRgq4KVwOrA',
+                      shareUrl:
+                        'https://open.spotify.com/album/3b3tyPWcSOYy5SFC0bCUWP?si=ofkmMNSlSnqyRgq4KVwOrA',
+                    },
+                    tracks: {
+                      totalCount: 14,
+                    },
+                  },
+                ],
+              },
+            },
+            {
+              releases: {
+                items: [
+                  {
+                    id: '3phjMsKsr6V1aicq04S3Ie',
+                    uri: 'spotify:album:3phjMsKsr6V1aicq04S3Ie',
+                    name: 'Arutokoroni no Teiri',
+                    type: 'ALBUM',
+                    date: {
+                      year: 2009,
+                      isoString: '2009-03-11T00:00:00Z',
+                    },
+                    coverArt: {
+                      sources: [
+                        {
+                          url: 'https://i.scdn.co/image/ab67616d00001e02c7060d26f9965231182c156c',
+                          width: 300,
+                          height: 300,
+                        },
+                        {
+                          url: 'https://i.scdn.co/image/ab67616d00004851c7060d26f9965231182c156c',
+                          width: 64,
+                          height: 64,
+                        },
+                        {
+                          url: 'https://i.scdn.co/image/ab67616d0000b273c7060d26f9965231182c156c',
+                          width: 640,
+                          height: 640,
+                        },
+                      ],
+                    },
+                    playability: {
+                      playable: true,
+                      reason: 'PLAYABLE',
+                    },
+                    sharingInfo: {
+                      shareId: '5FqBB9NYRYq0qfv1gWrEsw',
+                      shareUrl:
+                        'https://open.spotify.com/album/3phjMsKsr6V1aicq04S3Ie?si=5FqBB9NYRYq0qfv1gWrEsw',
+                    },
+                    tracks: {
+                      totalCount: 13,
+                    },
+                  },
+                ],
+              },
+            },
+            {
+              releases: {
+                items: [
+                  {
+                    id: '27mMMU3UZQbsCcAURmGvPP',
+                    uri: 'spotify:album:27mMMU3UZQbsCcAURmGvPP',
+                    name: 'RADWIMPS 4 ～おかずのごはん～',
+                    type: 'ALBUM',
+                    date: {
+                      year: 2006,
+                      isoString: '2006-12-06T00:00:00Z',
+                    },
+                    coverArt: {
+                      sources: [
+                        {
+                          url: 'https://i.scdn.co/image/ab67616d00001e02c864d5603e04d0fe4faef74e',
+                          width: 300,
+                          height: 300,
+                        },
+                        {
+                          url: 'https://i.scdn.co/image/ab67616d00004851c864d5603e04d0fe4faef74e',
+                          width: 64,
+                          height: 64,
+                        },
+                        {
+                          url: 'https://i.scdn.co/image/ab67616d0000b273c864d5603e04d0fe4faef74e',
+                          width: 640,
+                          height: 640,
+                        },
+                      ],
+                    },
+                    playability: {
+                      playable: true,
+                      reason: 'PLAYABLE',
+                    },
+                    sharingInfo: {
+                      shareId: 'KcVLScSWQjmA_6c3CEO3Bg',
+                      shareUrl:
+                        'https://open.spotify.com/album/27mMMU3UZQbsCcAURmGvPP?si=KcVLScSWQjmA_6c3CEO3Bg',
+                    },
+                    tracks: {
+                      totalCount: 14,
+                    },
+                  },
+                ],
+              },
+            },
+            {
+              releases: {
+                items: [
+                  {
+                    id: '5StzS3H3g6BwP5rpW4o49f',
+                    uri: 'spotify:album:5StzS3H3g6BwP5rpW4o49f',
+                    name: 'RADWIMPS 3 ~無人島に持っていき忘れた一枚~',
+                    type: 'ALBUM',
+                    date: {
+                      year: 2006,
+                      isoString: '2006-02-15T00:00:00Z',
+                    },
+                    coverArt: {
+                      sources: [
+                        {
+                          url: 'https://i.scdn.co/image/ab67616d00001e02db726790bd619f4a95b78f6e',
+                          width: 300,
+                          height: 300,
+                        },
+                        {
+                          url: 'https://i.scdn.co/image/ab67616d00004851db726790bd619f4a95b78f6e',
+                          width: 64,
+                          height: 64,
+                        },
+                        {
+                          url: 'https://i.scdn.co/image/ab67616d0000b273db726790bd619f4a95b78f6e',
+                          width: 640,
+                          height: 640,
+                        },
+                      ],
+                    },
+                    playability: {
+                      playable: true,
+                      reason: 'PLAYABLE',
+                    },
+                    sharingInfo: {
+                      shareId: 'udzxJeX4R4Km04iTWO2mDQ',
+                      shareUrl:
+                        'https://open.spotify.com/album/5StzS3H3g6BwP5rpW4o49f?si=udzxJeX4R4Km04iTWO2mDQ',
+                    },
+                    tracks: {
+                      totalCount: 12,
+                    },
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      },
+    },
+  },
+  extensions: [],
+};
+
+export { columns, columnsAlbum, users, statusOptions, musics };

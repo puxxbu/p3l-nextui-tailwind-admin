@@ -22,25 +22,24 @@ import {
 } from '@nextui-org/react';
 import { useState, useCallback } from 'react';
 
-import { columns, users, statusOptions } from '../data/data';
+import { columnsAlbum, musics, statusOptions } from '../data/data';
 import { capitalize } from '../utils';
 
 import { mdiDotsVertical, mdiMagnify, mdiChevronDown, mdiPlus } from '@mdi/js';
 import Icon from '@mdi/react';
 
-import { dataUsers, dataMusics } from 'Hooks/sampleData';
+import { dataMusics } from 'Hooks/sampleData';
 
 const statusColorMap: Record<string, ChipProps['color']> = {
-  active: 'success',
-  paused: 'danger',
-  vacation: 'warning',
+  album: 'success',
+  single: 'danger',
 };
 
-const INITIAL_VISIBLE_COLUMNS = ['name', 'role', 'status', 'actions'];
+const INITIAL_VISIBLE_COLUMNS = ['name', 'year', 'type', 'actions'];
 
-type User = (typeof users)[0];
+type User = (typeof musics.data.artist.discography.albums.items)[0];
 
-const DataTable = () => {
+const FetchDataTable = () => {
   const [filterValue, setFilterValue] = React.useState('');
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(
     new Set([])
@@ -51,43 +50,56 @@ const DataTable = () => {
   const [statusFilter, setStatusFilter] = React.useState<Selection>('all');
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
-    column: 'age',
+    column: 'year',
     direction: 'ascending',
   });
 
-  const testData = dataUsers();
+  const testData = dataMusics();
+  const offlineData = musics.data.artist.discography.albums.items;
 
   const [page, setPage] = useState(1);
 
   const hasSearchFilter = Boolean(filterValue);
 
   const headerColumns = React.useMemo(() => {
-    if (visibleColumns === 'all') return columns;
+    if (visibleColumns === 'all') return columnsAlbum;
 
-    return columns.filter((column) =>
+    return columnsAlbum.filter((column) =>
       Array.from(visibleColumns).includes(column.uid)
     );
   }, [visibleColumns]);
 
   const filteredItems = React.useMemo(() => {
-    let filteredUsers = [...users];
-
-    if (hasSearchFilter) {
-      filteredUsers = filteredUsers.filter((user) =>
-        user.name.toLowerCase().includes(filterValue.toLowerCase())
-      );
-    }
-    if (
-      statusFilter !== 'all' &&
-      Array.from(statusFilter).length !== statusOptions.length
-    ) {
-      filteredUsers = filteredUsers.filter((user) =>
-        Array.from(statusFilter).includes(user.status)
-      );
+    if (testData.isLoading) {
+      return [];
     }
 
-    return filteredUsers;
-  }, [users, filterValue, statusFilter]);
+    if (testData.isSuccess) {
+      let filteredUsers = testData.data;
+
+      if (hasSearchFilter) {
+        filteredUsers = filteredUsers.filter(
+          (item) =>
+            item.releases.items[0].name
+              .toLowerCase()
+              .includes(filterValue.toLowerCase())
+          //   item..toLowerCase().includes(filterValue.toLowerCase())
+        );
+      }
+      if (
+        statusFilter !== 'all' &&
+        Array.from(statusFilter).length !== statusOptions.length
+      ) {
+        filteredUsers = filteredUsers.filter((item) =>
+          Array.from(statusFilter).includes(item.releases.items[0].type)
+        );
+      }
+
+      return filteredUsers;
+    }
+
+    return [];
+  }, [testData.data, filterValue, statusFilter]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -100,8 +112,8 @@ const DataTable = () => {
 
   const sortedItems = React.useMemo(() => {
     return [...items].sort((a: User, b: User) => {
-      const first = a[sortDescriptor.column as keyof User] as number;
-      const second = b[sortDescriptor.column as keyof User] as number;
+      const first = a.releases.items[0].date.year as number;
+      const second = b.releases.items[0].date.year as number;
       const cmp = first < second ? -1 : first > second ? 1 : 0;
 
       return sortDescriptor.direction === 'descending' ? -cmp : cmp;
@@ -115,19 +127,24 @@ const DataTable = () => {
       case 'name':
         return (
           <User
-            avatarProps={{ radius: 'lg', src: user.avatar }}
-            description={user.email}
-            name={cellValue}
+            avatarProps={{
+              radius: 'lg',
+              src: user.releases.items[0].coverArt.sources[0].url,
+            }}
+            description={user.releases.items[0].id}
+            name={user.releases.items[0].name}
           >
-            {user.email}
+            {user.releases.items[0].id}
           </User>
         );
-      case 'role':
+      case 'year':
         return (
           <div className="flex flex-col">
-            <p className="text-bold text-small capitalize">{cellValue}</p>
+            <p className="text-bold text-small capitalize">
+              {user.releases.items[0].date.year}
+            </p>
             <p className="text-bold text-tiny capitalize text-default-400">
-              {user.team}
+              {user.releases.items[0].date.year}
             </p>
           </div>
         );
@@ -135,11 +152,11 @@ const DataTable = () => {
         return (
           <Chip
             className="capitalize"
-            color={statusColorMap[user.status]}
+            color={statusColorMap[user.releases.items[0].type]}
             size="sm"
             variant="flat"
           >
-            {cellValue}
+            {user.releases.items[0].type}
           </Chip>
         );
       case 'actions':
@@ -269,7 +286,7 @@ const DataTable = () => {
                 selectionMode="multiple"
                 onSelectionChange={setVisibleColumns}
               >
-                {columns.map((column) => (
+                {columnsAlbum.map((column) => (
                   <DropdownItem key={column.uid} className="capitalize">
                     {capitalize(column.name)}
                   </DropdownItem>
@@ -286,7 +303,7 @@ const DataTable = () => {
         </div>
         <div className="flex items-center justify-between">
           <span className="text-small text-default-400">
-            Total {users.length} users
+            Total {items.length} album
           </span>
           <label className="flex items-center text-small text-default-400">
             Rows per page:
@@ -308,7 +325,7 @@ const DataTable = () => {
     visibleColumns,
     onSearchChange,
     onRowsPerPageChange,
-    users.length,
+    items.length,
     hasSearchFilter,
   ]);
 
@@ -384,7 +401,7 @@ const DataTable = () => {
         </TableHeader>
         <TableBody emptyContent={'No users found'} items={sortedItems}>
           {(item) => (
-            <TableRow key={item.id}>
+            <TableRow key={item.releases.items[0].id}>
               {(columnKey) => (
                 <TableCell>{renderCell(item, columnKey)}</TableCell>
               )}
@@ -396,4 +413,4 @@ const DataTable = () => {
   }
 };
 
-export default DataTable;
+export default FetchDataTable;
