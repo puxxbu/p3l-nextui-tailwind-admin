@@ -31,7 +31,9 @@
       "Images/*": ["./src/images/*"],
       "Images": ["./src/images"],
       "Hooks/*": ["./src/hooks/*"],
-      "Hooks": ["./src/hooks"]
+      "Hooks": ["./src/hooks"],
+      "Contexts/*": ["./src/contexts/*"],
+      "Contexts": ["./src/contexts"]
     }
   },
   "include": ["src", "src/lib.d.ts"],

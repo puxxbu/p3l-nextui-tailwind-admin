@@ -38,6 +38,14 @@ interface ApiResponse {
   paging: Paging;
 }
 
+interface LoginResponse {
+  data: LoginData;
+}
+
+interface LoginData {
+  token: string;
+}
+
 export async function fetchContacts(page = 1): Promise<ApiResponse> {
   try {
     const response = await axios.get('http://localhost:3000/api/contacts', {
@@ -96,6 +104,37 @@ export function registerUser(
       const errorResponse = error.response.data as ErrorResponse;
       const errorMessage = errorResponse.errors;
       console.error('Error registering user:', errorMessage);
+      callback(undefined, errorMessage);
+    });
+}
+
+export function loginUser(
+  username: string,
+  password: string,
+  callback: (data?: any, error?: string) => void
+): void {
+  axios
+    .post<LoginData>(
+      'http://localhost:3000/api/users/login',
+      {
+        username: username,
+        password: password,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+      }
+    )
+    .then((response) => {
+      const data = response.data;
+      callback(data);
+    })
+    .catch((error) => {
+      const errorResponse = error.response.data as ErrorResponse;
+      const errorMessage = errorResponse.errors;
+      console.error('Error logging in:', errorMessage);
       callback(undefined, errorMessage);
     });
 }

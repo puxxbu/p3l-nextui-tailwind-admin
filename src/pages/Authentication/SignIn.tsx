@@ -9,24 +9,21 @@ import { mdiEmailOutline, mdiLock } from '@mdi/js';
 import { Input, useDisclosure, Button } from '@nextui-org/react';
 import React from 'react';
 
-import { registerUser } from 'Hooks/sampleData';
+import { loginUser } from 'Hooks/sampleData';
 import { MyModal } from 'Components';
 
 interface DataLogin {
   username?: string | null;
-  email?: string | null;
   password?: string | null;
 }
 const SignIn = () => {
   const [data, setData] = React.useState<DataLogin>({
     username: '',
-    email: '',
     password: '',
   });
 
   const [errData, setErrData] = React.useState<DataLogin>({
     username: '',
-    email: '',
     password: '',
   });
 
@@ -34,16 +31,15 @@ const SignIn = () => {
 
   const [loading, setLoading] = React.useState(false);
 
-  // const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
-  const validateEmail = (value: string) =>
-    value.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
+  const validateUsername = (value: string) => value.length !== 0;
 
   const validationState = React.useMemo(() => {
-    if (data.email === '') return undefined;
+    if (data.username === '') return undefined;
 
-    return validateEmail(data.email || '') ? 'valid' : 'invalid';
-  }, [data.email]);
+    return validateUsername(data.username || '') ? 'valid' : 'invalid';
+  }, [data.username]);
 
   const handleChange = (key: any, value: any) => {
     setData((prevData) => ({
@@ -52,12 +48,44 @@ const SignIn = () => {
     }));
   };
 
-  const handleEmailChange = (value: string) => {
-    handleChange('email', value);
+  const handleUsernameChange = (value: string) => {
+    handleChange('username', value);
+  };
+
+  const handlePasswordChange = (value: string) => {
+    handleChange('password', value);
+  };
+
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+    setLoading(true);
+
+    if (validationState === 'invalid') {
+      setLoading(false);
+      return;
+    }
+
+    loginUser(data.username || '', data.password || '', (data, error) => {
+      if (error) {
+        console.log('Error:', error);
+        setError(error);
+        setLoading(false);
+        onOpen();
+      } else {
+        setLoading(false);
+        console.log('Registration successful. Data:', data);
+      }
+    });
   };
 
   return (
     <div className="h-screen rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark  dark:bg-boxdark ">
+      <MyModal
+        isOpen={isOpen}
+        onOpen={onOpen}
+        onOpenChange={onOpenChange}
+        text={error}
+      />
       <div className="flex h-screen flex-wrap items-center  ">
         <div className="hidden w-full xl:block xl:w-1/2">
           <div className="px-26 py-17.5 text-center">
@@ -84,22 +112,16 @@ const SignIn = () => {
               Sign In to TailAdmin
             </h2>
 
-            <form>
+            <form onSubmit={handleSubmit}>
               <div className="mb-4">
                 <div className="relative">
                   <Input
                     size="lg"
-                    value={data.email || ''}
-                    type="email"
-                    label="Email"
+                    value={data.username || ''}
+                    type="username"
+                    label="Username"
                     variant="bordered"
-                    color={validationState === 'invalid' ? 'danger' : undefined}
-                    errorMessage={
-                      validationState === 'invalid' &&
-                      'Please enter a valid email'
-                    }
-                    validationState={validationState}
-                    onValueChange={handleEmailChange}
+                    onValueChange={handleUsernameChange}
                     className="w-full "
                   />
 
@@ -114,13 +136,22 @@ const SignIn = () => {
                   Re-type Password
                 </label>
                 <div className="relative">
-                  <input
+                  <Input
+                    size="lg"
+                    value={data.password || ''}
                     type="password"
-                    placeholder="6+ Characters, 1 Capital letter"
-                    className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                    label="Password"
+                    variant="bordered"
+                    color={validationState === 'invalid' ? 'danger' : undefined}
+                    errorMessage={
+                      validationState === 'invalid' && 'Input masih kosong!'
+                    }
+                    validationState={validationState}
+                    onValueChange={handlePasswordChange}
+                    className="w-full "
                   />
 
-                  <span className="absolute right-4 top-4">
+                  <span className="absolute right-4 top-5">
                     <Icon path={mdiLock} size={1} />
                   </span>
                 </div>
@@ -133,11 +164,6 @@ const SignIn = () => {
                   className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90"
                 />
               </div>
-
-              {/* <button className="flex w-full items-center justify-center gap-3.5 rounded-lg border border-stroke bg-gray p-4 hover:bg-opacity-50 dark:border-strokedark dark:bg-meta-4 dark:hover:bg-opacity-50">
-                <span></span>
-                Sign in with Google
-              </button> */}
 
               <div className="mt-6 text-center">
                 <p>

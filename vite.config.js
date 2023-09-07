@@ -11,6 +11,7 @@ export default defineConfig({
       Components: path.resolve(__dirname, './src/components'),
       Images: path.resolve(__dirname, './src/images'),
       Hooks: path.resolve(__dirname, './src/hooks'),
+      Contexts: path.resolve(__dirname, './src/contexts'),
     },
   },
   plugins: [react(), tsconfigPaths()],
