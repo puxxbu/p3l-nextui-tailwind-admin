@@ -6,12 +6,61 @@ import SigninLogo from 'Images/auth/welcome-signin.svg';
 import Icon from '@mdi/react';
 import { mdiEmailOutline, mdiLock } from '@mdi/js';
 
+import { Input, useDisclosure, Button } from '@nextui-org/react';
+import React from 'react';
+
+import { registerUser } from 'Hooks/sampleData';
+import { MyModal } from 'Components';
+
+interface DataLogin {
+  username?: string | null;
+  email?: string | null;
+  password?: string | null;
+}
 const SignIn = () => {
+  const [data, setData] = React.useState<DataLogin>({
+    username: '',
+    email: '',
+    password: '',
+  });
+
+  const [errData, setErrData] = React.useState<DataLogin>({
+    username: '',
+    email: '',
+    password: '',
+  });
+
+  const [error, setError] = React.useState('');
+
+  const [loading, setLoading] = React.useState(false);
+
+  // const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
+  const validateEmail = (value: string) =>
+    value.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
+
+  const validationState = React.useMemo(() => {
+    if (data.email === '') return undefined;
+
+    return validateEmail(data.email || '') ? 'valid' : 'invalid';
+  }, [data.email]);
+
+  const handleChange = (key: any, value: any) => {
+    setData((prevData) => ({
+      ...prevData,
+      [key]: value,
+    }));
+  };
+
+  const handleEmailChange = (value: string) => {
+    handleChange('email', value);
+  };
+
   return (
     <div className="h-screen rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark  dark:bg-boxdark ">
       <div className="flex h-screen flex-wrap items-center  ">
         <div className="hidden w-full xl:block xl:w-1/2">
-          <div className="py-17.5 px-26 text-center">
+          <div className="px-26 py-17.5 text-center">
             <Link className="mb-5.5 inline-block" to="/">
               <img className="hidden dark:block" src={Logo} alt="Logo" />
               <img className="dark:hidden" src={LogoDark} alt="Logo" />
@@ -37,17 +86,24 @@ const SignIn = () => {
 
             <form>
               <div className="mb-4">
-                <label className="mb-2.5 block font-medium text-black dark:text-white">
-                  Email
-                </label>
                 <div className="relative">
-                  <input
+                  <Input
+                    size="lg"
+                    value={data.email || ''}
                     type="email"
-                    placeholder="Enter your email"
-                    className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                    label="Email"
+                    variant="bordered"
+                    color={validationState === 'invalid' ? 'danger' : undefined}
+                    errorMessage={
+                      validationState === 'invalid' &&
+                      'Please enter a valid email'
+                    }
+                    validationState={validationState}
+                    onValueChange={handleEmailChange}
+                    className="w-full "
                   />
 
-                  <span className="absolute right-4 top-4">
+                  <span className="absolute right-4 top-5">
                     <Icon path={mdiEmailOutline} size={1} />
                   </span>
                 </div>
