@@ -58,6 +58,48 @@ export async function fetchContacts(page = 1): Promise<ApiResponse> {
   }
 }
 
+interface RegisterData {
+  username: string;
+  name: string;
+}
+
+interface ErrorResponse {
+  errors: string;
+}
+
+export function registerUser(
+  username: string,
+  password: string,
+  name: string,
+  callback: (data?: RegisterData, error?: string) => void
+): void {
+  axios
+    .post<RegisterData>(
+      'http://localhost:3000/api/users',
+      {
+        username: username,
+        password: password,
+        name: name,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+      }
+    )
+    .then((response) => {
+      const data = response.data;
+      callback(data);
+    })
+    .catch((error) => {
+      const errorResponse = error.response.data as ErrorResponse;
+      const errorMessage = errorResponse.errors;
+      console.error('Error registering user:', errorMessage);
+      callback(undefined, errorMessage);
+    });
+}
+
 export const dataMusics = () => {
   return useQuery({
     queryKey: ['musics'],

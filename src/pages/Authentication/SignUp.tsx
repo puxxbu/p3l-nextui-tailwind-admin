@@ -1,15 +1,95 @@
 import { Link } from 'react-router-dom';
-import Breadcrumb from '../../components/Breadcrumb';
 import LogoDark from '../../images/logo/logo-dark.svg';
 import Logo from '../../images/logo/logo.svg';
 import SigninLogo from '../../images/auth/welcome-signin.svg';
 
+import { Input } from '@nextui-org/react';
+import React from 'react';
+
+import { registerUser } from 'Hooks/sampleData';
+
+interface DataRegister {
+  username?: string | null;
+  email?: string | null;
+  password?: string | null;
+  confirmPassword?: string | null;
+}
+
 const SignUp = () => {
+  const [data, setData] = React.useState<DataRegister>({
+    username: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+  });
+
+  const [errData, setErrData] = React.useState<DataRegister>({
+    username: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+  });
+
+  const validateEmail = (value: string) =>
+    value.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
+
+  const validationState = React.useMemo(() => {
+    if (data.email === '') return undefined;
+
+    return validateEmail(data.email || '') ? 'valid' : 'invalid';
+  }, [data.email]);
+
+  const handleChange = (key: any, value: any) => {
+    setData((prevData) => ({
+      ...prevData,
+      [key]: value,
+    }));
+  };
+
+  const handleUsernameChange = (value: string) => {
+    handleChange('username', value);
+  };
+
+  const handleEmailChange = (value: string) => {
+    handleChange('email', value);
+  };
+
+  const handlePasswordChange = (value: string) => {
+    handleChange('password', value);
+  };
+
+  const handleConfirmPasswordChange = (value: string) => {
+    handleChange('confirmPassword', value);
+  };
+
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+
+    if (validationState === 'invalid') {
+      return;
+    }
+
+    console.log(data);
+
+    registerUser(
+      data.username || '',
+      data.password || '',
+      data.email || '',
+      (data, error) => {
+        if (error) {
+          console.error('Error:', error);
+        } else {
+          console.log('Registration successful. Data:', data);
+        }
+      }
+    );
+  };
+
   return (
     <div className="h-screen rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark  dark:bg-boxdark ">
       <div className="flex h-screen flex-wrap items-center  ">
         <div className="hidden w-full xl:block xl:w-1/2">
-          <div className="py-17.5 px-26 text-center">
+          <div className="px-26 py-17.5 text-center">
             <Link className="mb-5.5 inline-block" to="/">
               <img className="hidden dark:block" src={Logo} alt="Logo" />
               <img className="dark:hidden" src={LogoDark} alt="Logo" />
@@ -32,19 +112,20 @@ const SignUp = () => {
               Sign Up to TailAdmin
             </h2>
 
-            <form>
+            <form onSubmit={handleSubmit}>
               <div className="mb-4">
-                <label className="mb-2.5 block font-medium text-black dark:text-white">
-                  Name
-                </label>
                 <div className="relative">
-                  <input
-                    type="text"
-                    placeholder="Enter your full name"
-                    className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                  <Input
+                    size="lg"
+                    value={data.username || ''}
+                    type="username"
+                    label="Username"
+                    variant="bordered"
+                    onValueChange={handleUsernameChange}
+                    className="w-full "
                   />
 
-                  <span className="absolute right-4 top-4">
+                  <span className="absolute right-4 top-5">
                     <svg
                       className="fill-current"
                       width="22"
@@ -69,17 +150,24 @@ const SignUp = () => {
               </div>
 
               <div className="mb-4">
-                <label className="mb-2.5 block font-medium text-black dark:text-white">
-                  Email
-                </label>
                 <div className="relative">
-                  <input
+                  <Input
+                    size="lg"
+                    value={data.email || ''}
                     type="email"
-                    placeholder="Enter your email"
-                    className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                    label="Email"
+                    variant="bordered"
+                    color={validationState === 'invalid' ? 'danger' : undefined}
+                    errorMessage={
+                      validationState === 'invalid' &&
+                      'Please enter a valid email'
+                    }
+                    validationState={validationState}
+                    onValueChange={handleEmailChange}
+                    className="w-full "
                   />
 
-                  <span className="absolute right-4 top-4">
+                  <span className="absolute right-4 top-5">
                     <svg
                       className="fill-current"
                       width="22"
@@ -100,17 +188,24 @@ const SignUp = () => {
               </div>
 
               <div className="mb-4">
-                <label className="mb-2.5 block font-medium text-black dark:text-white">
-                  Password
-                </label>
                 <div className="relative">
-                  <input
+                  <Input
+                    size="lg"
+                    value={data.password || ''}
                     type="password"
-                    placeholder="Enter your password"
-                    className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                    label="Password"
+                    variant="bordered"
+                    color={validationState === 'invalid' ? 'danger' : undefined}
+                    errorMessage={
+                      validationState === 'invalid' &&
+                      'Please enter a valid email'
+                    }
+                    validationState={validationState}
+                    onValueChange={handlePasswordChange}
+                    className="w-full "
                   />
 
-                  <span className="absolute right-4 top-4">
+                  <span className="absolute right-4 top-5">
                     <svg
                       className="fill-current"
                       width="22"
@@ -135,17 +230,24 @@ const SignUp = () => {
               </div>
 
               <div className="mb-6">
-                <label className="mb-2.5 block font-medium text-black dark:text-white">
-                  Re-type Password
-                </label>
                 <div className="relative">
-                  <input
+                  <Input
+                    size="lg"
+                    value={data.confirmPassword || ''}
                     type="password"
-                    placeholder="Re-enter your password"
-                    className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                    label="Confirm Password"
+                    variant="bordered"
+                    color={validationState === 'invalid' ? 'danger' : undefined}
+                    errorMessage={
+                      validationState === 'invalid' &&
+                      'Please enter a valid email'
+                    }
+                    validationState={validationState}
+                    onValueChange={handleConfirmPasswordChange}
+                    className="w-full "
                   />
 
-                  <span className="absolute right-4 top-4">
+                  <span className="absolute right-4 top-5">
                     <svg
                       className="fill-current"
                       width="22"
