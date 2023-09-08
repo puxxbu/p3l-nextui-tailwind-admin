@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 import LogoDark from 'Images/logo/logo-dark.svg';
 import Logo from 'Images/logo/logo.svg';
@@ -11,6 +11,7 @@ import React from 'react';
 
 import { loginUser } from 'Hooks/sampleData';
 import { MyModal } from 'Components';
+import AuthContext from 'Contexts/AuthProvider';
 
 interface DataLogin {
   username?: string | null;
@@ -27,13 +28,17 @@ const SignIn = () => {
     password: '',
   });
 
+  const { setAuth } = React.useContext(AuthContext);
+  const { auth } = React.useContext(AuthContext);
   const [error, setError] = React.useState('');
-
   const [loading, setLoading] = React.useState(false);
-
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const validateUsername = (value: string) => value.length !== 0;
+
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from.pathname || '/';
 
   const validationState = React.useMemo(() => {
     if (data.username === '') return undefined;
@@ -59,6 +64,7 @@ const SignIn = () => {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     setLoading(true);
+    console.log('Auth Context. Data:', auth);
 
     if (validationState === 'invalid') {
       setLoading(false);
@@ -73,6 +79,8 @@ const SignIn = () => {
         onOpen();
       } else {
         setLoading(false);
+        setAuth(data);
+        navigate(from, { replace: true });
         console.log('Registration successful. Data:', data);
       }
     });
@@ -109,7 +117,7 @@ const SignIn = () => {
           <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
             <span className="mb-1.5 block font-medium">Start for free</span>
             <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
-              Sign In to TailAdmin
+              Sign In to
             </h2>
 
             <form onSubmit={handleSubmit}>
@@ -132,9 +140,6 @@ const SignIn = () => {
               </div>
 
               <div className="mb-6">
-                <label className="mb-2.5 block font-medium text-black dark:text-white">
-                  Re-type Password
-                </label>
                 <div className="relative">
                   <Input
                     size="lg"
