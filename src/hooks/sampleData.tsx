@@ -39,11 +39,13 @@ interface ApiResponse {
 }
 
 interface LoginResponse {
-  data: LoginData;
-}
-
-interface LoginData {
-  token: string;
+  data: {
+    token: string;
+    role: {
+      id: number;
+      name: string;
+    };
+  };
 }
 
 export async function fetchContacts(page = 1): Promise<ApiResponse> {
@@ -111,10 +113,10 @@ export function registerUser(
 export function loginUser(
   username: string,
   password: string,
-  callback: (data?: any, error?: string) => void
+  callback: (data?: LoginResponse, error?: string) => void
 ): void {
   axios
-    .post<LoginData>(
+    .post<LoginResponse>(
       'http://localhost:3000/api/users/login',
       {
         username: username,

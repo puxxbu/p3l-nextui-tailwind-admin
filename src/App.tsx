@@ -40,10 +40,12 @@ function App() {
         //public routes
         <Route path="/auth/signin" element={<SignIn />} />
         <Route path="/auth/signup" element={<SignUp />} />
-        <Route element={<RequireAuth />}>
+        <Route element={<RequireAuth allowedRoles={[1001]} />}>
           <Route path="/profile" element={<Profile />} />
         </Route>
-        <Route path="/calendar" element={<Calendar />} />
+        <Route element={<RequireAuth allowedRoles={[1002]} />}>
+          <Route path="/calendar" element={<Calendar />} />
+        </Route>
         <Route path="/forms/form-elements" element={<FormElements />} />
         <Route path="/forms/form-layout" element={<FormLayout />} />
         <Route path="/tables" element={<Tables />} />
