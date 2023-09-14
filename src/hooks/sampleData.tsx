@@ -2,10 +2,20 @@ import { useQuery, useMutation } from '@tanstack/react-query';
 import { columns, users, statusOptions, musics } from '../data/data';
 
 import axios from 'axios';
+import useAxiosPrivate from './useAxiosPrivate';
 
+axios.defaults.withCredentials = true;
 export const axiosInstance = axios.create({
   baseURL: 'http://localhost:3000',
 });
+
+export const axiosPrivate = axios.create({
+  baseURL: 'http://localhost:3000',
+  headers: { 'Content-Type': 'application/json' },
+  withCredentials: true,
+});
+
+// const testAxios = useAxiosPrivate();
 
 function wait(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -48,13 +58,25 @@ interface LoginResponse {
   };
 }
 
+interface UserResponse {
+  data: {
+    username: string;
+    name: string;
+    role: {
+      id: number;
+      name: string;
+    };
+  };
+}
+
 export async function fetchContacts(page = 1): Promise<ApiResponse> {
   try {
-    const response = await axios.get('http://localhost:3000/api/contacts', {
+    const response = await axiosInstance.get('/api/contacts', {
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
-        Authorization: '555ead79-fe4c-4441-9afd-6bf14c3f94f8',
+        Authorization:
+          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InBhYmxvMSIsImlhdCI6MTY5NDYxMDQxOSwiZXhwIjoxNjk1MTI4ODE5fQ.jf6a7zmBgShbVZZCRZZOHexRomCboV2kGP2bjx8sdy0',
       },
       params: {
         page: page,
@@ -64,6 +86,17 @@ export async function fetchContacts(page = 1): Promise<ApiResponse> {
     return response.data as ApiResponse;
   } catch (error) {
     console.error('Error fetching contacts:', error);
+    throw error;
+  }
+}
+
+export async function fetchUsers(): Promise<UserResponse> {
+  try {
+    const response = await testAxios.get('/api/users/current');
+
+    return response.data as UserResponse;
+  } catch (error) {
+    console.error('Error fetching user data:', error);
     throw error;
   }
 }
