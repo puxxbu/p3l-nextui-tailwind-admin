@@ -54,11 +54,11 @@ export async function fetchContacts(page = 1): Promise<ApiResponse> {
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
-        Authorization: '555ead79-fe4c-4441-9afd-6bf14c3f94f8',
       },
       params: {
         page: page,
       },
+      withCredentials: true,
     });
 
     return response.data as ApiResponse;

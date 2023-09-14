@@ -40,9 +40,7 @@ function App() {
         //public routes
         <Route path="/auth/signin" element={<SignIn />} />
         <Route path="/auth/signup" element={<SignUp />} />
-        <Route element={<RequireAuth allowedRoles={[1001]} />}>
-          <Route path="/profile" element={<Profile />} />
-        </Route>
+        <Route path="/profile" element={<Profile />} />
         <Route element={<RequireAuth allowedRoles={[1002]} />}>
           <Route path="/calendar" element={<Calendar />} />
         </Route>

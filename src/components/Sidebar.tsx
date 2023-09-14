@@ -4,6 +4,13 @@ import Logo from '../images/logo/logo.svg';
 import SidebarLinkGroup from './SidebarLinkGroup';
 import AuthContext from 'Contexts/AuthProvider';
 
+import { useSelector, useDispatch } from 'react-redux';
+import { ThunkDispatch } from 'redux-thunk';
+import { AnyAction } from 'redux';
+
+// import { login, logout } from 'src/actions/userAction';
+import { RootState } from 'src/store';
+
 interface SidebarProps {
   sidebarOpen: boolean;
   setSidebarOpen: (arg: boolean) => void;
@@ -12,8 +19,8 @@ interface SidebarProps {
 const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const location = useLocation();
   const { pathname } = location;
-  const { setAuth } = React.useContext(AuthContext);
   const navigate = useNavigate();
+  const dispatch = useDispatch<ThunkDispatch<RootState, unknown, AnyAction>>();
 
   const trigger = useRef<any>(null);
   const sidebar = useRef<any>(null);
@@ -23,8 +30,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     storedSidebarExpanded === null ? false : storedSidebarExpanded === 'true'
   );
 
-  const logout = async () => {
-    setAuth({});
+  const signout = async () => {
+    // dispatch(logout());
+
     navigate('/');
   };
 
@@ -713,7 +721,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                           </li>
                           <li>
                             <span
-                              onClick={logout}
+                              onClick={signout}
                               className="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:cursor-pointer hover:text-white"
                             >
                               Signout

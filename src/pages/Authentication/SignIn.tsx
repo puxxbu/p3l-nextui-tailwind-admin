@@ -12,6 +12,12 @@ import React from 'react';
 import { loginUser } from 'Hooks/sampleData';
 import { MyModal } from 'Components';
 import AuthContext from 'Contexts/AuthProvider';
+import { useSelector, useDispatch } from 'react-redux';
+import { ThunkDispatch } from 'redux-thunk';
+import { AnyAction } from 'redux';
+
+import { login } from 'src/actions/userAction';
+import { RootState } from 'src/store';
 
 interface DataLogin {
   username?: string | null;
@@ -39,6 +45,8 @@ const SignIn = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from.pathname || '/';
+
+  const dispatch = useDispatch<ThunkDispatch<RootState, unknown, AnyAction>>();
 
   const validationState = React.useMemo(() => {
     if (data.username === '') return undefined;
@@ -71,19 +79,18 @@ const SignIn = () => {
       return;
     }
 
-    loginUser(data.username || '', data.password || '', (data, error) => {
-      if (error) {
-        console.log('Error:', error);
-        setError(error);
-        setLoading(false);
-        onOpen();
-      } else {
-        setLoading(false);
-        setAuth(data);
+    //call dispatch
+
+    dispatch(login(data.username || '', data.password || ''))
+      .then(() => {
+        // Login berhasil
+        console.log('Login berhasil');
         navigate(from, { replace: true });
-        console.log('Registration successful. Data:', data);
-      }
-    });
+      })
+      .catch((error) => {
+        // Login gagal
+        console.error('Login gagal:', error);
+      });
   };
 
   return (
