@@ -13,6 +13,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const location = useLocation();
   const { pathname } = location;
   const { setAuth } = React.useContext(AuthContext);
+  console.log(React.useContext(AuthContext));
   const navigate = useNavigate();
 
   const trigger = useRef<any>(null);
