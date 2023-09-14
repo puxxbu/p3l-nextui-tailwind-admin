@@ -1,4 +1,4 @@
-import { createContext, useState } from 'react';
+import { createContext, useState, useEffect } from 'react';
 
 interface AuthContextProps {
   auth: any;
@@ -9,6 +9,16 @@ const AuthContext = createContext<AuthContextProps>({} as AuthContextProps);
 
 export const AuthProvider = ({ children }: any) => {
   const [auth, setAuth] = useState({});
+
+  useEffect(() => {
+    const storedData = localStorage.getItem('token');
+    if (storedData) {
+      const parsedData = JSON.parse(storedData);
+      console.log('AUTHPROVIDER');
+      console.log(storedData);
+      setAuth(parsedData);
+    }
+  }, []);
 
   return (
     <AuthContext.Provider value={{ auth, setAuth }}>

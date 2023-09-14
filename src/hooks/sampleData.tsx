@@ -50,15 +50,8 @@ interface LoginResponse {
 
 export async function fetchContacts(page = 1): Promise<ApiResponse> {
   try {
-    const response = await axios.get('http://localhost:3000/api/contacts', {
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: '555ead79-fe4c-4441-9afd-6bf14c3f94f8',
-      },
-      params: {
-        page: page,
-      },
+    const response = await axios.get('https://catfact.ninja/fact', {
+      withCredentials: true,
     });
 
     return response.data as ApiResponse;

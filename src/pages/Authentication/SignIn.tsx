@@ -80,8 +80,12 @@ const SignIn = () => {
       } else {
         setLoading(false);
         setAuth(data);
+        localStorage.setItem('token', JSON.stringify(data?.data) || '');
         navigate(from, { replace: true });
-        console.log('Registration successful. Data:', data);
+        console.log(
+          'Registration successful. Data:',
+          JSON.stringify(data?.data)
+        );
       }
     });
   };
