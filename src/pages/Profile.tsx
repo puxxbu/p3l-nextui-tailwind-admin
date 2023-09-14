@@ -9,14 +9,10 @@ import Icon from '@mdi/react';
 
 import { useQuery, useMutation } from '@tanstack/react-query';
 
-import { fetchUsers } from 'Hooks/sampleData';
-
-import useAxiosPrivate from 'src/hooks/useAxiosPrivate';
 import AuthContext from 'Contexts/AuthProvider';
 
 const Profile = () => {
   const [users, setUsers] = useState();
-  const testAxios = useAxiosPrivate(React.useContext(AuthContext));
 
   interface UserResponse {
     data: {
@@ -28,19 +24,6 @@ const Profile = () => {
       };
     };
   }
-
-  const fetchUser = async function fetchUsers(): Promise<UserResponse> {
-    try {
-      const response = await testAxios.get('/api/users/current');
-
-      return response.data as UserResponse;
-    } catch (error) {
-      console.error('Error fetching user data:', error);
-      throw error;
-    }
-  };
-
-  console.log(fetchUser());
 
   // const userData = useQuery({
   //   queryKey: ['profile'],
