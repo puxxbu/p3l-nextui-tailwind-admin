@@ -14,11 +14,13 @@ const MainLayout = ({ children }: MainLayoutProps) => {
 
   return (
     <NextUIProvider>
-      <TopNavBar />
-      <main className="grow overflow-hidden">
-        <PageIllustration />
-        {children}
-      </main>
+      <div className=" dark:bg-boxdark-2 dark:text-bodydark">
+        <TopNavBar />
+        <div className="grow overflow-hidden ">
+          <PageIllustration />
+          {children}
+        </div>
+      </div>
     </NextUIProvider>
   );
 };

@@ -10,6 +10,7 @@ import {
   NavbarMenuItem,
   NavbarMenuToggle,
 } from '@nextui-org/react';
+import DarkModeSwitcher from './DarkModeSwitcher';
 
 const TopNavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
@@ -57,6 +58,7 @@ const TopNavBar = () => {
         </NavbarItem>
       </NavbarContent>
       <NavbarContent justify="end">
+        <DarkModeSwitcher />
         <NavbarItem className="lg:flex">
           <Link href="#">Login</Link>
         </NavbarItem>
