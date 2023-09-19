@@ -14,6 +14,7 @@ import Tables from './pages/Tables';
 import Alerts from './pages/UiElements/Alerts';
 import Buttons from './pages/UiElements/Buttons';
 import RequireAuth from 'Components/RequireAuth';
+import LandingPage from './pages/LandingPage/LandingPage';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -24,7 +25,7 @@ function App() {
     setTimeout(() => {
       preloader.style.display = 'none';
       setLoading(false);
-    }, 2000);
+    }, 1000);
   }
 
   useEffect(() => {
@@ -36,7 +37,8 @@ function App() {
   ) : (
     <>
       <Routes>
-        <Route path="/" element={<ECommerce />} />
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/admin" element={<ECommerce />} />
         //public routes
         <Route path="/auth/signin" element={<SignIn />} />
         <Route path="/auth/signup" element={<SignUp />} />

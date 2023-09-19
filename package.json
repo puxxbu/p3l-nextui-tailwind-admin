@@ -20,6 +20,7 @@
     "@nextui-org/react": "^2.1.8",
     "@tanstack/react-query": "^4.33.0",
     "@tanstack/react-query-devtools": "^4.33.0",
+    "aos": "next",
     "apexcharts": "^3.37.0",
     "axios": "^1.5.0",
     "framer-motion": "^10.16.2",
