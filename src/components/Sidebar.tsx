@@ -26,6 +26,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
   const logout = async () => {
     setAuth({});
+    localStorage.removeItem('token');
     navigate('/');
   };
 

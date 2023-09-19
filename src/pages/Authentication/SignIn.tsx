@@ -79,8 +79,9 @@ const SignIn = () => {
         onOpen();
       } else {
         setLoading(false);
-        setAuth(data);
+        setAuth(data?.data);
         localStorage.setItem('token', JSON.stringify(data?.data) || '');
+        console.log('Auth Context. Data:', data);
         navigate(from, { replace: true });
         console.log(
           'Registration successful. Data:',
