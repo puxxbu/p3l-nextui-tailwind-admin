@@ -6,6 +6,7 @@ import MainLayout from 'src/layout/MainLayout';
 
 const LandingPage = () => {
   return (
+    //TODO: ADD AOS ANIMATION
     <MainLayout>
       <Hero />
       <Features />
