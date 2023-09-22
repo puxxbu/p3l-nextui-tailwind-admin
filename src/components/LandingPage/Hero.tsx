@@ -1,3 +1,6 @@
+import React from 'react';
+import { Carousel } from '@material-tailwind/react';
+
 export default function Hero() {
   return (
     <section>
@@ -46,8 +49,25 @@ export default function Hero() {
             <h1 className="h1 mb-4" data-aos="fade-up">
               Landing template for startups
             </h1>
+            <Carousel className="rounded-xl">
+              <img
+                src="https://images.unsplash.com/photo-1497436072909-60f360e1d4b1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2560&q=80"
+                alt="image 1"
+                className="h-full w-full object-cover"
+              />
+              <img
+                src="https://images.unsplash.com/photo-1493246507139-91e8fad9978e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2940&q=80"
+                alt="image 2"
+                className="h-full w-full object-cover"
+              />
+              <img
+                src="https://images.unsplash.com/photo-1518623489648-a173ef7824f3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2762&q=80"
+                alt="image 3"
+                className="h-full w-full object-cover"
+              />
+            </Carousel>
             <p
-              className="text-gray-400 mb-8 text-xl"
+              className="mb-8 text-xl text-gray-400"
               data-aos="fade-up"
               data-aos-delay="500"
             >
@@ -57,7 +77,7 @@ export default function Hero() {
             <div className="mx-auto max-w-xs sm:flex sm:max-w-none sm:justify-center">
               <div data-aos="fade-up" data-aos-delay="400">
                 <a
-                  className="btn bg-purple-600 hover:bg-purple-700 mb-4 w-full text-white sm:mb-0 sm:w-auto"
+                  className="mb-4 w-full bg-purple-600 px-8 py-3 text-white hover:bg-purple-700 sm:mb-0 sm:w-auto"
                   href="#0"
                 >
                   Start free trial
@@ -65,7 +85,7 @@ export default function Hero() {
               </div>
               <div data-aos="fade-up" data-aos-delay="600">
                 <a
-                  className="btn bg-gray-700 hover:bg-gray-800 w-full text-white sm:ml-4 sm:w-auto"
+                  className="w-full bg-gray-700 px-8 py-3 text-white hover:bg-gray-800 sm:ml-4 sm:w-auto"
                   href="#0"
                 >
                   Learn more

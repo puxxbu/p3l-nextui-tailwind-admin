@@ -4,6 +4,7 @@ import Sidebar from '../components/Sidebar';
 import { NextUIProvider } from '@nextui-org/react';
 import TopNavBar from 'src/components/TopNavBar';
 import PageIllustration from 'src/components/LandingPage/Page-Illustration';
+import { ThemeProvider } from '@material-tailwind/react';
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -14,13 +15,15 @@ const MainLayout = ({ children }: MainLayoutProps) => {
 
   return (
     <NextUIProvider>
-      <div className=" dark:bg-boxdark-2 dark:text-bodydark">
-        <TopNavBar />
-        <div className="grow overflow-hidden ">
-          <PageIllustration />
-          {children}
+      <ThemeProvider>
+        <div className=" dark:bg-boxdark-2 dark:text-bodydark">
+          <TopNavBar />
+          <div className="grow overflow-hidden ">
+            <PageIllustration />
+            {children}
+          </div>
         </div>
-      </div>
+      </ThemeProvider>
     </NextUIProvider>
   );
 };

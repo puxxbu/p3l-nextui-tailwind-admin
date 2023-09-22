@@ -194,3 +194,18 @@ span.flatpickr-weekday,
 [x-cloak] {
   display: none !important;
 }
+
+.swiper {
+@apply w-full h-full;
+
+}
+
+.swiper-slide {
+@apply flex justify-center items-center bg-white text-center ;
+  
+}
+
+.swiper-slide img {
+@apply object-cover object-center h-full w-full;
+  
+}
