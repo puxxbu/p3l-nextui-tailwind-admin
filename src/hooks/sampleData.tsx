@@ -134,6 +134,30 @@ export function loginUser(
     });
 }
 
+export function getCurrentUser(
+  token: string,
+  callback: (data?: LoginResponse, error?: string) => void
+): void {
+  axios
+    .get<LoginResponse>('http://localhost:3000/api/users/current', {
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
+      const data = response.data;
+      callback(data);
+    })
+    .catch((error) => {
+      const errorResponse = error.response.data as ErrorResponse;
+      const errorMessage = errorResponse.errors;
+      console.error('Error logging in:', errorMessage);
+      callback(undefined, errorMessage);
+    });
+}
+
 export const dataMusics = () => {
   return useQuery({
     queryKey: ['musics'],

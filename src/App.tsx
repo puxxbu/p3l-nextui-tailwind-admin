@@ -39,7 +39,7 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/admin" element={<ECommerce />} />
-        //public routes
+        //public routes //TODO add RequireAuth if user alr logged in
         <Route path="/auth/signin" element={<SignIn />} />
         <Route path="/auth/signup" element={<SignUp />} />
         <Route element={<RequireAuth allowedRoles={[1001]} />}>

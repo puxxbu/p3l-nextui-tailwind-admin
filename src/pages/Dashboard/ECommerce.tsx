@@ -10,9 +10,28 @@ import MapOne from '../../components/MapOne.tsx';
 import TableOne from '../../components/TableOne.tsx';
 import DefaultLayout from '../../layout/DefaultLayout.tsx';
 
+import MyModal from 'src/components/Modal.tsx';
+import { useDisclosure } from '@nextui-org/react';
+import { useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
+
 const ECommerce = () => {
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const location = useLocation();
+  const message = location.state?.message || '';
+
+  useEffect(() => {
+    if (message !== '') onOpen();
+  }, [message, onOpen]);
+
   return (
     <DefaultLayout>
+      <MyModal
+        isOpen={isOpen}
+        onOpen={onOpen}
+        onOpenChange={onOpenChange}
+        text={message}
+      />
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
         <CardOne />
         <CardTwo />

@@ -23,7 +23,7 @@ const MyModal = ({ isOpen, onOpen, onOpenChange, text }: MyModalProps) => {
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                Modal Title
+                <h1>Error !</h1>
               </ModalHeader>
               <ModalBody>
                 <h1>{text}</h1>
