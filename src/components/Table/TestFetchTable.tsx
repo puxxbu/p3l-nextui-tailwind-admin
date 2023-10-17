@@ -9,6 +9,8 @@ import {
   Pagination,
   getKeyValue,
   Spinner,
+  Button,
+  Input,
 } from '@nextui-org/react';
 import { users2 as users } from '../../data/data';
 
@@ -17,12 +19,16 @@ import { fetchKamar } from 'Hooks/sampleData';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import useAuth from 'src/hooks/useAuth';
 import Error from '../Error/Error';
+import Icon from '@mdi/react';
+import { mdiMagnify, mdiPlus } from '@mdi/js';
 
 export default function App() {
   const [page, setPage] = React.useState(1);
   const [items, setItems] = React.useState<Kamar[]>([]);
-  const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
   const { auth } = useAuth();
+  const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
+  const [filterValue, setFilterValue] = React.useState('');
+
   const {
     status,
     data,
@@ -31,18 +37,35 @@ export default function App() {
     isPreviousData,
     refetch,
     isLoading,
-  } = useQuery({
-    queryKey: ['projects', page],
-    queryFn: () => fetchKamar(page, auth.token),
-    keepPreviousData: true,
-    staleTime: 5000,
-  });
+  } = useQuery(
+    ['projects', page, filterValue], // Memasukkan filterValue sebagai bagian dari query key
+    () => fetchKamar(page, filterValue, auth.token),
+    {
+      keepPreviousData: true,
+      staleTime: 5000,
+    }
+  );
 
   console.log(page);
 
   React.useEffect(() => {
     refetch();
-  }, [page, refetch]);
+  }, [page, filterValue, refetch]);
+
+  const onClear = React.useCallback(() => {
+    setFilterValue('');
+    setPage(1);
+  }, []);
+
+  const onSearchChange = React.useCallback((value?: string) => {
+    if (value) {
+      setFilterValue(value);
+      console.log(value);
+      setPage(1);
+    } else {
+      setFilterValue('');
+    }
+  }, []);
 
   const rowsPerPage = 10;
 
@@ -64,40 +87,62 @@ export default function App() {
       return Error();
     } else {
       return (
-        <Table
-          aria-label="Example table with client side pagination"
-          bottomContent={
-            <div className="flex w-full justify-center">
-              <Pagination
-                isCompact
-                showControls
-                showShadow
-                color="secondary"
-                page={page}
-                total={pages}
-                onChange={(page) => setPage(page)}
-              />
+        <div className="flex flex-col gap-4">
+          <div className="flex items-end justify-between gap-3">
+            <Input
+              isClearable
+              variant="bordered"
+              className="w-full sm:max-w-[44%]"
+              placeholder="Search by name..."
+              startContent={<Icon path={mdiMagnify} size={1} />}
+              value={filterValue}
+              onClear={() => onClear()}
+              onValueChange={onSearchChange}
+            />
+            <div className="flex justify-end gap-3">
+              <Button
+                color="primary"
+                endContent={<Icon path={mdiPlus} size={1} />}
+              >
+                Add New
+              </Button>
             </div>
-          }
-          classNames={{
-            wrapper: 'min-h-[222px]',
-          }}
-        >
-          <TableHeader>
-            <TableColumn key="id_kamar">NAME</TableColumn>
-            <TableColumn key="id_jenis_kamar">FIRST NAME</TableColumn>
-            <TableColumn key="nomor_kamar">LAST NAME</TableColumn>
-          </TableHeader>
-          <TableBody items={items}>
-            {(item) => (
-              <TableRow key={item.id_kamar}>
-                {(columnKey) => (
-                  <TableCell>{getKeyValue(item, columnKey)}</TableCell>
-                )}
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+          </div>
+          <Table
+            aria-label="Example table with client side pagination"
+            bottomContent={
+              <div className="flex w-full justify-center">
+                <Pagination
+                  isCompact
+                  showControls
+                  showShadow
+                  color="secondary"
+                  page={page}
+                  total={pages}
+                  onChange={(page) => setPage(page)}
+                />
+              </div>
+            }
+            classNames={{
+              wrapper: 'min-h-[222px]',
+            }}
+          >
+            <TableHeader>
+              <TableColumn key="id_kamar">NAME</TableColumn>
+              <TableColumn key="id_jenis_kamar">FIRST NAME</TableColumn>
+              <TableColumn key="nomor_kamar">LAST NAME</TableColumn>
+            </TableHeader>
+            <TableBody items={items}>
+              {(item) => (
+                <TableRow key={item.id_kamar}>
+                  {(columnKey) => (
+                    <TableCell>{getKeyValue(item, columnKey)}</TableCell>
+                  )}
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </div>
       );
     }
   }
