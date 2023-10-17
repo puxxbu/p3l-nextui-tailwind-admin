@@ -2,6 +2,7 @@ import { useQuery, useMutation } from '@tanstack/react-query';
 import { columns, users, statusOptions, musics } from '../data/data';
 
 import axios from 'axios';
+import useAuth from './useAuth';
 
 export const axiosInstance = axios.create({
   baseURL: 'http://localhost:3000',
@@ -18,26 +19,6 @@ export const dataUsers = () => {
   });
 };
 
-interface Contact {
-  id: number;
-  first_name: string;
-  last_name: string;
-  email: string;
-  phone: string;
-  username: string;
-}
-
-interface Paging {
-  page: number;
-  total_item: number;
-  total_page: number;
-}
-
-interface ApiResponse {
-  data: Contact[];
-  paging: Paging;
-}
-
 interface LoginResponse {
   data: {
     token: string;
@@ -48,13 +29,34 @@ interface LoginResponse {
   };
 }
 
-export async function fetchContacts(page = 1): Promise<ApiResponse> {
-  try {
-    const response = await axios.get('https://catfact.ninja/fact', {
-      withCredentials: true,
-    });
+// export async function fetchContacts(page = 1): Promise<ApiResponse> {
+//   try {
+//     const response = await axios.get('https://catfact.ninja/fact', {
+//       withCredentials: true,
+//     });
 
-    return response.data as ApiResponse;
+//     return response.data as ApiResponse;
+//   } catch (error) {
+//     console.error('Error fetching contacts:', error);
+//     throw error;
+//   }
+// }
+
+export async function fetchKamar(
+  page = 1,
+  token: string
+): Promise<KamarResponse> {
+  try {
+    const response = await axios.get(
+      `http://localhost:3000/api/kamar?page=${page}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return response.data as KamarResponse;
   } catch (error) {
     console.error('Error fetching contacts:', error);
     throw error;

@@ -12,21 +12,15 @@ import {
 } from '@nextui-org/react';
 import { users2 as users } from '../data/data';
 
-import { fetchContacts } from 'Hooks/sampleData';
+import { fetchKamar } from 'Hooks/sampleData';
 
 import { useQuery, useMutation } from '@tanstack/react-query';
+import useAuth from 'src/hooks/useAuth';
 
-interface Contact {
-  id: number;
-  first_name: string;
-  last_name: string;
-  email: string;
-  phone: string;
-  username: string;
-}
 export default function App() {
   const [page, setPage] = React.useState(1);
-  const [items, setItems] = React.useState<Contact[]>([]);
+  const [items, setItems] = React.useState<Kamar[]>([]);
+  const { auth } = useAuth();
   const {
     status,
     data,
@@ -37,7 +31,7 @@ export default function App() {
     isLoading,
   } = useQuery({
     queryKey: ['projects', page],
-    queryFn: () => fetchContacts(page),
+    queryFn: () => fetchKamar(page, auth.token),
     keepPreviousData: true,
     staleTime: 5000,
   });
@@ -85,14 +79,13 @@ export default function App() {
         }}
       >
         <TableHeader>
-          <TableColumn key="id">NAME</TableColumn>
-          <TableColumn key="first_name">FIRST NAME</TableColumn>
-          <TableColumn key="last_name">LAST NAME</TableColumn>
-          <TableColumn key="email">EMAIL</TableColumn>
+          <TableColumn key="id_kamar">NAME</TableColumn>
+          <TableColumn key="id_jenis_kamar">FIRST NAME</TableColumn>
+          <TableColumn key="nomor_kamar">LAST NAME</TableColumn>
         </TableHeader>
         <TableBody items={items}>
           {(item) => (
-            <TableRow key={item.id}>
+            <TableRow key={item.id_kamar}>
               {(columnKey) => (
                 <TableCell>{getKeyValue(item, columnKey)}</TableCell>
               )}
