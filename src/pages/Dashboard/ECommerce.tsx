@@ -7,7 +7,7 @@ import ChartThree from '../../components/ChartThree.tsx';
 import ChartTwo from '../../components/ChartTwo.tsx';
 import ChatCard from '../../components/ChatCard.tsx';
 import MapOne from '../../components/MapOne.tsx';
-import TableOne from '../../components/TableOne.tsx';
+import TableOne from '../../components/Table/TableOne.tsx';
 import DefaultLayout from '../../layout/DefaultLayout.tsx';
 
 import MyModal from 'src/components/Modal.tsx';
