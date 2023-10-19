@@ -15,6 +15,7 @@ import Alerts from './pages/UiElements/Alerts';
 import Buttons from './pages/UiElements/Buttons';
 import RequireAuth from 'Components/RequireAuth';
 import LandingPage from './pages/LandingPage/LandingPage';
+import FormKamar from './pages/Form/FormKamar';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -50,6 +51,7 @@ function App() {
         </Route>
         <Route path="/forms/form-elements" element={<FormElements />} />
         <Route path="/forms/form-layout" element={<FormLayout />} />
+        <Route path="/forms/kamar" element={<FormKamar />} />
         <Route path="/tables" element={<Tables />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/chart" element={<Chart />} />

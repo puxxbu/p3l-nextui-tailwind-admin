@@ -128,9 +128,9 @@ export default function App() {
             }}
           >
             <TableHeader>
-              <TableColumn key="id_kamar">NAME</TableColumn>
-              <TableColumn key="id_jenis_kamar">FIRST NAME</TableColumn>
-              <TableColumn key="nomor_kamar">LAST NAME</TableColumn>
+              <TableColumn key="id_kamar">ID Kamar</TableColumn>
+              <TableColumn key="id_jenis_kamar">ID Jenis Kamar</TableColumn>
+              <TableColumn key="nomor_kamar">Nomor Kamar</TableColumn>
             </TableHeader>
             <TableBody items={items}>
               {(item) => (

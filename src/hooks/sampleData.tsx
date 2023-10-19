@@ -162,12 +162,3 @@ export function getCurrentUser(
       callback(undefined, errorMessage);
     });
 }
-
-export const dataMusics = () => {
-  return useQuery({
-    queryKey: ['musics'],
-    queryFn: () =>
-      wait(2000).then(() => [...musics.data.artist.discography.albums.items]),
-    placeholderData: [...musics.data.artist.discography.albums.items],
-  });
-};
