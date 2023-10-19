@@ -1,11 +1,12 @@
 import Icon from '@mdi/react';
 import Breadcrumb from '../../components/Breadcrumb';
 import DefaultLayout from '../../layout/DefaultLayout';
-import { mdiChevronDown } from '@mdi/js';
+import { mdiAlert, mdiChevronDown } from '@mdi/js';
 import { Input, Select, SelectItem, useDisclosure } from '@nextui-org/react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import useAuth from 'src/hooks/useAuth';
 import { createKamar } from 'src/hooks/formController';
+import toast, { Toaster } from 'react-hot-toast';
 
 const jenisKamar = [
   {
@@ -35,8 +36,8 @@ const jenisKamar = [
 ];
 
 interface DataKamar {
-  nomor_kamar?: string | null;
-  id_jenis_kamar?: string | null;
+  nomor_kamar: string;
+  id_jenis_kamar: string;
 }
 
 const FormKamar = () => {
@@ -56,8 +57,27 @@ const FormKamar = () => {
     }));
   };
 
+  const handleNomorKamar = (value: string) => {
+    if (value === '') return false;
+    handleChange('nomor_kamar', value);
+  };
+
+  const validateNomorKamar = (value: string) => value.match(/^\d+$/);
+
+  const isInvalid = useMemo(() => {
+    if (data.nomor_kamar === '') return false;
+    return validateNomorKamar(data.nomor_kamar) ? false : true;
+  }, [data.nomor_kamar]);
+
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+
+    if(isInvalid) return toast('Tolong cek kembali inputan anda',
+    {
+      icon: '❌',
+      className: "dark:bg-boxdark dark:text-white",
+    }
+  );
 
     createKamar(
       data.nomor_kamar || '0',
@@ -76,7 +96,7 @@ const FormKamar = () => {
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Create Kamar" />
-
+        <Toaster />
       <div className="grid grid-cols-1 gap-9 ">
         <div className="flex flex-col gap-9">
           {/* <!-- Contact Form --> */}
@@ -95,9 +115,9 @@ const FormKamar = () => {
                       type="text"
                       label="Nomor Kamar"
                       value={data.nomor_kamar || ''}
-                      onValueChange={(value) =>
-                        handleChange('nomor_kamar', value)
-                      }
+                      isInvalid={isInvalid}
+                      errorMessage={isInvalid && 'Masukkan input yang valid'}
+                      onValueChange={handleNomorKamar}
                       placeholder="Masukkan Nomor Kamar"
                     />
                   </div>
@@ -109,7 +129,7 @@ const FormKamar = () => {
                         label="Pilih Jenis Kamar"
                         className="relative z-20 bg-transparent dark:bg-form-input"
                         selectedKeys={data.id_jenis_kamar || ''}
-                        onChange={(selectedKeys) =>
+                        onChange={(selectedKeys : any) =>
                           handleChange(
                             'id_jenis_kamar',
                             selectedKeys.target.value
@@ -126,7 +146,7 @@ const FormKamar = () => {
                   </div>
                 </div>
 
-                <button className="text-gray flex w-full justify-center rounded bg-primary p-3 font-medium dark:text-white                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     ">
+                <button className="text-white flex w-full justify-center rounded bg-primary p-3 font-medium                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ">
                   Create Kamar
                 </button>
               </div>
