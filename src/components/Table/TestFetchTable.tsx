@@ -11,6 +11,10 @@ import {
   Spinner,
   Button,
   Input,
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
 } from '@nextui-org/react';
 import { users2 as users } from '../../data/data';
 
@@ -20,7 +24,8 @@ import { useQuery, useMutation } from '@tanstack/react-query';
 import useAuth from 'src/hooks/useAuth';
 import Error from '../Error/Error';
 import Icon from '@mdi/react';
-import { mdiMagnify, mdiPlus } from '@mdi/js';
+import { mdiChevronDown, mdiDotsVertical, mdiMagnify, mdiPlus } from '@mdi/js';
+import { useNavigate } from 'react-router-dom';
 
 export default function App() {
   const [page, setPage] = React.useState(1);
@@ -28,6 +33,8 @@ export default function App() {
   const { auth } = useAuth();
   const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
   const [filterValue, setFilterValue] = React.useState('');
+
+  const navigate = useNavigate();
 
   const {
     status,
@@ -131,12 +138,35 @@ export default function App() {
               <TableColumn key="id_kamar">ID Kamar</TableColumn>
               <TableColumn key="id_jenis_kamar">ID Jenis Kamar</TableColumn>
               <TableColumn key="nomor_kamar">Nomor Kamar</TableColumn>
+              <TableColumn key="action">Actions</TableColumn>
             </TableHeader>
             <TableBody items={items}>
               {(item) => (
                 <TableRow key={item.id_kamar}>
                   {(columnKey) => (
-                    <TableCell>{getKeyValue(item, columnKey)}</TableCell>
+                    <TableCell>
+                      {columnKey === 'action' ? (
+                        <Dropdown>
+                          <DropdownTrigger>
+                            <Button isIconOnly size="sm" variant="light">
+                              <Icon path={mdiDotsVertical} size={1} />
+                            </Button>
+                          </DropdownTrigger>
+                          <DropdownMenu
+                            aria-label="Action event example"
+                            onAction={(key) => navigate('/forms/kamar/' + key)}
+                          >
+                            <DropdownItem key={getKeyValue(item, 'id_kamar')}>
+                              View
+                            </DropdownItem>
+                            <DropdownItem>Edit</DropdownItem>
+                            <DropdownItem>Delete</DropdownItem>
+                          </DropdownMenu>
+                        </Dropdown>
+                      ) : (
+                        getKeyValue(item, columnKey)
+                      )}
+                    </TableCell>
                   )}
                 </TableRow>
               )}

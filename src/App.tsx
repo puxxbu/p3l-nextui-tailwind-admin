@@ -16,6 +16,7 @@ import Buttons from './pages/UiElements/Buttons';
 import RequireAuth from 'Components/RequireAuth';
 import LandingPage from './pages/LandingPage/LandingPage';
 import FormKamar from './pages/Form/FormKamar';
+import DetailKamar from './pages/Form/Detail/DetailKamar';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -51,7 +52,10 @@ function App() {
         </Route>
         <Route path="/forms/form-elements" element={<FormElements />} />
         <Route path="/forms/form-layout" element={<FormLayout />} />
-        <Route path="/forms/kamar" element={<FormKamar />} />
+        <Route element={<RequireAuth allowedRoles={[1001]} />}>
+          <Route path="/forms/kamar" element={<FormKamar />} />
+          <Route path="/forms/kamar/:id" element={<DetailKamar />} />
+        </Route>
         <Route path="/tables" element={<Tables />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/chart" element={<Chart />} />

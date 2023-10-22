@@ -38,7 +38,7 @@ const SignIn = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from.pathname || '/';
+  const from = location.state?.from.pathname || '/admin';
 
   const validationState = React.useMemo(() => {
     if (data.username === '') return undefined;
