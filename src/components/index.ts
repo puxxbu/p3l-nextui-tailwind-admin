@@ -1,6 +1,6 @@
 import DataTable from './DataTable';
-import FetchDataTable from './FetchDataTable';
-import TestFetchTable from './Table/TestFetchTable';
+
+import FetchKamarTable from './Table/FetchKamarTable';
 import MyModal from './Modal';
 
-export { DataTable, TestFetchTable, MyModal };
+export { DataTable, FetchKamarTable, MyModal };

@@ -2,10 +2,16 @@ import Icon from '@mdi/react';
 import Breadcrumb from '../../../components/Breadcrumb';
 import DefaultLayout from '../../../layout/DefaultLayout';
 import { mdiAlert, mdiChevronDown } from '@mdi/js';
-import { Input, Select, SelectItem, useDisclosure } from '@nextui-org/react';
+import {
+  Input,
+  Select,
+  SelectItem,
+  Selection,
+  useDisclosure,
+} from '@nextui-org/react';
 import { useEffect, useMemo, useState } from 'react';
 import useAuth from 'src/hooks/useAuth';
-import { createKamar, getKamarById } from 'src/hooks/formController';
+import { createKamar, getKamarById } from 'src/hooks/kamarController';
 import toast, { Toaster } from 'react-hot-toast';
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
@@ -46,6 +52,7 @@ const DetailKamar = () => {
   const { auth } = useAuth();
 
   const { id } = useParams<{ id: string }>();
+  const [value, setValue] = useState<Selection>(new Set([]));
 
   const { status, data, isFetching, isPreviousData, refetch, isLoading } =
     useQuery(
@@ -53,7 +60,6 @@ const DetailKamar = () => {
       () => getKamarById(id || '1', auth.token),
       {
         keepPreviousData: true,
-        staleTime: 5000,
       }
     );
 
@@ -69,13 +75,14 @@ const DetailKamar = () => {
         nomor_kamar: data.data.nomor_kamar.toString(),
         id_jenis_kamar: data.data.id_jenis_kamar.toString(),
       });
+      setValue(new Set([data.data.id_jenis_kamar.toString()]));
     }
   }, [status, data]);
 
   //   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [error, setError] = useState('');
 
-  const handleChange = (key: any, value: any) => {
+  const handleChange = (key: string, value: string) => {
     console.log(key, value);
     setDataKamar((prevData) => ({
       ...prevData,
@@ -83,9 +90,9 @@ const DetailKamar = () => {
     }));
   };
 
-  const handleNomorKamar = (value: string) => {
+  const handleInputChange = (key: string, value: string) => {
     if (value === '') return false;
-    handleChange('nomor_kamar', value);
+    handleChange(key, value);
   };
 
   const validateNomorKamar = (value: string) => value.match(/^\d+$/);
@@ -94,6 +101,12 @@ const DetailKamar = () => {
     if (dataKamar.nomor_kamar === '') return false;
     return validateNomorKamar(dataKamar.nomor_kamar) ? false : true;
   }, [dataKamar.nomor_kamar]);
+
+  const handleSelectionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setValue(new Set([e.target.value]));
+    handleChange('id_jenis_kamar', e.target.value);
+    console.log(e.target.value);
+  };
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -120,7 +133,7 @@ const DetailKamar = () => {
 
   return (
     <DefaultLayout>
-      <Breadcrumb pageName="Create Kamar" />
+      <Breadcrumb pageName="Update Kamar" />
       <Toaster />
       <div className="grid grid-cols-1 gap-9 ">
         <div className="flex flex-col gap-9">
@@ -142,7 +155,9 @@ const DetailKamar = () => {
                       value={dataKamar.nomor_kamar || ''}
                       isInvalid={isInvalid}
                       errorMessage={isInvalid && 'Masukkan input yang valid'}
-                      onValueChange={handleNomorKamar}
+                      onValueChange={(value) =>
+                        handleInputChange('nomor_kamar', value)
+                      }
                       placeholder="Masukkan Nomor Kamar"
                     />
                   </div>
@@ -153,13 +168,8 @@ const DetailKamar = () => {
                         isRequired
                         label="Pilih Jenis Kamar"
                         className="relative z-20 bg-transparent dark:bg-form-input"
-                        selectedKeys={dataKamar.id_jenis_kamar || ''}
-                        onChange={(selectedKeys: any) =>
-                          handleChange(
-                            'id_jenis_kamar',
-                            selectedKeys.target.value
-                          )
-                        }
+                        selectedKeys={value}
+                        onChange={handleSelectionChange}
                       >
                         {jenisKamar.map((item) => (
                           <SelectItem key={item.value} value={item.value}>
@@ -172,7 +182,7 @@ const DetailKamar = () => {
                 </div>
 
                 <button className="flex w-full justify-center rounded bg-primary p-3 font-medium text-white                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ">
-                  Create Kamar
+                  Update Kamar
                 </button>
               </div>
             </form>

@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
-import UserOne from '../images/user/user-01.png';
-import UserTwo from '../images/user/user-02.png';
-import UserThree from '../images/user/user-03.png';
-import UserFour from '../images/user/user-04.png';
-import UserFive from '../images/user/user-05.png';
+import UserOne from '../../images/user/user-01.png';
+import UserTwo from '../../images/user/user-02.png';
+import UserThree from '../../images/user/user-03.png';
+import UserFour from '../../images/user/user-04.png';
+import UserFive from '../../images/user/user-05.png';
 
 const ChatCard = () => {
   return (
@@ -15,11 +15,11 @@ const ChatCard = () => {
       <div>
         <Link
           to="/"
-          className="flex items-center gap-5 py-3 px-7.5 hover:bg-gray-3 dark:hover:bg-meta-4"
+          className="flex items-center gap-5 px-7.5 py-3 hover:bg-gray-3 dark:hover:bg-meta-4"
         >
           <div className="relative h-14 w-14 rounded-full">
             <img src={UserThree} alt="User" />
-            <span className="absolute right-0 bottom-0 h-3.5 w-3.5 rounded-full border-2 border-white bg-meta-3"></span>
+            <span className="absolute bottom-0 right-0 h-3.5 w-3.5 rounded-full border-2 border-white bg-meta-3"></span>
           </div>
 
           <div className="flex flex-1 items-center justify-between">
@@ -41,11 +41,11 @@ const ChatCard = () => {
         </Link>
         <Link
           to="/"
-          className="flex items-center gap-5 py-3 px-7.5 hover:bg-gray-3 dark:hover:bg-meta-4"
+          className="flex items-center gap-5 px-7.5 py-3 hover:bg-gray-3 dark:hover:bg-meta-4"
         >
           <div className="relative h-14 w-14 rounded-full">
             <img src={UserFour} alt="User" />
-            <span className="absolute right-0 bottom-0 h-3.5 w-3.5 rounded-full border-2 border-white bg-meta-3"></span>
+            <span className="absolute bottom-0 right-0 h-3.5 w-3.5 rounded-full border-2 border-white bg-meta-3"></span>
           </div>
 
           <div className="flex flex-1 items-center justify-between">
@@ -60,11 +60,11 @@ const ChatCard = () => {
         </Link>
         <Link
           to="/"
-          className="flex items-center gap-5 py-3 px-7.5 hover:bg-gray-3 dark:hover:bg-meta-4"
+          className="flex items-center gap-5 px-7.5 py-3 hover:bg-gray-3 dark:hover:bg-meta-4"
         >
           <div className="relative h-14 w-14 rounded-full">
             <img src={UserFive} alt="User" />
-            <span className="absolute right-0 bottom-0 h-3.5 w-3.5 rounded-full border-2 border-white bg-meta-6"></span>
+            <span className="absolute bottom-0 right-0 h-3.5 w-3.5 rounded-full border-2 border-white bg-meta-6"></span>
           </div>
 
           <div className="flex flex-1 items-center justify-between">
@@ -79,11 +79,11 @@ const ChatCard = () => {
         </Link>
         <Link
           to="/"
-          className="flex items-center gap-5 py-3 px-7.5 hover:bg-gray-3 dark:hover:bg-meta-4"
+          className="flex items-center gap-5 px-7.5 py-3 hover:bg-gray-3 dark:hover:bg-meta-4"
         >
           <div className="relative h-14 w-14 rounded-full">
             <img src={UserOne} alt="User" />
-            <span className="absolute right-0 bottom-0 h-3.5 w-3.5 rounded-full border-2 border-white bg-meta-3"></span>
+            <span className="absolute bottom-0 right-0 h-3.5 w-3.5 rounded-full border-2 border-white bg-meta-3"></span>
           </div>
 
           <div className="flex flex-1 items-center justify-between">
@@ -105,11 +105,11 @@ const ChatCard = () => {
         </Link>
         <Link
           to="/"
-          className="flex items-center gap-5 py-3 px-7.5 hover:bg-gray-3 dark:hover:bg-meta-4"
+          className="flex items-center gap-5 px-7.5 py-3 hover:bg-gray-3 dark:hover:bg-meta-4"
         >
           <div className="relative h-14 w-14 rounded-full">
             <img src={UserTwo} alt="User" />
-            <span className="absolute right-0 bottom-0 h-3.5 w-3.5 rounded-full border-2 border-white bg-meta-7"></span>
+            <span className="absolute bottom-0 right-0 h-3.5 w-3.5 rounded-full border-2 border-white bg-meta-7"></span>
           </div>
 
           <div className="flex flex-1 items-center justify-between">
@@ -124,11 +124,11 @@ const ChatCard = () => {
         </Link>
         <Link
           to="/"
-          className="flex items-center gap-5 py-3 px-7.5 hover:bg-gray-3 dark:hover:bg-meta-4"
+          className="flex items-center gap-5 px-7.5 py-3 hover:bg-gray-3 dark:hover:bg-meta-4"
         >
           <div className="relative h-14 w-14 rounded-full">
             <img src={UserFive} alt="User" />
-            <span className="absolute right-0 bottom-0 h-3.5 w-3.5 rounded-full border-2 border-white bg-meta-6"></span>
+            <span className="absolute bottom-0 right-0 h-3.5 w-3.5 rounded-full border-2 border-white bg-meta-6"></span>
           </div>
 
           <div className="flex flex-1 items-center justify-between">

@@ -73,6 +73,31 @@ export function updateKamar(
     });
 }
 
+export function deleteKamar(
+  id: string,
+  token: string,
+  callback: (data?: CreateKamarResponse, error?: string) => void
+): void {
+  axios
+    .delete<CreateKamarResponse>(`${baseURL}/api/kamar/${id}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
+      const data = response.data;
+      callback(data);
+    })
+    .catch((error) => {
+      const errorResponse = error.response.data as ErrorResponse;
+      const errorMessage = errorResponse.errors;
+      console.error('Error logging in:', errorMessage);
+      callback(undefined, errorMessage);
+    });
+}
+
 export async function getKamarById(
   id: string,
   token: string

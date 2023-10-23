@@ -10,13 +10,13 @@ import FormElements from './pages/Form/FormElements';
 import FormLayout from './pages/Form/FormLayout';
 import Profile from './pages/Profile';
 import Settings from './pages/Settings';
-import Tables from './pages/Tables';
 import Alerts from './pages/UiElements/Alerts';
 import Buttons from './pages/UiElements/Buttons';
 import RequireAuth from 'Components/RequireAuth';
 import LandingPage from './pages/LandingPage/LandingPage';
 import FormKamar from './pages/Form/FormKamar';
 import DetailKamar from './pages/Form/Detail/DetailKamar';
+import TabelKamar from './pages/Data/TabelKamar';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -56,7 +56,14 @@ function App() {
           <Route path="/forms/kamar" element={<FormKamar />} />
           <Route path="/forms/kamar/:id" element={<DetailKamar />} />
         </Route>
-        <Route path="/tables" element={<Tables />} />
+        <Route path="/tables" element={<TabelKamar />} />
+        <Route element={<RequireAuth allowedRoles={[1001]} />}>
+          <Route path="/data/kamar" element={<TabelKamar />} />
+          <Route path="/data/jenis-kamar" element={<FormKamar />} />
+          <Route path="/data/season" element={<FormKamar />} />
+          <Route path="/data/fasilitas" element={<FormKamar />} />
+          <Route path="/data/tarif" element={<FormKamar />} />
+        </Route>
         <Route path="/settings" element={<Settings />} />
         <Route path="/chart" element={<Chart />} />
         <Route path="/ui/alerts" element={<Alerts />} />

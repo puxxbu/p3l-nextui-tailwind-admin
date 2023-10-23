@@ -26,6 +26,7 @@ import Error from '../Error/Error';
 import Icon from '@mdi/react';
 import { mdiChevronDown, mdiDotsVertical, mdiMagnify, mdiPlus } from '@mdi/js';
 import { useNavigate } from 'react-router-dom';
+import { deleteKamar } from 'src/hooks/kamarController';
 
 export default function App() {
   const [page, setPage] = React.useState(1);
@@ -77,6 +78,27 @@ export default function App() {
   const rowsPerPage = 10;
 
   const pages = data?.paging.total_page || 1;
+
+  function switchAction(key: any, id: string) {
+    switch (key) {
+      case 'view':
+        navigate(`/forms/kamar/${id}`);
+        break;
+      case 'delete':
+        deleteKamar(id, auth.token, (data, error) => {
+          if (error) {
+            console.log(error);
+          } else {
+            refetch();
+            console.log(data);
+          }
+        });
+
+        break;
+      default:
+        break;
+    }
+  }
 
   React.useEffect(() => {
     const start = 0;
@@ -154,13 +176,23 @@ export default function App() {
                           </DropdownTrigger>
                           <DropdownMenu
                             aria-label="Action event example"
-                            onAction={(key) => navigate('/forms/kamar/' + key)}
+                            onAction={(key) =>
+                              switchAction(key, getKeyValue(item, 'id_kamar'))
+                            }
                           >
-                            <DropdownItem key={getKeyValue(item, 'id_kamar')}>
+                            <DropdownItem className="text-white" key="view">
                               View
                             </DropdownItem>
-                            <DropdownItem>Edit</DropdownItem>
-                            <DropdownItem>Delete</DropdownItem>
+                            <DropdownItem className="text-white">
+                              Edit
+                            </DropdownItem>
+                            <DropdownItem
+                              key="delete"
+                              className="text-danger"
+                              color="danger"
+                            >
+                              Delete
+                            </DropdownItem>
                           </DropdownMenu>
                         </Dropdown>
                       ) : (
