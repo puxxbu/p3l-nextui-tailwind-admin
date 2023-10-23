@@ -42,29 +42,7 @@ interface LoginResponse {
 //   }
 // }
 
-export async function fetchKamar(
-  page = 1,
-  nomor_kamar = '',
-  token: string
-): Promise<KamarResponse> {
-  try {
-    let url = `http://localhost:3000/api/kamar?page=${page}`;
-    if (nomor_kamar !== '') {
-      url += `&nomor_kamar=${parseInt(nomor_kamar)}`;
-    }
 
-    const response = await axios.get(url, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    return response.data as KamarResponse;
-  } catch (error) {
-    console.error('Error fetching contacts:', error);
-    throw error;
-  }
-}
 
 interface RegisterData {
   username: string;

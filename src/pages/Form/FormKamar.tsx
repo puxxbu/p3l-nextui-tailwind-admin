@@ -11,7 +11,7 @@ import {
 } from '@nextui-org/react';
 import { useMemo, useState } from 'react';
 import useAuth from 'src/hooks/useAuth';
-import { createKamar } from 'src/hooks/kamarController';
+import { createKamar } from 'src/hooks/kamar/kamarController';
 import toast, { Toaster } from 'react-hot-toast';
 import { MyModal } from 'src/components';
 import { jenisKamar } from 'src/utils/const';
@@ -31,6 +31,7 @@ const FormKamar = () => {
   const [value, setValue] = useState<Selection>(new Set([]));
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [error, setError] = useState('');
+  const [modalTitle, setModalTitle] = useState('');
 
   const handleChange = (key: any, value: any) => {
     console.log(key, value);
@@ -77,8 +78,10 @@ const FormKamar = () => {
       auth.token,
       (data, error) => {
         if (error) {
+          setModalTitle('Error');
           setError(error);
         } else {
+          setModalTitle('Berhasil');
           setError('Data Kamar Berhasil dibuat');
           onOpen();
           setData({
@@ -104,7 +107,8 @@ const FormKamar = () => {
         isOpen={isOpen}
         onOpen={onOpen}
         onOpenChange={onOpenChange}
-        text={error}
+        title={modalTitle}
+        content={error}
       />
       <div className="grid grid-cols-1 gap-9 ">
         <div className="flex flex-col gap-9">

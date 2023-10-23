@@ -1,11 +1,30 @@
-import { useQuery, useMutation } from '@tanstack/react-query';
-import { columns, users, statusOptions, musics } from '../data/data';
-
 import axios from 'axios';
-import useAuth from './useAuth';
-import { parse } from 'path';
 
 const baseURL = 'http://localhost:3000';
+
+export async function fetchKamar(
+  page = 1,
+  nomor_kamar = '',
+  token: string
+): Promise<KamarResponse> {
+  try {
+    let url = `http://localhost:3000/api/kamar?page=${page}`;
+    if (nomor_kamar !== '') {
+      url += `&nomor_kamar=${parseInt(nomor_kamar)}`;
+    }
+
+    const response = await axios.get(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.data as KamarResponse;
+  } catch (error) {
+    console.error('Error fetching contacts:', error);
+    throw error;
+  }
+}
 
 export function createKamar(
   nomor_kamar: string,

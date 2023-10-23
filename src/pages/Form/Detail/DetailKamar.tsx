@@ -11,10 +11,15 @@ import {
 } from '@nextui-org/react';
 import { useEffect, useMemo, useState } from 'react';
 import useAuth from 'src/hooks/useAuth';
-import { createKamar, getKamarById } from 'src/hooks/kamarController';
+import {
+  createKamar,
+  getKamarById,
+  updateKamar,
+} from 'src/hooks/kamar/kamarController';
 import toast, { Toaster } from 'react-hot-toast';
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
+import { MyModal } from 'src/components';
 
 const jenisKamar = [
   {
@@ -117,7 +122,8 @@ const DetailKamar = () => {
         className: 'dark:bg-boxdark dark:text-white',
       });
 
-    createKamar(
+    updateKamar(
+      id || '1',
       dataKamar.nomor_kamar || '0',
       dataKamar.id_jenis_kamar || '0',
       auth.token,
@@ -125,7 +131,7 @@ const DetailKamar = () => {
         if (error) {
           setError(error);
         } else {
-          console.log(data);
+          toast.success('Berhasil mengupdate kamar');
         }
       }
     );
@@ -135,6 +141,7 @@ const DetailKamar = () => {
     <DefaultLayout>
       <Breadcrumb pageName="Update Kamar" />
       <Toaster />
+
       <div className="grid grid-cols-1 gap-9 ">
         <div className="flex flex-col gap-9">
           {/* <!-- Contact Form --> */}

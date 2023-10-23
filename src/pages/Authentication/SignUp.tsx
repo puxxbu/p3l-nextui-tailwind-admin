@@ -35,6 +35,7 @@ const SignUp = () => {
   });
 
   const [error, setError] = React.useState('');
+  const [modalTitle, setModalTitle] = React.useState('');
 
   const [loading, setLoading] = React.useState(false);
 
@@ -87,6 +88,7 @@ const SignUp = () => {
       (data, error) => {
         if (error) {
           console.log('Error:', error);
+          setModalTitle('Error');
           setError(error);
           setLoading(false);
           onOpen();
@@ -104,7 +106,8 @@ const SignUp = () => {
         isOpen={isOpen}
         onOpen={onOpen}
         onOpenChange={onOpenChange}
-        text={error}
+        title={modalTitle}
+        content={error}
       />
       <div className="flex h-screen flex-wrap items-center  ">
         <div className="hidden w-full xl:block xl:w-1/2">

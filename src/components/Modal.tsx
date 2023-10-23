@@ -12,10 +12,17 @@ interface MyModalProps {
   isOpen: boolean;
   onOpen: () => void;
   onOpenChange: () => void;
-  text: string;
+  title: string;
+  content: string;
 }
 
-const MyModal = ({ isOpen, onOpen, onOpenChange, text }: MyModalProps) => {
+const MyModal = ({
+  isOpen,
+  onOpen,
+  onOpenChange,
+  title,
+  content,
+}: MyModalProps) => {
   return (
     <>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
@@ -23,10 +30,10 @@ const MyModal = ({ isOpen, onOpen, onOpenChange, text }: MyModalProps) => {
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                <h1>Error !</h1>
+                <h1>{title}</h1>
               </ModalHeader>
               <ModalBody>
-                <h1>{text}</h1>
+                <h1 className="text-white">{content}</h1>
               </ModalBody>
               <ModalFooter></ModalFooter>
             </>

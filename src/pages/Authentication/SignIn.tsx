@@ -31,6 +31,7 @@ const SignIn = () => {
   const { setAuth } = React.useContext(AuthContext);
   const { auth } = React.useContext(AuthContext);
   const [error, setError] = React.useState('');
+  const [modalTitle, setModalTitle] = React.useState('');
   const [loading, setLoading] = React.useState(false);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
@@ -74,6 +75,7 @@ const SignIn = () => {
     loginUser(data.username || '', data.password || '', (data, error) => {
       if (error) {
         console.log('Error:', error);
+        setModalTitle('Error');
         setError(error);
         setLoading(false);
         onOpen();
@@ -97,7 +99,8 @@ const SignIn = () => {
         isOpen={isOpen}
         onOpen={onOpen}
         onOpenChange={onOpenChange}
-        text={error}
+        title={modalTitle}
+        content={error}
       />
       <div className="flex h-screen flex-wrap items-center  ">
         <div className="hidden w-full xl:block xl:w-1/2">

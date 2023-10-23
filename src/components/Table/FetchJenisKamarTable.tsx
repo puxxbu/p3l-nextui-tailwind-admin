@@ -18,7 +18,7 @@ import {
 } from '@nextui-org/react';
 import { users2 as users } from '../../data/data';
 
-import { fetchKamar } from 'Hooks/sampleData';
+import { fetchKamar } from 'src/hooks/kamar/kamarController';
 
 import { useQuery, useMutation } from '@tanstack/react-query';
 import useAuth from 'src/hooks/useAuth';
@@ -26,7 +26,7 @@ import Error from '../Error/Error';
 import Icon from '@mdi/react';
 import { mdiChevronDown, mdiDotsVertical, mdiMagnify, mdiPlus } from '@mdi/js';
 import { useNavigate } from 'react-router-dom';
-import { deleteKamar } from 'src/hooks/kamarController';
+import { deleteKamar } from 'src/hooks/kamar/kamarController';
 
 export default function App() {
   const [page, setPage] = React.useState(1);
