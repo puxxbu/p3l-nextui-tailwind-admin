@@ -131,7 +131,9 @@ const FormKamar = () => {
                       value={data.nomor_kamar}
                       isInvalid={isInvalid}
                       errorMessage={isInvalid && 'Masukkan input yang valid'}
-                      onValueChange={handleNomorKamar}
+                      onValueChange={(value) =>
+                        handleChange('nomor_kamar', value)
+                      }
                       placeholder="Masukkan Nomor Kamar"
                     />
                   </div>

@@ -8,7 +8,7 @@ import { Button } from '@nextui-org/react';
 const TabelKamar = () => {
   return (
     <DefaultLayout>
-      <Breadcrumb pageName="Tables" />
+      <Breadcrumb pageName="Data Kamar" />
 
       <div className="flex flex-col gap-10">
         <FetchKamarTable />

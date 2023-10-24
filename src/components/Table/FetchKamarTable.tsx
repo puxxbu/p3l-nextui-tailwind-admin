@@ -132,6 +132,7 @@ export default function App() {
               <Button
                 color="primary"
                 endContent={<Icon path={mdiPlus} size={1} />}
+                onClick={() => navigate('/forms/kamar')}
               >
                 Add New
               </Button>

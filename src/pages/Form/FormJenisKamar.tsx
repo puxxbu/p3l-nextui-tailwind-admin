@@ -15,17 +15,20 @@ import { createKamar } from 'src/hooks/kamar/kamarController';
 import toast, { Toaster } from 'react-hot-toast';
 import { MyModal } from 'src/components';
 import { jenisKamar } from 'src/utils/const';
+import { createJenisKamar } from 'src/hooks/jenisKamar/jenisKamarController';
 
-interface DataKamar {
-  nomor_kamar: string;
-  id_jenis_kamar: any;
+interface DataJenisKamar {
+  jenis_kamar: string;
+  jenis_bed: string;
+  jumlah_kasur: string;
 }
 
 const FormJenisKamar = () => {
   const { auth } = useAuth();
-  const [data, setData] = useState<DataKamar>({
-    nomor_kamar: '',
-    id_jenis_kamar: '',
+  const [data, setData] = useState<DataJenisKamar>({
+    jenis_kamar: '',
+    jenis_bed: '',
+    jumlah_kasur: '',
   });
 
   const [value, setValue] = useState<Selection>(new Set([]));
@@ -41,9 +44,9 @@ const FormJenisKamar = () => {
     }));
   };
 
-  const handleNomorKamar = (value: string) => {
+  const handleJumlahKasur = (value: string) => {
     if (value === '') return false;
-    handleChange('nomor_kamar', value);
+    handleChange('jumlah_kasur', value);
   };
 
   const validateNomorKamar = (value: string) => value.match(/^\d+$/);
@@ -59,9 +62,9 @@ const FormJenisKamar = () => {
   };
 
   const isInvalid = useMemo(() => {
-    if (data.nomor_kamar === '') return false;
-    return validateNomorKamar(data.nomor_kamar) ? false : true;
-  }, [data.nomor_kamar]);
+    if (data.jumlah_kasur === '') return false;
+    return validateNomorKamar(data.jumlah_kasur) ? false : true;
+  }, [data.jumlah_kasur]);
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -72,9 +75,10 @@ const FormJenisKamar = () => {
         className: 'dark:bg-boxdark dark:text-white',
       });
 
-    createKamar(
-      data.nomor_kamar || '0',
-      data.id_jenis_kamar || '0',
+    createJenisKamar(
+      data.jenis_kamar || '0',
+      data.jenis_bed || '0',
+      data.jumlah_kasur || '0',
       auth.token,
       (data, error) => {
         if (error) {
@@ -85,19 +89,20 @@ const FormJenisKamar = () => {
           setError('Data Kamar Berhasil dibuat');
           onOpen();
           setData({
-            nomor_kamar: '',
-            id_jenis_kamar: '',
+            jenis_kamar: '',
+            jenis_bed: '',
+            jumlah_kasur: '',
           });
-          setValue(new Set([]));
+          // setValue(new Set([]));
         }
       }
     );
   };
 
-  const handleClearSelect = () => {
-    setValue(new Set([]));
-    console.log(data.id_jenis_kamar);
-  };
+  // const handleClearSelect = () => {
+  //   setValue(new Set([]));
+  //   console.log(data.id_jenis_kamar);
+  // };
 
   return (
     <DefaultLayout>
@@ -127,36 +132,49 @@ const FormJenisKamar = () => {
                     <Input
                       isRequired
                       type="text"
-                      label="Nomor Kamar"
-                      value={data.nomor_kamar}
+                      label="Jenis Kamar"
+                      value={data.jenis_kamar}
                       isInvalid={isInvalid}
-                      errorMessage={isInvalid && 'Masukkan input yang valid'}
-                      onValueChange={handleNomorKamar}
-                      placeholder="Masukkan Nomor Kamar"
+                      onValueChange={(value) =>
+                        handleChange('jenis_kamar', value)
+                      }
+                      placeholder="Masukkan Nama Jenis Kamar"
                     />
                   </div>
 
                   <div className="w-full xl:w-1/2">
-                    <div className="relative z-20 bg-transparent dark:bg-form-input">
-                      <Select
-                        isRequired
-                        label="Pilih Jenis Kamar"
-                        className="relative z-20 bg-transparent dark:bg-form-input"
-                        selectedKeys={value}
-                        onChange={handleSelectionChange}
-                      >
-                        {jenisKamar.map((item) => (
-                          <SelectItem key={item.value} value={item.value}>
-                            {item.label}
-                          </SelectItem>
-                        ))}
-                      </Select>
-                    </div>
+                    <Input
+                      isRequired
+                      type="text"
+                      label="Jenis Bed"
+                      value={data.jenis_bed}
+                      isInvalid={isInvalid}
+                      onValueChange={(value) =>
+                        handleChange('jenis_bed', value)
+                      }
+                      placeholder="Masukkan Jenis Bed"
+                    />
+                  </div>
+                </div>
+                <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
+                  <div className="w-full xl:w-1/2">
+                    <Input
+                      isRequired
+                      type="text"
+                      label="Jumlah Kasur"
+                      value={data.jumlah_kasur}
+                      isInvalid={isInvalid}
+                      errorMessage={isInvalid && 'Masukkan input yang valid'}
+                      onValueChange={(value) =>
+                        handleChange('jumlah_kasur', value)
+                      }
+                      placeholder="Masukkan Jumlah Kasur"
+                    />
                   </div>
                 </div>
 
                 <button className="flex w-full justify-center rounded bg-primary p-3 font-medium text-white                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ">
-                  Create Kamar
+                  Create Jenis Kamar
                 </button>
               </div>
             </form>

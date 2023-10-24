@@ -26,18 +26,21 @@ export async function fetchJenisKamar(
   }
 }
 
-export function createKamar(
-  nomor_kamar: string,
-  id_jenis_kamar: string,
+export function createJenisKamar(
+  jenis_kamar: string,
+  jenis_bed: string,
+  jumlah_kasur: string,
   token: string,
-  callback: (data?: CreateKamarResponse, error?: string) => void
+  callback: (data?: CreateJenisKamarResponse, error?: string) => void
 ): void {
   axios
-    .post<CreateKamarResponse>(
-      `${baseURL}/api/kamar`,
+    .post<CreateJenisKamarResponse>(
+      `${baseURL}/api/jenis-kamar`,
       {
-        nomor_kamar: parseInt(nomor_kamar),
-        id_jenis_kamar: parseInt(id_jenis_kamar),
+        jenis_kamar: jenis_kamar,
+        jenis_bed: jenis_bed,
+        jumlah_kasur: parseInt(jumlah_kasur),
+        kapasitas: 2,
       },
       {
         headers: {

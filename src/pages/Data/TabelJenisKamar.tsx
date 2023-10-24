@@ -8,7 +8,7 @@ import { Button } from '@nextui-org/react';
 const TabelJenisKamar = () => {
   return (
     <DefaultLayout>
-      <Breadcrumb pageName="Tables" />
+      <Breadcrumb pageName="Data Jenis Kamar" />
 
       <div className="flex flex-col gap-10">
         <FetchJenisKamarTable />
