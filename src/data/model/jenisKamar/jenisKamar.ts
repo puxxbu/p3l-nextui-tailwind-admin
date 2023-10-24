@@ -12,11 +12,11 @@ interface Paging {
   total_page: number;
 }
 
-interface KamarResponse {
-  data: Kamar[];
+interface JenisKamarResponse {
+  data: JenisKamar[];
   paging: Paging;
 }
 
-interface CreateKamarResponse {
-  data: Kamar;
+interface CreateJenisKamarResponse {
+  data: JenisKamar;
 }

@@ -20,8 +20,8 @@ const LandingPage = () => {
   return (
     //TODO: ADD AOS ANIMATION
     <MainLayout>
-      <Hero />
-      <Features />
+      {/* <Hero /> */}
+      {/* <Features /> */}
       <Zigzag />
     </MainLayout>
   );

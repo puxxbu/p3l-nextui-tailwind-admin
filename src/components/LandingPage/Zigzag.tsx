@@ -2,16 +2,16 @@ export default function Zigzag() {
   return (
     <section>
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <div className="border-gray-800 border-t py-12 md:py-20">
+        <div className="border-t border-gray-800 py-12 md:py-20">
           {/* Section header */}
           <div className="mx-auto max-w-3xl pb-12 text-center md:pb-16">
-            <div className="text-green-600 bg-green-200 m-2 mb-4 inline-flex rounded-full px-3 py-1 text-sm font-semibold">
-              Reach goals that matter
+            <div className="m-2 mb-4 inline-flex rounded-full bg-green-200 px-3 py-1 text-sm font-semibold text-green-600">
+              Hotel blaHotel blaHotel blaHotel blaHotel bla
             </div>
-            <h1 className="h2 mb-4">One product, unlimited solutions</h1>
-            <p className="text-gray-400 text-xl">
-              Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
-              officia deserunt mollit laborum — semper quis lectus nulla.
+            <h1 className="h2 mb-4">Hotel Kami sangat bagus</h1>
+            <p className="text-xl text-gray-400">
+              Banyak sekali fasilitas di Grand Atma Hotel yang sangat menarik
+              bagi para tamu yang menginap di hotel kami
             </p>
           </div>
 
@@ -38,19 +38,21 @@ export default function Zigzag() {
                 data-aos="fade-right"
               >
                 <div className="md:pr-4 lg:pr-12 xl:pr-16">
-                  <div className="font-architects-daughter text-purple-600 mb-2 text-xl">
-                    More speed. Less spend
+                  <div className="font-architects-daughter mb-2 text-xl text-purple-400">
+                    Tidur nyenyak dengan banyak hiburan
                   </div>
-                  <h3 className="h3 mb-3">Keep projects on schedule</h3>
-                  <p className="text-gray-400 mb-4 text-xl">
+                  <h3 className="h3 mb-3">
+                    Kami Menghadirkan fasilitas mutakhir
+                  </h3>
+                  <p className="mb-4 text-xl text-gray-400">
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
                     do eiusmod tempor incididunt ut labore et dolore magna
                     aliqua.
                   </p>
-                  <ul className="text-gray-400 -mb-2 text-lg">
+                  <ul className="-mb-2 text-lg text-gray-400">
                     <li className="mb-2 flex items-center">
                       <svg
-                        className="text-green-500 mr-2 h-3 w-3 shrink-0 fill-current"
+                        className="mr-2 h-3 w-3 shrink-0 fill-current text-green-500"
                         viewBox="0 0 12 12"
                         xmlns="http://www.w3.org/2000/svg"
                       >
@@ -60,7 +62,7 @@ export default function Zigzag() {
                     </li>
                     <li className="mb-2 flex items-center">
                       <svg
-                        className="text-green-500 mr-2 h-3 w-3 shrink-0 fill-current"
+                        className="mr-2 h-3 w-3 shrink-0 fill-current text-green-500"
                         viewBox="0 0 12 12"
                         xmlns="http://www.w3.org/2000/svg"
                       >
@@ -70,7 +72,7 @@ export default function Zigzag() {
                     </li>
                     <li className="flex items-center">
                       <svg
-                        className="text-green-500 mr-2 h-3 w-3 shrink-0 fill-current"
+                        className="mr-2 h-3 w-3 shrink-0 fill-current text-green-500"
                         viewBox="0 0 12 12"
                         xmlns="http://www.w3.org/2000/svg"
                       >
@@ -104,19 +106,21 @@ export default function Zigzag() {
                 data-aos="fade-right"
               >
                 <div className="md:pr-4 lg:pr-12 xl:pr-16">
-                  <div className="font-architects-daughter text-purple-600 mb-2 text-xl">
-                    More speed. Less spend
+                  <div className="font-architects-daughter mb-2 text-xl text-purple-400">
+                    Tidur nyenyak dengan banyak hiburan
                   </div>
-                  <h3 className="h3 mb-3">Keep projects on schedule</h3>
-                  <p className="text-gray-400 mb-4 text-xl">
+                  <h3 className="h3 mb-3">
+                    Kami Menghadirkan fasilitas mutakhir
+                  </h3>
+                  <p className="mb-4 text-xl text-gray-400">
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
                     do eiusmod tempor incididunt ut labore et dolore magna
                     aliqua.
                   </p>
-                  <ul className="text-gray-400 -mb-2 text-lg">
+                  <ul className="-mb-2 text-lg text-gray-400">
                     <li className="mb-2 flex items-center">
                       <svg
-                        className="text-green-500 mr-2 h-3 w-3 shrink-0 fill-current"
+                        className="mr-2 h-3 w-3 shrink-0 fill-current text-green-500"
                         viewBox="0 0 12 12"
                         xmlns="http://www.w3.org/2000/svg"
                       >
@@ -126,7 +130,7 @@ export default function Zigzag() {
                     </li>
                     <li className="mb-2 flex items-center">
                       <svg
-                        className="text-green-500 mr-2 h-3 w-3 shrink-0 fill-current"
+                        className="mr-2 h-3 w-3 shrink-0 fill-current text-green-500"
                         viewBox="0 0 12 12"
                         xmlns="http://www.w3.org/2000/svg"
                       >
@@ -136,7 +140,7 @@ export default function Zigzag() {
                     </li>
                     <li className="flex items-center">
                       <svg
-                        className="text-green-500 mr-2 h-3 w-3 shrink-0 fill-current"
+                        className="mr-2 h-3 w-3 shrink-0 fill-current text-green-500"
                         viewBox="0 0 12 12"
                         xmlns="http://www.w3.org/2000/svg"
                       >
@@ -170,19 +174,21 @@ export default function Zigzag() {
                 data-aos="fade-right"
               >
                 <div className="md:pr-4 lg:pr-12 xl:pr-16">
-                  <div className="font-architects-daughter text-purple-600 mb-2 text-xl">
-                    More speed. Less spend
+                  <div className="font-architects-daughter mb-2 text-xl text-purple-400">
+                    Tidur nyenyak dengan banyak hiburan
                   </div>
-                  <h3 className="h3 mb-3">Keep projects on schedule</h3>
-                  <p className="text-gray-400 mb-4 text-xl">
+                  <h3 className="h3 mb-3">
+                    Kami Menghadirkan fasilitas mutakhir
+                  </h3>
+                  <p className="mb-4 text-xl text-gray-400">
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
                     do eiusmod tempor incididunt ut labore et dolore magna
                     aliqua.
                   </p>
-                  <ul className="text-gray-400 -mb-2 text-lg">
+                  <ul className="-mb-2 text-lg text-gray-400">
                     <li className="mb-2 flex items-center">
                       <svg
-                        className="text-green-500 mr-2 h-3 w-3 shrink-0 fill-current"
+                        className="mr-2 h-3 w-3 shrink-0 fill-current text-green-500"
                         viewBox="0 0 12 12"
                         xmlns="http://www.w3.org/2000/svg"
                       >
@@ -192,7 +198,7 @@ export default function Zigzag() {
                     </li>
                     <li className="mb-2 flex items-center">
                       <svg
-                        className="text-green-500 mr-2 h-3 w-3 shrink-0 fill-current"
+                        className="mr-2 h-3 w-3 shrink-0 fill-current text-green-500"
                         viewBox="0 0 12 12"
                         xmlns="http://www.w3.org/2000/svg"
                       >
@@ -202,7 +208,7 @@ export default function Zigzag() {
                     </li>
                     <li className="flex items-center">
                       <svg
-                        className="text-green-500 mr-2 h-3 w-3 shrink-0 fill-current"
+                        className="mr-2 h-3 w-3 shrink-0 fill-current text-green-500"
                         viewBox="0 0 12 12"
                         xmlns="http://www.w3.org/2000/svg"
                       >

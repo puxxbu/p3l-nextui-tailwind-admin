@@ -23,8 +23,8 @@ interface LoginResponse {
   data: {
     token: string;
     role: {
-      id: number;
-      name: string;
+      id_role: number;
+      nama_role: string;
     };
   };
 }
@@ -41,8 +41,6 @@ interface LoginResponse {
 //     throw error;
 //   }
 // }
-
-
 
 interface RegisterData {
   username: string;
@@ -110,9 +108,14 @@ export function loginUser(
       callback(data);
     })
     .catch((error) => {
+      console.log('Error:', error);
+      if (error.code === 'ERR_NETWORK') {
+        console.error('Connection refused. Please check the server.');
+        callback(undefined, 'Tidak Terhubung ke Server');
+      }
       const errorResponse = error.response.data as ErrorResponse;
       const errorMessage = errorResponse.errors;
-      console.error('Error logging in:', errorMessage);
+      console.error('Error logging in:', errorMessage, errorResponse);
       callback(undefined, errorMessage);
     });
 }

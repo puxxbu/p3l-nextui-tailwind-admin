@@ -11,9 +11,12 @@ import {
   NavbarMenuToggle,
 } from '@nextui-org/react';
 import DarkModeSwitcher from './DarkModeSwitcher';
+import useAuth from 'src/hooks/useAuth';
 
 const TopNavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+
+  const { auth } = useAuth();
 
   const menuItems = [
     'Profile',
@@ -36,11 +39,11 @@ const TopNavBar = () => {
           className="sm:hidden"
         />
         <NavbarBrand>
-          <p className="text-inherit font-bold">ACME</p>
+          <p className="font-bold text-inherit">Grand Atma Hotel</p>
         </NavbarBrand>
       </NavbarContent>
 
-      <NavbarContent className="hidden gap-4 sm:flex" justify="center">
+      {/* <NavbarContent className="hidden gap-4 sm:flex" justify="center">
         <NavbarItem>
           <Link color="foreground" href="#">
             Features
@@ -56,17 +59,43 @@ const TopNavBar = () => {
             Integrations
           </Link>
         </NavbarItem>
-      </NavbarContent>
+      </NavbarContent> */}
       <NavbarContent justify="end">
         <DarkModeSwitcher />
-        <NavbarItem className="lg:flex">
-          <Link href="#">Login</Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Button as={Link} color="primary" href="#" variant="flat">
-            Sign Up
-          </Button>
-        </NavbarItem>
+        {auth.token === undefined ? (
+          <>
+            <NavbarItem className="lg:flex">
+              <Link className="font-bold" href="/auth/signin">
+                Login
+              </Link>
+            </NavbarItem>
+            <NavbarItem>
+              <Button
+                as={Link}
+                color="primary"
+                href="/auth/signup"
+                variant="flat"
+                className="font-bold"
+              >
+                Sign Up
+              </Button>
+            </NavbarItem>
+          </>
+        ) : (
+          <>
+            <NavbarItem>
+              <Button
+                as={Link}
+                color="danger"
+                href="/auth/signin"
+                variant="flat"
+                className="font-bold text-red-500 "
+              >
+                Sign Out
+              </Button>
+            </NavbarItem>
+          </>
+        )}
       </NavbarContent>
       <NavbarMenu>
         {menuItems.map((item, index) => (

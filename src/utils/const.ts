@@ -24,3 +24,5 @@ export const jenisKamar = [
     value: 6,
   },
 ];
+
+export const rolePegawai = [1001, 1002, 1003, 1004, 1005];

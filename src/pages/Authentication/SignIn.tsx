@@ -12,6 +12,7 @@ import React from 'react';
 import { loginUser } from 'Hooks/sampleData';
 import { MyModal } from 'Components';
 import AuthContext from 'Contexts/AuthProvider';
+import { rolePegawai } from 'src/utils/const';
 
 interface DataLogin {
   username?: string | null;
@@ -84,9 +85,15 @@ const SignIn = () => {
         setAuth(data?.data);
         localStorage.setItem('token', JSON.stringify(data?.data) || '');
         console.log('Auth Context. Data:', data);
-        navigate(from, { replace: true });
+        if (rolePegawai.includes(data?.data.role.id_role || 0)) {
+          navigate('/admin');
+        } else {
+          navigate('/');
+        }
+
         console.log(
           'Registration successful. Data:',
+          rolePegawai.includes(data?.data.role.id_role || 0),
           JSON.stringify(data?.data)
         );
       }

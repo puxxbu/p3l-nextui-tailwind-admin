@@ -33,7 +33,7 @@ const MyModal = ({
                 <h1>{title}</h1>
               </ModalHeader>
               <ModalBody>
-                <h1 className="text-white">{content}</h1>
+                <h1 className="text-gray-600 dark:text-white">{content}</h1>
               </ModalBody>
               <ModalFooter></ModalFooter>
             </>

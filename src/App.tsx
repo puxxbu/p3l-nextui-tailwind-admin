@@ -17,6 +17,7 @@ import LandingPage from './pages/LandingPage/LandingPage';
 import FormKamar from './pages/Form/FormKamar';
 import DetailKamar from './pages/Form/Detail/DetailKamar';
 import TabelKamar from './pages/Data/TabelKamar';
+import { rolePegawai } from './utils/const';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -44,20 +45,20 @@ function App() {
         //public routes //TODO add RequireAuth if user alr logged in
         <Route path="/auth/signin" element={<SignIn />} />
         <Route path="/auth/signup" element={<SignUp />} />
-        <Route element={<RequireAuth allowedRoles={[1001]} />}>
+        <Route element={<RequireAuth allowedRoles={rolePegawai} />}>
           <Route path="/profile" element={<Profile />} />
         </Route>
-        <Route element={<RequireAuth allowedRoles={[1002]} />}>
+        <Route element={<RequireAuth allowedRoles={rolePegawai} />}>
           <Route path="/calendar" element={<Calendar />} />
         </Route>
         <Route path="/forms/form-elements" element={<FormElements />} />
         <Route path="/forms/form-layout" element={<FormLayout />} />
-        <Route element={<RequireAuth allowedRoles={[1001]} />}>
+        <Route element={<RequireAuth allowedRoles={rolePegawai} />}>
           <Route path="/forms/kamar" element={<FormKamar />} />
           <Route path="/forms/kamar/:id" element={<DetailKamar />} />
         </Route>
         <Route path="/tables" element={<TabelKamar />} />
-        <Route element={<RequireAuth allowedRoles={[1001]} />}>
+        <Route element={<RequireAuth allowedRoles={rolePegawai} />}>
           <Route path="/data/kamar" element={<TabelKamar />} />
           <Route path="/data/jenis-kamar" element={<FormKamar />} />
           <Route path="/data/season" element={<FormKamar />} />
