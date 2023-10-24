@@ -180,10 +180,13 @@ export default function App() {
                               switchAction(key, getKeyValue(item, 'id_kamar'))
                             }
                           >
-                            <DropdownItem className="text-white" key="view">
+                            <DropdownItem
+                              className="text-gray-700 dark:text-white"
+                              key="view"
+                            >
                               View
                             </DropdownItem>
-                            <DropdownItem className="text-white">
+                            <DropdownItem className="text-gray-700 dark:text-white">
                               Edit
                             </DropdownItem>
                             <DropdownItem

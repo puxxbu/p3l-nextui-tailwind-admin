@@ -7,6 +7,7 @@ import {
   Select,
   SelectItem,
   Selection,
+  Spinner,
   useDisclosure,
 } from '@nextui-org/react';
 import { useEffect, useMemo, useState } from 'react';
@@ -18,7 +19,7 @@ import {
 } from 'src/hooks/kamar/kamarController';
 import toast, { Toaster } from 'react-hot-toast';
 import { useQuery } from '@tanstack/react-query';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { MyModal } from 'src/components';
 
 const jenisKamar = [
@@ -55,6 +56,7 @@ interface DataKamar {
 
 const DetailKamar = () => {
   const { auth } = useAuth();
+  const navigate = useNavigate();
 
   const { id } = useParams<{ id: string }>();
   const [value, setValue] = useState<Selection>(new Set([]));
@@ -62,7 +64,7 @@ const DetailKamar = () => {
   const { status, data, isFetching, isPreviousData, refetch, isLoading } =
     useQuery(
       ['projects', id], // Memasukkan filterValue sebagai bagian dari query key
-      () => getKamarById(id || '1', auth.token),
+      () => getKamarById(id || '0', auth.token),
       {
         keepPreviousData: true,
       }
@@ -81,6 +83,11 @@ const DetailKamar = () => {
         id_jenis_kamar: data.data.id_jenis_kamar.toString(),
       });
       setValue(new Set([data.data.id_jenis_kamar.toString()]));
+    }
+
+    if (status === 'error') {
+      toast.error('Data Kamar tidak ditemukan');
+      navigate('/admin');
     }
   }, [status, data]);
 
@@ -123,7 +130,7 @@ const DetailKamar = () => {
       });
 
     updateKamar(
-      id || '1',
+      id || '0',
       dataKamar.nomor_kamar || '0',
       dataKamar.id_jenis_kamar || '0',
       auth.token,
@@ -140,62 +147,66 @@ const DetailKamar = () => {
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Update Kamar" />
+
       <Toaster />
 
-      <div className="grid grid-cols-1 gap-9 ">
-        <div className="flex flex-col gap-9">
-          {/* <!-- Contact Form --> */}
-          <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-            <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-              <h3 className="font-medium text-black dark:text-white">
-                Contact Form
-              </h3>
-            </div>
-            <form onSubmit={handleSubmit}>
-              <div className="p-6.5">
-                <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
-                  <div className="w-full xl:w-1/2">
-                    <Input
-                      isRequired
-                      type="text"
-                      label="Nomor Kamar"
-                      value={dataKamar.nomor_kamar || ''}
-                      isInvalid={isInvalid}
-                      errorMessage={isInvalid && 'Masukkan input yang valid'}
-                      onValueChange={(value) =>
-                        handleInputChange('nomor_kamar', value)
-                      }
-                      placeholder="Masukkan Nomor Kamar"
-                    />
-                  </div>
-
-                  <div className="w-full xl:w-1/2">
-                    <div className="relative z-20 bg-transparent dark:bg-form-input">
-                      <Select
+      {isLoading ? (
+        <Spinner color="primary" />
+      ) : (
+        <div className="grid grid-cols-1 gap-9 ">
+          <div className="flex flex-col gap-9">
+            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+              <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+                <h3 className="font-medium text-black dark:text-white">
+                  Contact Form
+                </h3>
+              </div>
+              <form onSubmit={handleSubmit}>
+                <div className="p-6.5">
+                  <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
+                    <div className="w-full xl:w-1/2">
+                      <Input
                         isRequired
-                        label="Pilih Jenis Kamar"
-                        className="relative z-20 bg-transparent dark:bg-form-input"
-                        selectedKeys={value}
-                        onChange={handleSelectionChange}
-                      >
-                        {jenisKamar.map((item) => (
-                          <SelectItem key={item.value} value={item.value}>
-                            {item.label}
-                          </SelectItem>
-                        ))}
-                      </Select>
+                        type="text"
+                        label="Nomor Kamar"
+                        value={dataKamar.nomor_kamar || ''}
+                        isInvalid={isInvalid}
+                        errorMessage={isInvalid && 'Masukkan input yang valid'}
+                        onValueChange={(value) =>
+                          handleInputChange('nomor_kamar', value)
+                        }
+                        placeholder="Masukkan Nomor Kamar"
+                      />
+                    </div>
+
+                    <div className="w-full xl:w-1/2">
+                      <div className="relative z-20 bg-transparent dark:bg-form-input">
+                        <Select
+                          isRequired
+                          label="Pilih Jenis Kamar"
+                          className="relative z-20 bg-transparent dark:bg-form-input"
+                          selectedKeys={value}
+                          onChange={handleSelectionChange}
+                        >
+                          {jenisKamar.map((item) => (
+                            <SelectItem key={item.value} value={item.value}>
+                              {item.label}
+                            </SelectItem>
+                          ))}
+                        </Select>
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                <button className="flex w-full justify-center rounded bg-primary p-3 font-medium text-white                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ">
-                  Update Kamar
-                </button>
-              </div>
-            </form>
+                  <button className="flex w-full justify-center rounded bg-primary p-3 font-medium text-white                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ">
+                    Update Kamar
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </DefaultLayout>
   );
 };

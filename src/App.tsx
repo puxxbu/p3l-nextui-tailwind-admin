@@ -18,6 +18,9 @@ import FormKamar from './pages/Form/FormKamar';
 import DetailKamar from './pages/Form/Detail/DetailKamar';
 import TabelKamar from './pages/Data/TabelKamar';
 import { rolePegawai } from './utils/const';
+import TabelJenisKamar from './pages/Data/TabelJenisKamar';
+import FormJenisKamar from './pages/Form/FormJenisKamar';
+import DetailJenisKamar from './pages/Form/Detail/DetailJenisKamar';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -56,11 +59,13 @@ function App() {
         <Route element={<RequireAuth allowedRoles={rolePegawai} />}>
           <Route path="/forms/kamar" element={<FormKamar />} />
           <Route path="/forms/kamar/:id" element={<DetailKamar />} />
+          <Route path="/forms/jenis-kamar" element={<FormJenisKamar />} />
+          <Route path="/forms/jenis-kamar/:id" element={<DetailJenisKamar />} />
         </Route>
         <Route path="/tables" element={<TabelKamar />} />
         <Route element={<RequireAuth allowedRoles={rolePegawai} />}>
           <Route path="/data/kamar" element={<TabelKamar />} />
-          <Route path="/data/jenis-kamar" element={<FormKamar />} />
+          <Route path="/data/jenis-kamar" element={<TabelJenisKamar />} />
           <Route path="/data/season" element={<FormKamar />} />
           <Route path="/data/fasilitas" element={<FormKamar />} />
           <Route path="/data/tarif" element={<FormKamar />} />

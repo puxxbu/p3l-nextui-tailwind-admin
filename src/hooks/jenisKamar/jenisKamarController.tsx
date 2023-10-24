@@ -2,15 +2,15 @@ import axios from 'axios';
 
 const baseURL = 'http://localhost:3000';
 
-export async function fetchKamar(
+export async function fetchJenisKamar(
   page = 1,
-  nomor_kamar = '',
+  jenis_kamar = '',
   token: string
-): Promise<KamarResponse> {
+): Promise<JenisKamarResponse> {
   try {
-    let url = `http://localhost:3000/api/kamar?page=${page}`;
-    if (nomor_kamar !== '') {
-      url += `&nomor_kamar=${parseInt(nomor_kamar)}`;
+    let url = `http://localhost:3000/api/jenis-kamar?page=${page}`;
+    if (jenis_kamar !== '') {
+      url += `&jenis_kamar=${parseInt(jenis_kamar)}`;
     }
 
     const response = await axios.get(url, {
@@ -19,7 +19,7 @@ export async function fetchKamar(
       },
     });
 
-    return response.data as KamarResponse;
+    return response.data as JenisKamarResponse;
   } catch (error) {
     console.error('Error fetching contacts:', error);
     throw error;
@@ -117,12 +117,12 @@ export function deleteKamar(
     });
 }
 
-export async function getKamarById(
+export async function getJenisKamarById(
   id: string,
   token: string
-): Promise<CreateKamarResponse> {
+): Promise<CreateJenisKamarResponse> {
   try {
-    let url = `http://localhost:3000/api/kamar/${id}`;
+    let url = `http://localhost:3000/api/jenis-kamar/${id}`;
 
     const response = await axios.get(url, {
       headers: {
@@ -130,7 +130,7 @@ export async function getKamarById(
       },
     });
 
-    return response.data as CreateKamarResponse;
+    return response.data as CreateJenisKamarResponse;
   } catch (error) {
     console.error('Error fetching contacts:', error);
     throw error;

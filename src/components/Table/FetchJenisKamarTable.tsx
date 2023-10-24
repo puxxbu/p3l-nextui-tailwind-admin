@@ -27,10 +27,11 @@ import Icon from '@mdi/react';
 import { mdiChevronDown, mdiDotsVertical, mdiMagnify, mdiPlus } from '@mdi/js';
 import { useNavigate } from 'react-router-dom';
 import { deleteKamar } from 'src/hooks/kamar/kamarController';
+import { fetchJenisKamar } from 'src/hooks/jenisKamar/jenisKamarController';
 
 export default function App() {
   const [page, setPage] = React.useState(1);
-  const [items, setItems] = React.useState<Kamar[]>([]);
+  const [items, setItems] = React.useState<JenisKamar[]>([]);
   const { auth } = useAuth();
   const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
   const [filterValue, setFilterValue] = React.useState('');
@@ -46,8 +47,8 @@ export default function App() {
     refetch,
     isLoading,
   } = useQuery(
-    ['projects', page, filterValue], // Memasukkan filterValue sebagai bagian dari query key
-    () => fetchKamar(page, filterValue, auth.token),
+    ['jenisKamar', page, filterValue], // Memasukkan filterValue sebagai bagian dari query key
+    () => fetchJenisKamar(page, filterValue, auth.token),
     {
       keepPreviousData: true,
       staleTime: 5000,
@@ -157,14 +158,15 @@ export default function App() {
             }}
           >
             <TableHeader>
-              <TableColumn key="id_kamar">ID Kamar</TableColumn>
               <TableColumn key="id_jenis_kamar">ID Jenis Kamar</TableColumn>
-              <TableColumn key="nomor_kamar">Nomor Kamar</TableColumn>
+              <TableColumn key="jenis_kamar">Jenis Kamar</TableColumn>
+              <TableColumn key="jenis_bed">Jenis Bed</TableColumn>
+              <TableColumn key="jumlah_kasur">Jumlah Kasur</TableColumn>
               <TableColumn key="action">Actions</TableColumn>
             </TableHeader>
             <TableBody items={items}>
               {(item) => (
-                <TableRow key={item.id_kamar}>
+                <TableRow key={item.id_jenis_kamar}>
                   {(columnKey) => (
                     <TableCell>
                       {columnKey === 'action' ? (
@@ -180,10 +182,13 @@ export default function App() {
                               switchAction(key, getKeyValue(item, 'id_kamar'))
                             }
                           >
-                            <DropdownItem className="text-white" key="view">
+                            <DropdownItem
+                              className="text-gray-700 dark:text-white"
+                              key="view"
+                            >
                               View
                             </DropdownItem>
-                            <DropdownItem className="text-white">
+                            <DropdownItem className="text-gray-700 dark:text-white">
                               Edit
                             </DropdownItem>
                             <DropdownItem
