@@ -24,10 +24,14 @@ import { useQuery, useMutation } from '@tanstack/react-query';
 import useAuth from 'src/hooks/useAuth';
 import Error from '../Error/Error';
 import Icon from '@mdi/react';
-import { mdiChevronDown, mdiDotsVertical, mdiMagnify, mdiPlus } from '@mdi/js';
+import { mdiDotsVertical, mdiMagnify, mdiPlus } from '@mdi/js';
 import { useNavigate } from 'react-router-dom';
-import { deleteKamar } from 'src/hooks/kamar/kamarController';
-import { fetchJenisKamar } from 'src/hooks/jenisKamar/jenisKamarController';
+
+import {
+  deleteJenisKamar,
+  fetchJenisKamar,
+} from 'src/hooks/jenisKamar/jenisKamarController';
+import toast, { Toaster } from 'react-hot-toast';
 
 export default function App() {
   const [page, setPage] = React.useState(1);
@@ -83,14 +87,15 @@ export default function App() {
   function switchAction(key: any, id: string) {
     switch (key) {
       case 'view':
-        navigate(`/forms/kamar/${id}`);
+        navigate(`/forms/jenis-kamar/${id}`);
         break;
       case 'delete':
-        deleteKamar(id, auth.token, (data, error) => {
+        deleteJenisKamar(id, auth.token, (data, error) => {
           if (error) {
             console.log(error);
           } else {
             refetch();
+            toast.success('Data Jenis Kamar berhasil dihapus');
             console.log(data);
           }
         });
@@ -118,6 +123,7 @@ export default function App() {
     } else {
       return (
         <div className="flex flex-col gap-4">
+          <Toaster />
           <div className="flex items-end justify-between gap-3">
             <Input
               isClearable
@@ -180,7 +186,10 @@ export default function App() {
                           <DropdownMenu
                             aria-label="Action event example"
                             onAction={(key) =>
-                              switchAction(key, getKeyValue(item, 'id_kamar'))
+                              switchAction(
+                                key,
+                                getKeyValue(item, 'id_jenis_kamar')
+                              )
                             }
                           >
                             <DropdownItem

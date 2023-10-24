@@ -62,18 +62,22 @@ export function createJenisKamar(
     });
 }
 
-export function updateKamar(
-  nomor_kamar: string,
+export function updateJenisKamar(
   id_jenis_kamar: string,
+  jenis_kamar: string,
+  jenis_bed: string,
+  jumlah_kasur: string,
   token: string,
-  callback: (data?: CreateKamarResponse, error?: string) => void
+  callback: (data?: CreateJenisKamarResponse, error?: string) => void
 ): void {
   axios
-    .post<CreateKamarResponse>(
-      `${baseURL}/api/kamar`,
+    .put<CreateJenisKamarResponse>(
+      `${baseURL}/api/jenis-kamar/${id_jenis_kamar}`,
       {
-        nomor_kamar: parseInt(nomor_kamar),
-        id_jenis_kamar: parseInt(id_jenis_kamar),
+        jenis_kamar: jenis_kamar,
+        jenis_bed: jenis_bed,
+        jumlah_kasur: parseInt(jumlah_kasur),
+        kapasitas: 2,
       },
       {
         headers: {
@@ -95,13 +99,13 @@ export function updateKamar(
     });
 }
 
-export function deleteKamar(
+export function deleteJenisKamar(
   id: string,
   token: string,
-  callback: (data?: CreateKamarResponse, error?: string) => void
+  callback: (data?: CreateJenisKamarResponse, error?: string) => void
 ): void {
   axios
-    .delete<CreateKamarResponse>(`${baseURL}/api/kamar/${id}`, {
+    .delete<CreateJenisKamarResponse>(`${baseURL}/api/jenis-kamar/${id}`, {
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',

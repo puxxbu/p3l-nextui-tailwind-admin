@@ -44,22 +44,7 @@ const FormJenisKamar = () => {
     }));
   };
 
-  const handleJumlahKasur = (value: string) => {
-    if (value === '') return false;
-    handleChange('jumlah_kasur', value);
-  };
-
   const validateNomorKamar = (value: string) => value.match(/^\d+$/);
-
-  // const handleSelectionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-  //   handleChange('id_jenis_kamar', e.target.value);
-  // };
-
-  const handleSelectionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setValue(new Set([e.target.value]));
-    handleChange('id_jenis_kamar', e.target.value);
-    console.log(e.target.value);
-  };
 
   const isInvalid = useMemo(() => {
     if (data.jumlah_kasur === '') return false;
