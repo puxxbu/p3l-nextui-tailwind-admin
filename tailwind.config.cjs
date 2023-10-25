@@ -10,6 +10,7 @@ module.exports = withMT({
     './src/**/*.{js,ts,jsx,tsx}',
     './node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}',
     'node_modules/flowbite-react/**/*.{js,jsx,ts,tsx}',
+    './node_modules/react-tailwindcss-datepicker/dist/index.esm.js',
   ],
   darkMode: 'class',
   theme: {
@@ -73,6 +74,18 @@ module.exports = withMT({
         700: '#4B4ACF',
         800: '#38379C',
         900: '#262668',
+      },
+      slate: {
+        50: '#f7fafc',
+        100: '#edf2f7',
+        200: '#e2e8f0',
+        300: '#cbd5e0',
+        400: '#a0aec0',
+        500: '#718096',
+        600: '#4a5568',
+        700: '#2d3748',
+        800: '#27272a', // Warna latar belakang 'bg-slate-800'
+        900: '#171923',
       },
     },
     screens: {

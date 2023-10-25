@@ -23,6 +23,8 @@ import FormJenisKamar from './pages/Form/FormJenisKamar';
 import DetailJenisKamar from './pages/Form/Detail/DetailJenisKamar';
 import TabelSeason from './pages/Data/TableSeason';
 import FormSeason from './pages/Form/FormSeason';
+import DetailSeason from './pages/Form/Detail/DetailSeason';
+import TabelFasilitas from './pages/Data/TabelFasilitas';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -64,14 +66,14 @@ function App() {
           <Route path="/forms/jenis-kamar" element={<FormJenisKamar />} />
           <Route path="/forms/jenis-kamar/:id" element={<DetailJenisKamar />} />
           <Route path="/forms/season" element={<FormSeason />} />
-          <Route path="/forms/season/:id" element={<DetailJenisKamar />} />
+          <Route path="/forms/season/:id" element={<DetailSeason />} />
         </Route>
         <Route path="/tables" element={<TabelKamar />} />
         <Route element={<RequireAuth allowedRoles={rolePegawai} />}>
           <Route path="/data/kamar" element={<TabelKamar />} />
           <Route path="/data/jenis-kamar" element={<TabelJenisKamar />} />
           <Route path="/data/season" element={<TabelSeason />} />
-          <Route path="/data/fasilitas" element={<FormKamar />} />
+          <Route path="/data/fasilitas" element={<TabelFasilitas />} />
           <Route path="/data/tarif" element={<FormKamar />} />
         </Route>
         <Route path="/settings" element={<Settings />} />

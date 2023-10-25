@@ -16,11 +16,8 @@ import {
   DropdownMenu,
   DropdownItem,
 } from '@nextui-org/react';
-import { users2 as users } from '../../data/data';
 
-import { fetchKamar } from 'src/hooks/kamar/kamarController';
-
-import { useQuery, useMutation } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import useAuth from 'src/hooks/useAuth';
 import Error from '../Error/Error';
 import Icon from '@mdi/react';

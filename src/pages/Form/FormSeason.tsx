@@ -17,21 +17,45 @@ import { MyModal } from 'src/components';
 import { jenisKamar } from 'src/utils/const';
 import { createJenisKamar } from 'src/hooks/jenisKamar/jenisKamarController';
 
+import Datepicker from 'react-tailwindcss-datepicker';
+import { createSeason } from 'src/hooks/season/seasonController';
+
 interface DataSeason {
   nama_season: string;
   tanggal_mulai: string;
   tanggal_selesai: string;
 }
 
+interface DatepickerProps {
+  startDate: any;
+  endDate: any;
+}
+
 const FormSeason = () => {
   const { auth } = useAuth();
+  const today = new Date();
+  const twoMonthsLater = new Date(
+    today.getFullYear(),
+    today.getMonth() + 2,
+    today.getDate()
+  );
   const [data, setData] = useState<DataSeason>({
     nama_season: '',
     tanggal_mulai: '',
     tanggal_selesai: '',
   });
 
-  const [value, setValue] = useState<Selection>(new Set([]));
+  const [value, setValue] = useState<DatepickerProps>({
+    startDate: null,
+    endDate: null,
+  });
+
+  const handleValueChange = (newValue: any) => {
+    console.log('newValue:', newValue);
+    setValue(newValue);
+    handleChange('tanggal_mulai', newValue.startDate);
+    handleChange('tanggal_selesai', newValue.endDate);
+  };
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [error, setError] = useState('');
   const [modalTitle, setModalTitle] = useState('');
@@ -46,21 +70,27 @@ const FormSeason = () => {
 
   const validateNomorKamar = (value: string) => value.match(/^\d+$/);
 
-  const isInvalid = useMemo(() => {
-    if (data.tanggal_selesai === '') return false;
-    return validateNomorKamar(data.tanggal_selesai) ? false : true;
-  }, [data.tanggal_selesai]);
+  //   const isInvalid = useMemo(() => {
+  //     if (data.tanggal_selesai === '') return false;
+  //     return validateNomorKamar(data.tanggal_selesai) ? false : true;
+  //   }, [data.tanggal_selesai]);
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
-    if (isInvalid)
-      return toast('Tolong cek kembali inputan anda', {
+    // if (isInvalid)
+    //   return toast('Tolong cek kembali inputan anda', {
+    //     icon: '❌',
+    //     className: 'dark:bg-boxdark dark:text-white',
+    //   });
+
+    if (value.startDate === null || value.endDate === null || value === null)
+      return toast('Tolong isi range Tanggal Season terlebih dahulu', {
         icon: '❌',
         className: 'dark:bg-boxdark dark:text-white',
       });
 
-    createJenisKamar(
+    createSeason(
       data.nama_season || '0',
       data.tanggal_mulai || '0',
       data.tanggal_selesai || '0',
@@ -78,7 +108,10 @@ const FormSeason = () => {
             tanggal_mulai: '',
             tanggal_selesai: '',
           });
-          // setValue(new Set([]));
+          setValue({
+            startDate: null,
+            endDate: null,
+          });
         }
       }
     );
@@ -86,7 +119,7 @@ const FormSeason = () => {
 
   return (
     <DefaultLayout>
-      <Breadcrumb pageName="Create Jenis Kamar" />
+      <Breadcrumb pageName="Create Season" />
       <Toaster />
       <MyModal
         isOpen={isOpen}
@@ -101,60 +134,44 @@ const FormSeason = () => {
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
               <h3 className="font-medium text-black dark:text-white">
-                Jenis Kamar Form
+                Season Form
               </h3>
             </div>
 
             <form onSubmit={handleSubmit}>
               <div className="p-6.5">
                 <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
-                  <div className="w-full xl:w-1/2">
+                  <div className="w-full  xl:w-1/2 ">
                     <Input
                       isRequired
                       type="text"
                       label="Nama Season"
                       value={data.nama_season}
-                      isInvalid={isInvalid}
                       onValueChange={(value) =>
                         handleChange('nama_season', value)
                       }
                       placeholder="Masukkan Nama Season"
                     />
                   </div>
-
-                  <div className="w-full xl:w-1/2">
-                    <Input
-                      isRequired
-                      type="text"
-                      label="Tanggal Mulai"
-                      value={data.tanggal_mulai}
-                      isInvalid={isInvalid}
-                      onValueChange={(value) =>
-                        handleChange('tanggal_mulai', value)
-                      }
-                      placeholder="Masukkan Tanggal Mulai"
-                    />
-                  </div>
-                </div>
-                <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
-                  <div className="w-full xl:w-1/2">
-                    <Input
-                      isRequired
-                      type="text"
-                      label="Tanggal Selesai"
-                      value={data.tanggal_selesai}
-                      isInvalid={isInvalid}
-                      errorMessage={isInvalid && 'Masukkan input yang valid'}
-                      onValueChange={(value) =>
-                        handleChange('tanggal_selesai', value)
-                      }
-                      placeholder="Masukkan Tanggal Selesai"
+                  <div className="flex h-[60px] w-full flex-col rounded-lg  dark:bg-slate-800 xl:w-1/2">
+                    <div className="pl-[12px] pt-[2px] text-xs font-medium ">
+                      Range Tanggal Season
+                    </div>
+                    <Datepicker
+                      disabledDates={[
+                        {
+                          startDate: '2000-02-02',
+                          endDate: twoMonthsLater,
+                        },
+                      ]}
+                      value={value}
+                      onChange={handleValueChange}
                     />
                   </div>
                 </div>
 
                 <button className="flex w-full justify-center rounded bg-primary p-3 font-medium text-white                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ">
-                  Create Jenis Kamar
+                  Create Season
                 </button>
               </div>
             </form>

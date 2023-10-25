@@ -1,18 +1,18 @@
 import Breadcrumb from '../../components/Breadcrumb';
 
 import DefaultLayout from '../../layout/DefaultLayout';
-import { FetchSeasonTable } from 'Components';
+import { FetchFasilitasTable } from 'Components';
 
-const TabelSeason = () => {
+const TabelFasilitas = () => {
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Data Season" />
 
       <div className="flex flex-col gap-10">
-        <FetchSeasonTable />
+        <FetchFasilitasTable />
       </div>
     </DefaultLayout>
   );
 };
 
-export default TabelSeason;
+export default TabelFasilitas;

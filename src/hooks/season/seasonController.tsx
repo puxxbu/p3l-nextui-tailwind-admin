@@ -26,21 +26,20 @@ export async function fetchSeason(
   }
 }
 
-export function createJenisKamar(
-  jenis_kamar: string,
-  jenis_bed: string,
-  jumlah_kasur: string,
+export function createSeason(
+  nama_season: string,
+  tanggal_mulai: string,
+  tanggal_selesai: string,
   token: string,
-  callback: (data?: CreateJenisKamarResponse, error?: string) => void
+  callback: (data?: CreateSeasonResponse, error?: string) => void
 ): void {
   axios
-    .post<CreateJenisKamarResponse>(
-      `${baseURL}/api/jenis-kamar`,
+    .post<CreateSeasonResponse>(
+      `${baseURL}/api/season`,
       {
-        jenis_kamar: jenis_kamar,
-        jenis_bed: jenis_bed,
-        jumlah_kasur: parseInt(jumlah_kasur),
-        kapasitas: 2,
+        nama_season: nama_season,
+        tanggal_mulai: tanggal_mulai,
+        tanggal_selesai: tanggal_selesai,
       },
       {
         headers: {
@@ -62,22 +61,21 @@ export function createJenisKamar(
     });
 }
 
-export function updateJenisKamar(
-  id_jenis_kamar: string,
-  jenis_kamar: string,
-  jenis_bed: string,
-  jumlah_kasur: string,
+export function updateSeason(
+  id_season: string,
+  nama_season: string,
+  tanggal_mulai: string,
+  tanggal_selesai: string,
   token: string,
-  callback: (data?: CreateJenisKamarResponse, error?: string) => void
+  callback: (data?: CreateSeasonResponse, error?: string) => void
 ): void {
   axios
-    .put<CreateJenisKamarResponse>(
-      `${baseURL}/api/jenis-kamar/${id_jenis_kamar}`,
+    .put<CreateSeasonResponse>(
+      `${baseURL}/api/season/${id_season}`,
       {
-        jenis_kamar: jenis_kamar,
-        jenis_bed: jenis_bed,
-        jumlah_kasur: parseInt(jumlah_kasur),
-        kapasitas: 2,
+        nama_season: nama_season,
+        tanggal_mulai: tanggal_mulai,
+        tanggal_selesai: tanggal_selesai,
       },
       {
         headers: {
@@ -99,13 +97,13 @@ export function updateJenisKamar(
     });
 }
 
-export function deleteJenisKamar(
+export function deleteSeason(
   id: string,
   token: string,
-  callback: (data?: CreateJenisKamarResponse, error?: string) => void
+  callback: (data?: CreateSeasonResponse, error?: string) => void
 ): void {
   axios
-    .delete<CreateJenisKamarResponse>(`${baseURL}/api/jenis-kamar/${id}`, {
+    .delete<CreateSeasonResponse>(`${baseURL}/api/season/${id}`, {
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
@@ -124,12 +122,12 @@ export function deleteJenisKamar(
     });
 }
 
-export async function getJenisKamarById(
+export async function getSeasonById(
   id: string,
   token: string
-): Promise<CreateJenisKamarResponse> {
+): Promise<CreateSeasonResponse> {
   try {
-    let url = `http://localhost:3000/api/jenis-kamar/${id}`;
+    let url = `http://localhost:3000/api/season/${id}`;
 
     const response = await axios.get(url, {
       headers: {
@@ -137,7 +135,7 @@ export async function getJenisKamarById(
       },
     });
 
-    return response.data as CreateJenisKamarResponse;
+    return response.data as CreateSeasonResponse;
   } catch (error) {
     console.error('Error fetching contacts:', error);
     throw error;
