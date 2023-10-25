@@ -16,9 +16,6 @@ import {
   DropdownMenu,
   DropdownItem,
 } from '@nextui-org/react';
-import { users2 as users } from '../../data/data';
-
-import { fetchKamar } from 'src/hooks/kamar/kamarController';
 
 import { useQuery, useMutation } from '@tanstack/react-query';
 import useAuth from 'src/hooks/useAuth';
@@ -27,32 +24,22 @@ import Icon from '@mdi/react';
 import { mdiDotsVertical, mdiMagnify, mdiPlus } from '@mdi/js';
 import { useNavigate } from 'react-router-dom';
 
-import {
-  deleteJenisKamar,
-  fetchJenisKamar,
-} from 'src/hooks/jenisKamar/jenisKamarController';
 import toast, { Toaster } from 'react-hot-toast';
+import { fetchSeason } from 'src/hooks/season/seasonController';
+import { formatDate } from 'src/utils';
 
 export default function App() {
   const [page, setPage] = React.useState(1);
-  const [items, setItems] = React.useState<JenisKamar[]>([]);
+  const [items, setItems] = React.useState<Season[]>([]);
   const { auth } = useAuth();
   const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
   const [filterValue, setFilterValue] = React.useState('');
 
   const navigate = useNavigate();
 
-  const {
-    status,
-    data,
-    error,
-    isFetching,
-    isPreviousData,
-    refetch,
-    isLoading,
-  } = useQuery(
-    ['jenisKamar', page, filterValue], // Memasukkan filterValue sebagai bagian dari query key
-    () => fetchJenisKamar(page, filterValue, auth.token),
+  const { status, data, error, refetch, isLoading } = useQuery(
+    ['season', page, filterValue], // Memasukkan filterValue sebagai bagian dari query key
+    () => fetchSeason(page, filterValue, auth.token),
     {
       keepPreviousData: true,
       staleTime: 5000,
@@ -90,15 +77,15 @@ export default function App() {
         navigate(`/forms/jenis-kamar/${id}`);
         break;
       case 'delete':
-        deleteJenisKamar(id, auth.token, (data, error) => {
-          if (error) {
-            console.log(error);
-          } else {
-            refetch();
-            toast.success('Data Jenis Kamar berhasil dihapus');
-            console.log(data);
-          }
-        });
+        // deleteJenisKamar(id, auth.token, (data, error) => {
+        //   if (error) {
+        //     console.log(error);
+        //   } else {
+        //     refetch();
+        //     toast.success('Data Jenis Kamar berhasil dihapus');
+        //     console.log(data);
+        //   }
+        // });
 
         break;
       default:
@@ -165,15 +152,15 @@ export default function App() {
             }}
           >
             <TableHeader>
-              <TableColumn key="id_jenis_kamar">ID Jenis Kamar</TableColumn>
-              <TableColumn key="jenis_kamar">Jenis Kamar</TableColumn>
-              <TableColumn key="jenis_bed">Jenis Bed</TableColumn>
-              <TableColumn key="jumlah_kasur">Jumlah Kasur</TableColumn>
+              <TableColumn key="id_season">ID Jenis Kamar</TableColumn>
+              <TableColumn key="nama_season">Jenis Kamar</TableColumn>
+              <TableColumn key="tanggal_mulai">Jenis Bed</TableColumn>
+              <TableColumn key="tanggal_selesai">Jumlah Kasur</TableColumn>
               <TableColumn key="action">Actions</TableColumn>
             </TableHeader>
             <TableBody items={items}>
               {(item) => (
-                <TableRow key={item.id_jenis_kamar}>
+                <TableRow key={item.id_season}>
                   {(columnKey) => (
                     <TableCell>
                       {(() => {
@@ -191,7 +178,7 @@ export default function App() {
                                   onAction={(key) =>
                                     switchAction(
                                       key,
-                                      getKeyValue(item, 'id_jenis_kamar')
+                                      getKeyValue(item, 'id_season')
                                     )
                                   }
                                 >
@@ -214,6 +201,11 @@ export default function App() {
                                 </DropdownMenu>
                               </Dropdown>
                             );
+
+                          case 'tanggal_mulai':
+                          case 'tanggal_selesai':
+                            return formatDate(getKeyValue(item, columnKey));
+
                           default:
                             return getKeyValue(item, columnKey);
                         }

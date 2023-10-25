@@ -63,11 +63,8 @@ const DetailKamar = () => {
 
   const { status, data, isFetching, isPreviousData, refetch, isLoading } =
     useQuery(
-      ['projects', id], // Memasukkan filterValue sebagai bagian dari query key
-      () => getKamarById(id || '0', auth.token),
-      {
-        keepPreviousData: true,
-      }
+      ['detailKamar', id], // Memasukkan filterValue sebagai bagian dari query key
+      () => getKamarById(id || '0', auth.token)
     );
 
   const [dataKamar, setDataKamar] = useState<DataKamar>({
@@ -95,7 +92,6 @@ const DetailKamar = () => {
   const [error, setError] = useState('');
 
   const handleChange = (key: string, value: string) => {
-    console.log(key, value);
     setDataKamar((prevData) => ({
       ...prevData,
       [key]: value,
@@ -169,11 +165,11 @@ const DetailKamar = () => {
                         isRequired
                         type="text"
                         label="Nomor Kamar"
-                        value={dataKamar.nomor_kamar || ''}
+                        value={dataKamar.nomor_kamar}
                         isInvalid={isInvalid}
                         errorMessage={isInvalid && 'Masukkan input yang valid'}
                         onValueChange={(value) =>
-                          handleInputChange('nomor_kamar', value)
+                          handleChange('nomor_kamar', value)
                         }
                         placeholder="Masukkan Nomor Kamar"
                       />

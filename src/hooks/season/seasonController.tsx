@@ -2,15 +2,15 @@ import axios from 'axios';
 
 const baseURL = 'http://localhost:3000';
 
-export async function fetchJenisKamar(
+export async function fetchSeason(
   page = 1,
-  jenis_kamar = '',
+  nama_season = '',
   token: string
-): Promise<JenisKamarResponse> {
+): Promise<SeasonResponse> {
   try {
-    let url = `http://localhost:3000/api/jenis-kamar?page=${page}`;
-    if (jenis_kamar !== '') {
-      url += `&jenis_kamar=${jenis_kamar}`;
+    let url = `http://localhost:3000/api/season?page=${page}`;
+    if (nama_season !== '') {
+      url += `&nama_season=${nama_season}`;
     }
 
     const response = await axios.get(url, {
@@ -19,7 +19,7 @@ export async function fetchJenisKamar(
       },
     });
 
-    return response.data as JenisKamarResponse;
+    return response.data as SeasonResponse;
   } catch (error) {
     console.error('Error fetching contacts:', error);
     throw error;
