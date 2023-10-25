@@ -22,6 +22,7 @@ import TabelJenisKamar from './pages/Data/TabelJenisKamar';
 import FormJenisKamar from './pages/Form/FormJenisKamar';
 import DetailJenisKamar from './pages/Form/Detail/DetailJenisKamar';
 import TabelSeason from './pages/Data/TableSeason';
+import FormSeason from './pages/Form/FormSeason';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -62,7 +63,7 @@ function App() {
           <Route path="/forms/kamar/:id" element={<DetailKamar />} />
           <Route path="/forms/jenis-kamar" element={<FormJenisKamar />} />
           <Route path="/forms/jenis-kamar/:id" element={<DetailJenisKamar />} />
-          <Route path="/forms/season" element={<FormJenisKamar />} />
+          <Route path="/forms/season" element={<FormSeason />} />
           <Route path="/forms/season/:id" element={<DetailJenisKamar />} />
         </Route>
         <Route path="/tables" element={<TabelKamar />} />

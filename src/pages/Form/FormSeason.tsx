@@ -17,18 +17,18 @@ import { MyModal } from 'src/components';
 import { jenisKamar } from 'src/utils/const';
 import { createJenisKamar } from 'src/hooks/jenisKamar/jenisKamarController';
 
-interface DataJenisKamar {
-  jenis_kamar: string;
-  jenis_bed: string;
-  jumlah_kasur: string;
+interface DataSeason {
+  nama_season: string;
+  tanggal_mulai: string;
+  tanggal_selesai: string;
 }
 
-const FormJenisKamar = () => {
+const FormSeason = () => {
   const { auth } = useAuth();
-  const [data, setData] = useState<DataJenisKamar>({
-    jenis_kamar: '',
-    jenis_bed: '',
-    jumlah_kasur: '',
+  const [data, setData] = useState<DataSeason>({
+    nama_season: '',
+    tanggal_mulai: '',
+    tanggal_selesai: '',
   });
 
   const [value, setValue] = useState<Selection>(new Set([]));
@@ -47,9 +47,9 @@ const FormJenisKamar = () => {
   const validateNomorKamar = (value: string) => value.match(/^\d+$/);
 
   const isInvalid = useMemo(() => {
-    if (data.jumlah_kasur === '') return false;
-    return validateNomorKamar(data.jumlah_kasur) ? false : true;
-  }, [data.jumlah_kasur]);
+    if (data.tanggal_selesai === '') return false;
+    return validateNomorKamar(data.tanggal_selesai) ? false : true;
+  }, [data.tanggal_selesai]);
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -61,9 +61,9 @@ const FormJenisKamar = () => {
       });
 
     createJenisKamar(
-      data.jenis_kamar || '0',
-      data.jenis_bed || '0',
-      data.jumlah_kasur || '0',
+      data.nama_season || '0',
+      data.tanggal_mulai || '0',
+      data.tanggal_selesai || '0',
       auth.token,
       (data, error) => {
         if (error) {
@@ -74,9 +74,9 @@ const FormJenisKamar = () => {
           setError('Data Kamar Berhasil dibuat');
           onOpen();
           setData({
-            jenis_kamar: '',
-            jenis_bed: '',
-            jumlah_kasur: '',
+            nama_season: '',
+            tanggal_mulai: '',
+            tanggal_selesai: '',
           });
           // setValue(new Set([]));
         }
@@ -112,13 +112,13 @@ const FormJenisKamar = () => {
                     <Input
                       isRequired
                       type="text"
-                      label="Jenis Kamar"
-                      value={data.jenis_kamar}
+                      label="Nama Season"
+                      value={data.nama_season}
                       isInvalid={isInvalid}
                       onValueChange={(value) =>
-                        handleChange('jenis_kamar', value)
+                        handleChange('nama_season', value)
                       }
-                      placeholder="Masukkan Nama Jenis Kamar"
+                      placeholder="Masukkan Nama Season"
                     />
                   </div>
 
@@ -126,13 +126,13 @@ const FormJenisKamar = () => {
                     <Input
                       isRequired
                       type="text"
-                      label="Jenis Bed"
-                      value={data.jenis_bed}
+                      label="Tanggal Mulai"
+                      value={data.tanggal_mulai}
                       isInvalid={isInvalid}
                       onValueChange={(value) =>
-                        handleChange('jenis_bed', value)
+                        handleChange('tanggal_mulai', value)
                       }
-                      placeholder="Masukkan Jenis Bed"
+                      placeholder="Masukkan Tanggal Mulai"
                     />
                   </div>
                 </div>
@@ -141,14 +141,14 @@ const FormJenisKamar = () => {
                     <Input
                       isRequired
                       type="text"
-                      label="Jumlah Kasur"
-                      value={data.jumlah_kasur}
+                      label="Tanggal Selesai"
+                      value={data.tanggal_selesai}
                       isInvalid={isInvalid}
                       errorMessage={isInvalid && 'Masukkan input yang valid'}
                       onValueChange={(value) =>
-                        handleChange('jumlah_kasur', value)
+                        handleChange('tanggal_selesai', value)
                       }
-                      placeholder="Masukkan Jumlah Kasur"
+                      placeholder="Masukkan Tanggal Selesai"
                     />
                   </div>
                 </div>
@@ -165,4 +165,4 @@ const FormJenisKamar = () => {
   );
 };
 
-export default FormJenisKamar;
+export default FormSeason;
