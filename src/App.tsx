@@ -25,6 +25,8 @@ import TabelSeason from './pages/Data/TableSeason';
 import FormSeason from './pages/Form/FormSeason';
 import DetailSeason from './pages/Form/Detail/DetailSeason';
 import TabelFasilitas from './pages/Data/TabelFasilitas';
+import FormFasilitas from './pages/Form/FormFasilitas';
+import DetailFasilitas from './pages/Form/Detail/DetailFasilitas';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -67,6 +69,8 @@ function App() {
           <Route path="/forms/jenis-kamar/:id" element={<DetailJenisKamar />} />
           <Route path="/forms/season" element={<FormSeason />} />
           <Route path="/forms/season/:id" element={<DetailSeason />} />
+          <Route path="/forms/fasilitas" element={<FormFasilitas />} />
+          <Route path="/forms/fasilitas/:id" element={<DetailFasilitas />} />
         </Route>
         <Route path="/tables" element={<TabelKamar />} />
         <Route element={<RequireAuth allowedRoles={rolePegawai} />}>

@@ -6,7 +6,7 @@ import { FetchFasilitasTable } from 'Components';
 const TabelFasilitas = () => {
   return (
     <DefaultLayout>
-      <Breadcrumb pageName="Data Season" />
+      <Breadcrumb pageName="Data Fasilitas" />
 
       <div className="flex flex-col gap-10">
         <FetchFasilitasTable />

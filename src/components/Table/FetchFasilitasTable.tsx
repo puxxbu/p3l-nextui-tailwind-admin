@@ -27,10 +27,11 @@ import { useNavigate } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
 import { deleteSeason, fetchSeason } from 'src/hooks/season/seasonController';
 import { formatDate } from 'src/utils';
+import { deleteFasilitas, fetchFasilitas } from 'src/hooks/fasilitas/fasilitasController';
 
 export default function App() {
   const [page, setPage] = React.useState(1);
-  const [items, setItems] = React.useState<Season[]>([]);
+  const [items, setItems] = React.useState<Fasilitas[]>([]);
   const { auth } = useAuth();
   const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
   const [filterValue, setFilterValue] = React.useState('');
@@ -38,8 +39,8 @@ export default function App() {
   const navigate = useNavigate();
 
   const { status, data, error, refetch, isLoading } = useQuery(
-    ['season', page, filterValue], // Memasukkan filterValue sebagai bagian dari query key
-    () => fetchSeason(page, filterValue, auth.token),
+    ['fasilitas', page, filterValue], // Memasukkan filterValue sebagai bagian dari query key
+    () => fetchFasilitas(page, filterValue, auth.token),
     {
       keepPreviousData: true,
       staleTime: 5000,
@@ -74,10 +75,10 @@ export default function App() {
   function switchAction(key: any, id: string) {
     switch (key) {
       case 'view':
-        navigate(`/forms/season/${id}`);
+        navigate(`/forms/fasilitas/${id}`);
         break;
       case 'delete':
-        deleteSeason(id, auth.token, (data, error) => {
+        deleteFasilitas(id, auth.token, (data, error) => {
           if (error) {
             console.log(error);
           } else {
@@ -126,7 +127,7 @@ export default function App() {
               <Button
                 color="primary"
                 endContent={<Icon path={mdiPlus} size={1} />}
-                onClick={() => navigate('/forms/season')}
+                onClick={() => navigate('/forms/fasilitas')}
               >
                 Add New
               </Button>
@@ -152,15 +153,15 @@ export default function App() {
             }}
           >
             <TableHeader>
-              <TableColumn key="id_season">ID Jenis Kamar</TableColumn>
-              <TableColumn key="nama_season">Jenis Kamar</TableColumn>
-              <TableColumn key="tanggal_mulai">Jenis Bed</TableColumn>
-              <TableColumn key="tanggal_selesai">Jumlah Kasur</TableColumn>
+              <TableColumn key="id_fasilitas">ID Fasilitas</TableColumn>
+              <TableColumn key="nama_layanan">Nama Fasilitas</TableColumn>
+              <TableColumn key="harga">Harga</TableColumn>
+
               <TableColumn key="action">Actions</TableColumn>
             </TableHeader>
             <TableBody items={items}>
               {(item) => (
-                <TableRow key={item.id_season}>
+                <TableRow key={item.id_fasilitas}>
                   {(columnKey) => (
                     <TableCell>
                       {(() => {
@@ -178,7 +179,7 @@ export default function App() {
                                   onAction={(key) =>
                                     switchAction(
                                       key,
-                                      getKeyValue(item, 'id_season')
+                                      getKeyValue(item, 'id_fasilitas')
                                     )
                                   }
                                 >
@@ -201,10 +202,6 @@ export default function App() {
                                 </DropdownMenu>
                               </Dropdown>
                             );
-
-                          case 'tanggal_mulai':
-                          case 'tanggal_selesai':
-                            return formatDate(getKeyValue(item, columnKey));
 
                           default:
                             return getKeyValue(item, columnKey);
