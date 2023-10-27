@@ -15,3 +15,7 @@ export function rangeDate(start: string, end: string) {
 export function capitalizeFirstLetter(str: string): string {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
+
+export function formatJenisKamar(jenis_kamar: string, jenis_bed: string) {
+  return `${jenis_kamar} (${capitalizeFirstLetter(jenis_bed)})`;
+}

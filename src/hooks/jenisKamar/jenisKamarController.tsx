@@ -26,6 +26,26 @@ export async function fetchJenisKamar(
   }
 }
 
+export async function fetchJenisKamarList(
+  size = 50,
+  token: string
+): Promise<JenisKamarResponse> {
+  try {
+    let url = `http://localhost:3000/api/jenis-kamar?size=${size}`;
+
+    const response = await axios.get(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.data as JenisKamarResponse;
+  } catch (error) {
+    console.error('Error fetching contacts:', error);
+    throw error;
+  }
+}
+
 export function createJenisKamar(
   jenis_kamar: string,
   jenis_bed: string,

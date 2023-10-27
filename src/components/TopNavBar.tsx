@@ -12,6 +12,7 @@ import {
 } from '@nextui-org/react';
 import DarkModeSwitcher from './DarkModeSwitcher';
 import useAuth from 'src/hooks/useAuth';
+import DropdownUser from './DropdownUser';
 
 const TopNavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
@@ -62,6 +63,7 @@ const TopNavBar = () => {
       </NavbarContent> */}
       <NavbarContent justify="end">
         <DarkModeSwitcher />
+
         {auth.token === undefined ? (
           <>
             <NavbarItem className="lg:flex">
@@ -83,7 +85,8 @@ const TopNavBar = () => {
           </>
         ) : (
           <>
-            <NavbarItem>
+            <DropdownUser />
+            {/* <NavbarItem>
               <Button
                 as={Link}
                 color="danger"
@@ -93,7 +96,7 @@ const TopNavBar = () => {
               >
                 Sign Out
               </Button>
-            </NavbarItem>
+            </NavbarItem> */}
           </>
         )}
       </NavbarContent>

@@ -28,6 +28,9 @@ import TabelFasilitas from './pages/Data/TabelFasilitas';
 import FormFasilitas from './pages/Form/FormFasilitas';
 import DetailFasilitas from './pages/Form/Detail/DetailFasilitas';
 import FormTarif from './pages/Form/FormTarif';
+import UserProfile from './pages/UserProfile';
+import DetailTarif from './pages/Form/Detail/DetailTarif';
+import TabelTarif from './pages/Data/TabelTarif';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -52,6 +55,7 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/admin" element={<ECommerce />} />
+        <Route path="/user/profile" element={<UserProfile />} />
         //public routes //TODO add RequireAuth if user alr logged in
         <Route path="/auth/signin" element={<SignIn />} />
         <Route path="/auth/signup" element={<SignUp />} />
@@ -73,7 +77,7 @@ function App() {
           <Route path="/forms/fasilitas" element={<FormFasilitas />} />
           <Route path="/forms/fasilitas/:id" element={<DetailFasilitas />} />
           <Route path="/forms/tarif" element={<FormTarif />} />
-          <Route path="/forms/tarif/:id" element={<DetailFasilitas />} />
+          <Route path="/forms/tarif/:id" element={<DetailTarif />} />
         </Route>
         <Route path="/tables" element={<TabelKamar />} />
         <Route element={<RequireAuth allowedRoles={rolePegawai} />}>
@@ -81,7 +85,7 @@ function App() {
           <Route path="/data/jenis-kamar" element={<TabelJenisKamar />} />
           <Route path="/data/season" element={<TabelSeason />} />
           <Route path="/data/fasilitas" element={<TabelFasilitas />} />
-          <Route path="/data/tarif" element={<FormKamar />} />
+          <Route path="/data/tarif" element={<TabelTarif />} />
         </Route>
         <Route path="/settings" element={<Settings />} />
         <Route path="/chart" element={<Chart />} />

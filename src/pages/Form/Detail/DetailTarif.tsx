@@ -1,6 +1,5 @@
-import Icon from '@mdi/react';
-import Breadcrumb from '../../components/Breadcrumb';
-import DefaultLayout from '../../layout/DefaultLayout';
+import Breadcrumb from '../../../components/Breadcrumb';
+import DefaultLayout from '../../../layout/DefaultLayout';
 
 import {
   Input,
@@ -20,7 +19,12 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchSeasonList } from 'src/hooks/season/seasonController';
 import { capitalizeFirstLetter, rangeDate } from 'src/utils';
 import { fetchJenisKamarList } from 'src/hooks/jenisKamar/jenisKamarController';
-import { createTarif } from 'src/hooks/tarif/tarifController';
+import {
+  createTarif,
+  getTarifById,
+  updateTarif,
+} from 'src/hooks/tarif/tarifController';
+import { useParams } from 'react-router-dom';
 
 interface DataTarif {
   harga: string;
@@ -43,6 +47,8 @@ const FormTarif = () => {
     id_season: '',
   });
 
+  const { id } = useParams<{ id: string }>();
+
   const [seasons, setSeasons] = useState<Season[]>([]);
   const [jenisKamar, setJenisKamar] = useState<JenisKamar[]>([]);
 
@@ -51,6 +57,14 @@ const FormTarif = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [error, setError] = useState('');
   const [modalTitle, setModalTitle] = useState('');
+
+  const { status: statusTarif, data: dataTarif } = useQuery(
+    ['Tarif'],
+    () => getTarifById(id || '0', auth.token),
+    {
+      keepPreviousData: true,
+    }
+  );
 
   const { status: statusSeason, data: seasonList } = useQuery(
     ['SeasonList'],
@@ -67,21 +81,47 @@ const FormTarif = () => {
     }
   );
 
+  console.log(dataTarif);
+
   useEffect(() => {
     if (
       statusSeason === 'success' &&
       seasonList &&
       statusJenisKamar === 'success' &&
-      JenisKamarList
+      JenisKamarList &&
+      statusTarif === 'success' &&
+      dataTarif
     ) {
       setSeasons(seasonList.data);
       setJenisKamar(JenisKamarList.data);
+      console.log(dataTarif?.data.jenis_kamar.id_jenis_kamar + 'CEK DATA');
+      setData({
+        harga: dataTarif?.data.harga.toString() || '',
+        id_jenis_kamar:
+          dataTarif?.data.jenis_kamar.id_jenis_kamar.toString() || '',
+        id_season: dataTarif?.data.season.id_season.toString() || '',
+      });
+      setSelectJK(
+        new Set([dataTarif?.data.jenis_kamar.id_jenis_kamar.toString()])
+      );
+      setSelectSeason(new Set([dataTarif?.data.season.id_season.toString()]));
     }
 
-    if (statusSeason === 'error' || statusJenisKamar === 'error') {
+    if (
+      statusSeason === 'error' ||
+      statusJenisKamar === 'error' ||
+      statusTarif === 'error'
+    ) {
       toast.error('Data tidak ditemukan');
     }
-  }, [statusSeason, seasonList, statusJenisKamar, JenisKamarList]);
+  }, [
+    statusSeason,
+    seasonList,
+    statusJenisKamar,
+    JenisKamarList,
+    statusTarif,
+    dataTarif,
+  ]);
 
   const handleChange = (key: any, value: any) => {
     console.log(key, value);
@@ -118,7 +158,8 @@ const FormTarif = () => {
         className: 'dark:bg-boxdark dark:text-white',
       });
 
-    createTarif(
+    updateTarif(
+      id || '0',
       data.harga || '0',
       data.id_season || '0',
       data.id_jenis_kamar || '0',
@@ -129,16 +170,7 @@ const FormTarif = () => {
           setError(error);
           onOpen();
         } else {
-          setModalTitle('Berhasil');
-          setError('Data Tarif Berhasil dibuat');
-          onOpen();
-          setData({
-            harga: '',
-            id_jenis_kamar: '',
-            id_season: '',
-          });
-          setSelectJK(new Set([]));
-          setSelectSeason(new Set([]));
+          toast.success('Berhasil Mengupdate Tarif');
         }
       }
     );
@@ -146,7 +178,7 @@ const FormTarif = () => {
 
   return (
     <DefaultLayout>
-      <Breadcrumb pageName="Create Tarif" />
+      <Breadcrumb pageName="Update Tarif" />
       <Toaster />
       <MyModal
         isOpen={isOpen}
@@ -195,7 +227,7 @@ const FormTarif = () => {
                       renderValue={(items: SelectedItems<JenisKamar>) => {
                         return items.map((item) => (
                           <div
-                            key={item.key}
+                            key={item.data?.id_jenis_kamar}
                             className="flex items-center gap-2"
                           >
                             <div className="flex flex-col">
@@ -245,7 +277,10 @@ const FormTarif = () => {
                             <div className="flex flex-col">
                               <span>{item.data?.nama_season}</span>
                               <span className="text-tiny text-default-500">
-                                ({item.data?.nama_season})
+                                {rangeDate(
+                                  item.data?.tanggal_mulai || '',
+                                  item.data?.tanggal_selesai || ''
+                                )}
                               </span>
                             </div>
                           </div>
@@ -256,6 +291,7 @@ const FormTarif = () => {
                         <SelectItem
                           key={season.id_season}
                           textValue={season.nama_season}
+                          value={season.id_season}
                         >
                           <div className="flex items-center gap-2">
                             <div className="flex  flex-col dark:text-white">
@@ -277,7 +313,7 @@ const FormTarif = () => {
                 </div>
 
                 <button className="flex w-full justify-center rounded bg-primary p-3 font-medium text-white                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ">
-                  Create Tarif
+                  Update Tarif
                 </button>
               </div>
             </form>

@@ -16,7 +16,7 @@ const MainLayout = ({ children }: MainLayoutProps) => {
   return (
     <NextUIProvider>
       <ThemeProvider>
-        <div className=" dark:bg-boxdark-2 dark:text-bodydark">
+        <div className="h-screen dark:bg-boxdark-2 dark:text-bodydark">
           <TopNavBar />
           <div className="grow overflow-hidden ">
             <PageIllustration />

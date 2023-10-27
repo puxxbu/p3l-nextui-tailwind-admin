@@ -31,7 +31,7 @@ export async function fetchTarif(
 //   token: string
 // ): Promise<TarifResponse> {
 //   try {
-//     let url = `http://localhost:3000/api/season?size=${size}`;
+//     let url = `http://localhost:3000/api/tarif?size=${size}`;
 
 //     const response = await axios.get(url, {
 //       headers: {
@@ -55,7 +55,7 @@ export function createTarif(
 ): void {
   axios
     .post<CreateTarifResponse>(
-      `${baseURL}/api/season`,
+      `${baseURL}/api/tarif`,
       {
         harga: parseInt(harga),
         id_season: id_season,
@@ -95,7 +95,7 @@ export function updateTarif(
 ): void {
   axios
     .put<CreateTarifResponse>(
-      `${baseURL}/api/season/${id_tarif}`,
+      `${baseURL}/api/tarif/${id_tarif}`,
       {
         harga: parseInt(harga),
         id_season: id_season,
@@ -127,7 +127,7 @@ export function deleteTarif(
   callback: (data?: CreateTarifResponse, error?: string) => void
 ): void {
   axios
-    .delete<CreateTarifResponse>(`${baseURL}/api/season/${id}`, {
+    .delete<CreateTarifResponse>(`${baseURL}/api/tarif/${id}`, {
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
@@ -151,7 +151,7 @@ export async function getTarifById(
   token: string
 ): Promise<CreateTarifResponse> {
   try {
-    let url = `http://localhost:3000/api/season/${id}`;
+    let url = `http://localhost:3000/api/tarif/${id}`;
 
     const response = await axios.get(url, {
       headers: {
