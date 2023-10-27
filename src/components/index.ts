@@ -6,6 +6,7 @@ import FetchSeasonTable from './Table/FetchSeasonTable';
 import MyModal from './Modal';
 import FetchFasilitasTable from './Table/FetchFasilitasTable';
 import FetchTarifTable from './Table/FetchTarifTable';
+import FetchCustomerTable from './Table/FetchCustomerTable';
 
 export {
   DataTable,
@@ -15,4 +16,5 @@ export {
   FetchSeasonTable,
   FetchTarifTable,
   FetchFasilitasTable,
+  FetchCustomerTable,
 };
