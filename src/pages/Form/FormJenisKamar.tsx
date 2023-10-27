@@ -71,7 +71,7 @@ const FormJenisKamar = () => {
           setError(error);
         } else {
           setModalTitle('Berhasil');
-          setError('Data Kamar Berhasil dibuat');
+          setError('Data Jenis Kamar Berhasil dibuat');
           onOpen();
           setData({
             jenis_kamar: '',

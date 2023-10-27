@@ -99,9 +99,10 @@ const FormSeason = () => {
         if (error) {
           setModalTitle('Error');
           setError(error);
+          onOpen();
         } else {
           setModalTitle('Berhasil');
-          setError('Data Kamar Berhasil dibuat');
+          setError('Data Season Berhasil dibuat');
           onOpen();
           setData({
             nama_season: '',
@@ -153,11 +154,15 @@ const FormSeason = () => {
                       placeholder="Masukkan Nama Season"
                     />
                   </div>
-                  <div className="flex h-[60px] w-full flex-col rounded-lg  dark:bg-slate-800 xl:w-1/2">
-                    <div className="pl-[12px] pt-[2px] text-xs font-medium ">
+                  <div className="flex h-[60px] w-full flex-col rounded-lg bg-slate-50  dark:bg-slate-800 xl:w-1/2">
+                    <div className="pl-[12px] pt-[2px] text-xs font-medium  ">
                       Range Tanggal Season
                     </div>
                     <Datepicker
+                      classNames={{
+                        input: () =>
+                          'relative bg-slate-50 transition-all duration-300 py-2.5 pl-4 pr-14 w-full border-gray-300 dark:bg-slate-800 dark:text-white/80 dark:border-slate-600 rounded-lg tracking-wide font-light text-sm placeholder-gray-400 bg-white focus:ring disabled:opacity-40 disabled:cursor-not-allowed focus:border-blue-500 focus:ring-blue-500/20',
+                      }}
                       disabledDates={[
                         {
                           startDate: '2000-02-02',

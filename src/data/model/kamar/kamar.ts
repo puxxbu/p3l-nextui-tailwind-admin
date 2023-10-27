@@ -4,8 +4,6 @@ interface Kamar {
   nomor_kamar: number;
 }
 
-interface JenisKamar {}
-
 interface Paging {
   page: number;
   total_item: number;

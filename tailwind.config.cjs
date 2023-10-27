@@ -76,7 +76,7 @@ module.exports = withMT({
         900: '#262668',
       },
       slate: {
-        50: '#f7fafc',
+        50: '#f4f4f5',
         100: '#edf2f7',
         200: '#e2e8f0',
         300: '#cbd5e0',
