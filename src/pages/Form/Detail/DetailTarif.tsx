@@ -311,10 +311,6 @@ const FormTarif = () => {
                     </Select>
                   </div>
                 </div>
-
-                <button className="flex w-full justify-center rounded bg-primary p-3 font-medium text-white                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ">
-                  Update Tarif
-                </button>
               </div>
             </form>
           </div>

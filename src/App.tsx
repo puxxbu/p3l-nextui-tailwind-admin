@@ -32,6 +32,7 @@ import UserProfile from './pages/UserProfile';
 import DetailTarif from './pages/Form/Detail/DetailTarif';
 import TabelTarif from './pages/Data/TabelTarif';
 import TabelCustomer from './pages/Data/TabelCustomer';
+import FormCustomer from './pages/Form/FormCustomer';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -79,7 +80,7 @@ function App() {
           <Route path="/forms/fasilitas/:id" element={<DetailFasilitas />} />
           <Route path="/forms/tarif" element={<FormTarif />} />
           <Route path="/forms/tarif/:id" element={<DetailTarif />} />
-          <Route path="/forms/customer" element={<FormElements />} />
+          <Route path="/forms/customer" element={<FormCustomer />} />
           <Route path="/forms/customer/:id" element={<DetailKamar />} />
         </Route>
         <Route path="/tables" element={<TabelKamar />} />
