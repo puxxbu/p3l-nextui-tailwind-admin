@@ -13,10 +13,14 @@ import Icon from '@mdi/react';
 import { mdiAccount, mdiEmailOutline, mdiLock, mdiLockCheck } from '@mdi/js';
 
 interface DataRegister {
-  username?: string | null;
-  email?: string | null;
-  password?: string | null;
-  confirmPassword?: string | null;
+  username: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  nama: string;
+  nomor_identitas: string;
+  nomor_telepon: string;
+  alamat: string;
 }
 
 const SignUp = () => {
@@ -25,6 +29,10 @@ const SignUp = () => {
     email: '',
     password: '',
     confirmPassword: '',
+    nama: '',
+    nomor_identitas: '',
+    nomor_telepon: '',
+    alamat: '',
   });
 
   const [errData, setErrData] = React.useState<DataRegister>({
@@ -32,6 +40,10 @@ const SignUp = () => {
     email: '',
     password: '',
     confirmPassword: '',
+    nama: '',
+    nomor_identitas: '',
+    nomor_telepon: '',
+    alamat: '',
   });
 
   const [error, setError] = React.useState('');
@@ -50,6 +62,16 @@ const SignUp = () => {
     return validateEmail(data.email || '') ? 'valid' : 'invalid';
   }, [data.email]);
 
+  const validateNomor = (value: string) => value.match(/^\d+$/);
+
+  const validNomorTelepon = React.useMemo(() => {
+    if (data.nomor_telepon === '') return false;
+    return validateNomor(data.nomor_telepon || '') ? false : true;
+  }, [data.nomor_telepon]);
+  const validNomorIdentitas = React.useMemo(() => {
+    if (data.nomor_identitas === '') return false;
+    return validateNomor(data.nomor_identitas || '') ? false : true;
+  }, [data.nomor_identitas]);
   const handleChange = (key: any, value: any) => {
     setData((prevData) => ({
       ...prevData,
@@ -81,27 +103,22 @@ const SignUp = () => {
       return;
     }
 
-    registerUser(
-      data.username || '',
-      data.password || '',
-      data.email || '',
-      (data, error) => {
-        if (error) {
-          console.log('Error:', error);
-          setModalTitle('Error');
-          setError(error);
-          setLoading(false);
-          onOpen();
-        } else {
-          setLoading(false);
-          console.log('Registration successful. Data:', data);
-        }
+    registerUser(data, (data, error) => {
+      if (error) {
+        console.log('Error:', error);
+        setModalTitle('Error');
+        setError(error);
+        setLoading(false);
+        onOpen();
+      } else {
+        setLoading(false);
+        console.log('Registration successful. Data:', data);
       }
-    );
+    });
   };
 
   return (
-    <div className="h-screen rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark  dark:bg-boxdark ">
+    <div className="h-screen  rounded-sm   bg-white  dark:border-strokedark  dark:bg-boxdark ">
       <MyModal
         isOpen={isOpen}
         onOpen={onOpen}
@@ -112,17 +129,12 @@ const SignUp = () => {
       <div className="flex h-screen flex-wrap items-center  ">
         <div className="hidden w-full xl:block xl:w-1/2">
           <div className="px-26 py-17.5 text-center">
-            <Link className="mb-5.5 inline-block" to="/">
-              <img className="hidden dark:block" src={Logo} alt="Logo" />
-              <img className="dark:hidden" src={LogoDark} alt="Logo" />
-            </Link>
             {/* <Button onPress={onOpen} className="max-w-fit">
               Open Modal
             </Button> */}
-            <p className="2xl:px-20">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit
-              suspendisse.
-            </p>
+            <h2 className="text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
+              Selamat Datang di Grand Atma Hotel
+            </h2>
 
             <span className="mt-15 inline-block">
               <img src={SigninLogo} alt="Logo" />
@@ -130,18 +142,19 @@ const SignUp = () => {
           </div>
         </div>
 
-        <div className="w-full border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2">
+        <div className="h-full w-full border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2">
           <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
-            <span className="mb-1.5 block font-medium">Start for free</span>
+            <span className="mb-1.5 block font-medium">Grand Atma Hotel</span>
             <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
-              Sign Up to TailAdmin
+              Daftar Akun
             </h2>
 
             <form onSubmit={handleSubmit}>
               <div className="mb-4">
                 <div className="relative">
                   <Input
-                    size="lg"
+                    isRequired
+                    size="md"
                     value={data.username || ''}
                     type="username"
                     label="Username"
@@ -159,7 +172,7 @@ const SignUp = () => {
               <div className="mb-4">
                 <div className="relative">
                   <Input
-                    size="lg"
+                    size="md"
                     value={data.email || ''}
                     type="email"
                     label="Email"
@@ -183,17 +196,11 @@ const SignUp = () => {
               <div className="mb-4">
                 <div className="relative">
                   <Input
-                    size="lg"
+                    size="md"
                     value={data.password || ''}
                     type="password"
                     label="Password"
                     variant="bordered"
-                    color={validationState === 'invalid' ? 'danger' : undefined}
-                    errorMessage={
-                      validationState === 'invalid' &&
-                      'Please enter a valid email'
-                    }
-                    validationState={validationState}
                     onValueChange={handlePasswordChange}
                     className="w-full "
                   />
@@ -204,20 +211,14 @@ const SignUp = () => {
                 </div>
               </div>
 
-              <div className="mb-6">
+              {/* <div className="mb-6">
                 <div className="relative">
                   <Input
-                    size="lg"
+                    size="md"
                     value={data.confirmPassword || ''}
                     type="password"
                     label="Confirm Password"
                     variant="bordered"
-                    color={validationState === 'invalid' ? 'danger' : undefined}
-                    errorMessage={
-                      validationState === 'invalid' &&
-                      'Please enter a valid email'
-                    }
-                    validationState={validationState}
                     onValueChange={handleConfirmPasswordChange}
                     className="w-full "
                   />
@@ -225,6 +226,76 @@ const SignUp = () => {
                   <span className="absolute right-4 top-5">
                     <Icon path={mdiLockCheck} size={1} />
                   </span>
+                </div>
+              </div> */}
+              <div className="mb-4">
+                <div className="relative">
+                  <Input
+                    size="md"
+                    value={data.nama || ''}
+                    type="text"
+                    label="Nama"
+                    variant="bordered"
+                    onValueChange={(value) => handleChange('nama', value)}
+                    className="w-full "
+                  />
+                </div>
+              </div>
+
+              <div className="mb-4">
+                <div className="relative">
+                  <Input
+                    isRequired
+                    size="md"
+                    value={data.nomor_identitas || ''}
+                    type="text"
+                    label="Nomor Identitas"
+                    variant="bordered"
+                    isInvalid={validNomorIdentitas}
+                    errorMessage={
+                      validNomorIdentitas && 'Masukkan input yang valid'
+                    }
+                    onValueChange={(value) =>
+                      handleChange('nomor_identitas', value)
+                    }
+                    className="w-full "
+                  />
+                </div>
+              </div>
+
+              <div className="mb-4">
+                <div className="relative">
+                  <Input
+                    isRequired
+                    size="md"
+                    value={data.nomor_telepon || ''}
+                    type="text"
+                    label="Nomor Telepon"
+                    variant="bordered"
+                    isInvalid={validNomorTelepon}
+                    errorMessage={
+                      validNomorTelepon && 'Masukkan input yang valid'
+                    }
+                    onValueChange={(value) =>
+                      handleChange('nomor_telepon', value)
+                    }
+                    className="w-full "
+                  />
+                </div>
+              </div>
+
+              <div className="mb-6">
+                <div className="relative">
+                  <Input
+                    isRequired
+                    size="md"
+                    value={data.alamat || ''}
+                    type="text"
+                    label="Alamat"
+                    variant="bordered"
+                    onValueChange={(value) => handleChange('alamat', value)}
+                    className="w-full "
+                  />
                 </div>
               </div>
 

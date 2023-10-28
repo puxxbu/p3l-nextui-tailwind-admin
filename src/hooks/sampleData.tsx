@@ -42,7 +42,7 @@ interface LoginResponse {
 //   }
 // }
 
-interface RegisterData {
+interface ResponseData {
   username: string;
   name: string;
 }
@@ -51,19 +51,49 @@ interface ErrorResponse {
   errors: string;
 }
 
+interface ResponseData {
+  data: DataItem[];
+}
+
+interface DataItem {
+  username: string;
+  id_role: number;
+  nama: string;
+  jenis_customer: string;
+}
+
+interface Customer {
+  username: string;
+  password: string;
+  nama: string;
+  nomor_identitas: string;
+  nomor_telepon: string;
+  email: string;
+  alamat: string;
+}
+
 export function registerUser(
-  username: string,
-  password: string,
-  name: string,
-  callback: (data?: RegisterData, error?: string) => void
+  dataCustomer: Customer,
+
+  callback: (data?: ResponseData, error?: string) => void
 ): void {
   axios
-    .post<RegisterData>(
+    .post<ResponseData>(
       'http://localhost:3000/api/users',
       {
-        username: username,
-        password: password,
-        name: name,
+        akun: {
+          username: dataCustomer.username,
+          password: dataCustomer.password,
+          id_role: 2001,
+        },
+        customer: {
+          nama: dataCustomer.nama,
+          jenis_customer: 'Personal',
+          nomor_identitas: dataCustomer.nomor_identitas,
+          nomor_telepon: dataCustomer.nomor_telepon,
+          email: dataCustomer.email,
+          alamat: dataCustomer.alamat,
+        },
       },
       {
         headers: {
@@ -77,9 +107,14 @@ export function registerUser(
       callback(data);
     })
     .catch((error) => {
+      console.log(error.message);
+      if (axios.isAxiosError(error)) {
+        callback(undefined, error.message);
+      }
+
       const errorResponse = error.response.data as ErrorResponse;
       const errorMessage = errorResponse.errors;
-      console.error('Error registering user:', errorMessage);
+      console.error('Error logging in:', errorMessage);
       callback(undefined, errorMessage);
     });
 }

@@ -91,6 +91,11 @@ export function updateFasilitas(
       callback(data);
     })
     .catch((error) => {
+      console.log(error.message);
+      if (axios.isAxiosError(error)) {
+        callback(undefined, error.message);
+      }
+
       const errorResponse = error.response.data as ErrorResponse;
       const errorMessage = errorResponse.errors;
       console.error('Error logging in:', errorMessage);
@@ -116,6 +121,11 @@ export function deleteFasilitas(
       callback(data);
     })
     .catch((error) => {
+      console.log(error.message);
+      if (axios.isAxiosError(error)) {
+        callback(undefined, error.message);
+      }
+
       const errorResponse = error.response.data as ErrorResponse;
       const errorMessage = errorResponse.errors;
       console.error('Error logging in:', errorMessage);
