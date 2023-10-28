@@ -127,7 +127,7 @@ const DetailSeason = () => {
 
   return (
     <DefaultLayout>
-      <Breadcrumb pageName="Create Season" />
+      <Breadcrumb pageName="Update Season" />
       <Toaster />
       {isLoading ? (
         <Spinner color="primary" />
@@ -175,7 +175,7 @@ const DetailSeason = () => {
                   </div>
 
                   <button className="flex w-full justify-center rounded bg-primary p-3 font-medium text-white                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ">
-                    Create Season
+                    Update Season
                   </button>
                 </div>
               </form>

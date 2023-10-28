@@ -69,19 +69,26 @@ export function createCustomer(
     });
 }
 
-export function updateKamar(
-  id_kamar: string,
-  nomor_kamar: string,
-  id_jenis_kamar: string,
+export function updateCustomer(
+  data: DataCustomerDetail,
   token: string,
   callback: (data?: CreateCustomerResponse, error?: string) => void
 ): void {
+  console.log(data);
   axios
     .put<CreateCustomerResponse>(
-      `${baseURL}/api/kamar/${id_kamar}`,
+      `${baseURL}/api/customer/`,
       {
-        nomor_kamar: parseInt(nomor_kamar),
-        id_jenis_kamar: parseInt(id_jenis_kamar),
+        id_customer: parseInt(data.id_customer),
+        customer: {
+          jenis_customer: data.jenis_customer,
+          nama: data.nama,
+          nomor_identitas: data.nomor_identitas,
+          nomor_telepon: data.nomor_telepon,
+          email: data.email,
+          alamat: data.alamat,
+          tanggal_dibuat: data.tanggal_dibuat,
+        },
       },
       {
         headers: {
@@ -128,12 +135,30 @@ export function deleteKamar(
     });
 }
 
-export async function getKamarById(
+export async function getCustomerById(
   id: string,
   token: string
 ): Promise<CreateCustomerResponse> {
   try {
-    let url = `http://localhost:3000/api/kamar/${id}`;
+    let url = `http://localhost:3000/api/customer/${id}`;
+
+    const response = await axios.get(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.data as CreateCustomerResponse;
+  } catch (error) {
+    console.error('Error fetching contacts:', error);
+    throw error;
+  }
+}
+export async function getCurrentCustomer(
+  token: string
+): Promise<CreateCustomerResponse> {
+  try {
+    let url = `http://localhost:3000/api/customer/current`;
 
     const response = await axios.get(url, {
       headers: {

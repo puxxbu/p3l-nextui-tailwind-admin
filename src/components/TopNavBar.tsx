@@ -13,6 +13,7 @@ import {
 import DarkModeSwitcher from './DarkModeSwitcher';
 import useAuth from 'src/hooks/useAuth';
 import DropdownUser from './DropdownUser';
+import DropdownCustomer from './DropdownCustomer';
 
 const TopNavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
@@ -85,7 +86,7 @@ const TopNavBar = () => {
           </>
         ) : (
           <>
-            <DropdownUser />
+            <DropdownCustomer />
             {/* <NavbarItem>
               <Button
                 as={Link}

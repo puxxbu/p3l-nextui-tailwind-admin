@@ -33,6 +33,7 @@ import DetailTarif from './pages/Form/Detail/DetailTarif';
 import TabelTarif from './pages/Data/TabelTarif';
 import TabelCustomer from './pages/Data/TabelCustomer';
 import FormCustomer from './pages/Form/FormCustomer';
+import DetailCustomer from './pages/Form/Detail/DetailCustomer';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -56,20 +57,18 @@ function App() {
     <>
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route path="/admin" element={<ECommerce />} />
-        <Route path="/user/profile" element={<UserProfile />} />
+        <Route element={<RequireAuth allowedRoles={[2001]} />}>
+          <Route path="/user/profile" element={<UserProfile />} />
+        </Route>
         //public routes //TODO add RequireAuth if user alr logged in
         <Route path="/auth/signin" element={<SignIn />} />
         <Route path="/auth/signup" element={<SignUp />} />
         <Route element={<RequireAuth allowedRoles={rolePegawai} />}>
           <Route path="/profile" element={<Profile />} />
-        </Route>
-        <Route element={<RequireAuth allowedRoles={rolePegawai} />}>
           <Route path="/calendar" element={<Calendar />} />
-        </Route>
-        <Route path="/forms/form-elements" element={<FormElements />} />
-        <Route path="/forms/form-layout" element={<FormLayout />} />
-        <Route element={<RequireAuth allowedRoles={rolePegawai} />}>
+          <Route path="/admin" element={<ECommerce />} />
+          <Route path="/forms/form-elements" element={<FormElements />} />
+          <Route path="/forms/form-layout" element={<FormLayout />} />
           <Route path="/forms/kamar" element={<FormKamar />} />
           <Route path="/forms/kamar/:id" element={<DetailKamar />} />
           <Route path="/forms/jenis-kamar" element={<FormJenisKamar />} />
@@ -81,21 +80,25 @@ function App() {
           <Route path="/forms/tarif" element={<FormTarif />} />
           <Route path="/forms/tarif/:id" element={<DetailTarif />} />
           <Route path="/forms/customer" element={<FormCustomer />} />
-          <Route path="/forms/customer/:id" element={<DetailKamar />} />
+          <Route path="/forms/customer/:id" element={<DetailCustomer />} />
         </Route>
-        <Route path="/tables" element={<TabelKamar />} />
         <Route element={<RequireAuth allowedRoles={rolePegawai} />}>
+          <Route path="/tables" element={<TabelKamar />} />
           <Route path="/data/kamar" element={<TabelKamar />} />
           <Route path="/data/jenis-kamar" element={<TabelJenisKamar />} />
           <Route path="/data/season" element={<TabelSeason />} />
           <Route path="/data/fasilitas" element={<TabelFasilitas />} />
           <Route path="/data/customer" element={<TabelCustomer />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="/chart" element={<Chart />} />
+          <Route path="/ui/alerts" element={<Alerts />} />
+          <Route path="/ui/buttons" element={<Buttons />} />
         </Route>
-        <Route path="/settings" element={<Settings />} />
-        <Route path="/chart" element={<Chart />} />
-        <Route path="/ui/alerts" element={<Alerts />} />
-        <Route path="/ui/buttons" element={<Buttons />} />
         <Route path="/*" element={<div> Not Found</div>} />
+        <Route
+          path="/error/forbidden"
+          element={<div> Anda tidak memiliki akses kedalam sini</div>}
+        />
       </Routes>
     </>
   );

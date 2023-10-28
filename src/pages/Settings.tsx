@@ -41,33 +41,6 @@ const Settings = () => {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     console.log(dataPassword);
-
-    updatePassword(
-      dataPassword.oldPassword,
-      dataPassword.newPassword,
-      auth.token,
-      (data, error) => {
-        if (error) {
-          toast.error('Gagal Update Password (' + error + ')');
-        } else {
-          toast.success('Berhasil mengupdate password');
-        }
-      }
-    );
-    // updateJenisKamar(
-    //   id || '1',
-    //   dataJenisKamar.jenis_kamar || '0',
-    //   dataJenisKamar.jenis_bed || '0',
-    //   dataJenisKamar.jumlah_kasur || '0',
-    //   auth.token,
-    //   (data, error) => {
-    //     if (error) {
-    //       setError(error);
-    //     } else {
-    //       toast.success('Berhasil mengupdate kamar');
-    //     }
-    //   }
-    // );
   };
 
   return (

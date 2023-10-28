@@ -19,3 +19,16 @@ interface CustomerResponse {
 interface CreateCustomerResponse {
   data: Customer;
 }
+
+interface DataCustomerDetail {
+  id_customer: string;
+  id_akun: string;
+  jenis_customer: string;
+  nama: string;
+  nomor_identitas: string;
+  nomor_telepon: string;
+  email: string;
+  alamat: string;
+  tanggal_dibuat: string;
+  nama_institusi: string;
+}

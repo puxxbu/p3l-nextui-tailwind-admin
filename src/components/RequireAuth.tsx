@@ -1,11 +1,20 @@
 import { useLocation, Navigate, Outlet } from 'react-router-dom';
 import useAuth from 'Hooks/useAuth';
 import { getCurrentUser } from 'src/hooks/sampleData';
+import { all } from 'axios';
 
 const RequireAuth = ({ allowedRoles }: { allowedRoles: number[] }) => {
   const { auth } = useAuth();
   const location = useLocation();
   console.log('auth :' + auth.token);
+
+  if (!allowedRoles.includes(2001)) {
+    if (auth.role.id_role === 2001) {
+      return (
+        <Navigate to="/error/forbidden" state={{ from: location }} replace />
+      );
+    }
+  }
 
   getCurrentUser(auth.token, (data, error) => {
     if (error) {
