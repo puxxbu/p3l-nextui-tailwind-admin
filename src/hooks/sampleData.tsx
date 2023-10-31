@@ -199,3 +199,23 @@ export async function fetchBookingHistory(
     throw error;
   }
 }
+
+export async function fetchDetailBooking(
+  id: string,
+  token: string
+): Promise<BookingApiResponse> {
+  try {
+    let url = `http://localhost:3000/api/customer/booking/${id}`;
+
+    const response = await axios.get(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.data as BookingApiResponse;
+  } catch (error) {
+    console.error('Error fetching contacts:', error);
+    throw error;
+  }
+}

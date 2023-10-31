@@ -1,16 +1,37 @@
-import { useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useRef, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 import UserOne from '../images/user/user-01.png';
+import AuthContext from 'src/contexts/AuthProvider';
+import { useQuery } from '@tanstack/react-query';
+import useAuth from 'src/hooks/useAuth';
+import { getCurrentUser } from 'src/hooks/sampleData';
 
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-
+  const navigate = useNavigate();
+  const { setAuth } = React.useContext(AuthContext);
   const trigger = useRef<any>(null);
   const dropdown = useRef<any>(null);
+  const { auth } = useAuth();
+
+  const [role, setRole] = useState('');
+
+  const logout = async () => {
+    setAuth({});
+    localStorage.removeItem('token');
+    navigate('/auth/signin');
+  };
 
   // close on click outside
   useEffect(() => {
+    getCurrentUser(auth.token, (data, error) => {
+      if (error) {
+        console.log('data :' + error);
+      } else {
+        setRole(data?.data.role.nama_role || '');
+      }
+    });
     const clickHandler = ({ target }: MouseEvent) => {
       if (!dropdown.current) return;
       if (
@@ -47,7 +68,7 @@ const DropdownUser = () => {
           <span className="block text-sm font-medium text-black dark:text-white">
             Pegawai
           </span>
-          <span className="block text-xs">role pegawai</span>
+          <span className="block text-xs">{role}</span>
         </span>
 
         <span className="h-12 w-12 rounded-full">
@@ -155,7 +176,10 @@ const DropdownUser = () => {
             </Link>
           </li>
         </ul>
-        <button className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">
+        <button
+          onClick={logout}
+          className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
+        >
           <svg
             className="fill-current"
             width="22"

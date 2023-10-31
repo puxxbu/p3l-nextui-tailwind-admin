@@ -77,7 +77,7 @@ export default function App() {
   function switchAction(key: any, id: string) {
     switch (key) {
       case 'view':
-        navigate(`/forms/kamar/${id}`);
+        navigate(`/data/user/detail-history/${id}`);
         break;
 
         break;
@@ -162,7 +162,7 @@ export default function App() {
                                   onAction={(key) =>
                                     switchAction(
                                       key,
-                                      getKeyValue(item, 'id_season')
+                                      getKeyValue(item, 'id_booking')
                                     )
                                   }
                                 >
@@ -177,7 +177,11 @@ export default function App() {
                             );
 
                           case 'nama_pegawai_fo':
-                            return item.pegawai_2.nama_pegawai;
+                            if (item.pegawai_2 === null) {
+                              return 'Tidak ada pegawai FO';
+                            } else {
+                              item.pegawai_2.nama_pegawai;
+                            }
 
                           case 'tanggal_check_in':
                           case 'tanggal_check_out':

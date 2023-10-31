@@ -117,7 +117,7 @@ const DropdownCustomer = () => {
           </li>
           <li>
             <Link
-              to="#"
+              to="/user/history"
               className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
             >
               <svg
@@ -133,7 +133,7 @@ const DropdownCustomer = () => {
                   fill=""
                 />
               </svg>
-              My Contacts
+              History
             </Link>
           </li>
         </ul>
