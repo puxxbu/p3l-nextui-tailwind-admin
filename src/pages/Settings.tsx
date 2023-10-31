@@ -40,7 +40,22 @@ const Settings = () => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    console.log(dataPassword);
+    updatePassword(
+      dataPassword.oldPassword,
+      dataPassword.newPassword,
+      auth.token,
+      (data, error) => {
+        if (error) {
+          toast.error('Gagal Update Password (' + error + ')');
+        } else {
+          toast.success('Berhasil mengupdate password');
+        }
+        setDataPassword({
+          oldPassword: '',
+          newPassword: '',
+        });
+      }
+    );
   };
 
   return (
