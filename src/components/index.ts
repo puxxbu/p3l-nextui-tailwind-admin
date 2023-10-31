@@ -8,6 +8,7 @@ import FetchFasilitasTable from './Table/FetchFasilitasTable';
 import FetchTarifTable from './Table/FetchTarifTable';
 import FetchCustomerTable from './Table/FetchCustomerTable';
 import FetchHistoryBooking from './Table/FetchHistoryBooking';
+import FetchHistoryBookingUser from './Table/FetchHistoryBookingUser';
 
 export {
   DataTable,
@@ -19,4 +20,5 @@ export {
   FetchFasilitasTable,
   FetchCustomerTable,
   FetchHistoryBooking,
+  FetchHistoryBookingUser,
 };

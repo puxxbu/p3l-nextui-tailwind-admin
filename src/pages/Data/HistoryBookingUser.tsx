@@ -7,6 +7,7 @@ import {
   DataTable,
   FetchCustomerTable,
   FetchHistoryBooking,
+  FetchHistoryBookingUser,
   FetchKamarTable,
 } from 'Components';
 import { Button } from '@nextui-org/react';
@@ -14,10 +15,11 @@ import MainLayout from 'src/layout/MainLayout';
 const HistoryBookingUser = () => {
   return (
     <MainLayout>
-      <Breadcrumb pageName="Booking History" />
-      <div className="flex flex-col gap-10">
-        <FetchHistoryBooking />
-      </div>
+      <section>
+        <div className=" mx-auto mt-10 max-w-5xl justify-center ">
+          <FetchHistoryBookingUser />
+        </div>
+      </section>
     </MainLayout>
   );
 };
