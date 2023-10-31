@@ -16,28 +16,33 @@ import {
   DropdownMenu,
   DropdownItem,
 } from '@nextui-org/react';
+import { users2 as users } from '../../data/data';
+
+import { fetchKamar } from 'src/hooks/kamar/kamarController';
 
 import { useQuery, useMutation } from '@tanstack/react-query';
 import useAuth from 'src/hooks/useAuth';
 import Error from '../Error/Error';
 import Icon from '@mdi/react';
-import { mdiDotsVertical, mdiMagnify, mdiPlus } from '@mdi/js';
-import { useNavigate } from 'react-router-dom';
+import { mdiChevronDown, mdiDotsVertical, mdiMagnify, mdiPlus } from '@mdi/js';
+import { useNavigate, useParams } from 'react-router-dom';
 import { deleteKamar } from 'src/hooks/kamar/kamarController';
-import { fetchCustomer } from 'src/hooks/customer/customerController';
+import { fetchBookingHistory } from 'src/hooks/sampleData';
+import { formatDate } from 'src/utils';
 
 export default function App() {
   const [page, setPage] = React.useState(1);
-  const [items, setItems] = React.useState<Customer[]>([]);
+  const [items, setItems] = React.useState<BookingItem[]>([]);
   const { auth } = useAuth();
   const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
   const [filterValue, setFilterValue] = React.useState('');
 
+  const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
   const { data, error, refetch, isLoading } = useQuery(
-    ['customers', page, filterValue], // Memasukkan filterValue sebagai bagian dari query key
-    () => fetchCustomer(page, filterValue, auth.token),
+    ['bookHistory', page, filterValue], // Memasukkan filterValue sebagai bagian dari query key
+    () => fetchBookingHistory(page, id || '0', auth.token),
     {
       keepPreviousData: true,
       staleTime: 5000,
@@ -72,20 +77,8 @@ export default function App() {
   function switchAction(key: any, id: string) {
     switch (key) {
       case 'view':
-        navigate(`/forms/customer/${id}`);
+        navigate(`/forms/kamar/${id}`);
         break;
-      case 'history':
-        navigate(`/data/user/${id}/booking-history`);
-        break;
-      case 'delete':
-        // deleteCustomer(id, auth.token, (data, error) => {
-        //   if (error) {
-        //     console.log(error);
-        //   } else {
-        //     refetch();
-        //     console.log(data);
-        //   }
-        // });
 
         break;
       default:
@@ -121,15 +114,6 @@ export default function App() {
               onClear={() => onClear()}
               onValueChange={onSearchChange}
             />
-            <div className="flex justify-end gap-3">
-              <Button
-                color="primary"
-                endContent={<Icon path={mdiPlus} size={1} />}
-                onClick={() => navigate('/forms/Customer')}
-              >
-                Add New
-              </Button>
-            </div>
           </div>
           <Table
             aria-label="Example table with client side pagination"
@@ -151,56 +135,58 @@ export default function App() {
             }}
           >
             <TableHeader>
-              <TableColumn key="id_customer">ID Customer</TableColumn>
-              <TableColumn key="nama">Nama Customer</TableColumn>
-              <TableColumn key="jenis_customer">Jenis Customer</TableColumn>
+              <TableColumn key="id_booking">ID Booking</TableColumn>
+              <TableColumn key="nama_pegawai_fo">Pegawai FO</TableColumn>
+              <TableColumn key="tanggal_check_in">Check-in</TableColumn>
+              <TableColumn key="tanggal_check_out">Check-out</TableColumn>
+              <TableColumn key="status_booking">Status Booking</TableColumn>
               <TableColumn key="action">Actions</TableColumn>
             </TableHeader>
             <TableBody items={items}>
               {(item) => (
-                <TableRow key={item.id_customer}>
+                <TableRow key={item.id_booking}>
                   {(columnKey) => (
                     <TableCell>
-                      {columnKey === 'action' ? (
-                        <Dropdown>
-                          <DropdownTrigger>
-                            <Button isIconOnly size="sm" variant="light">
-                              <Icon path={mdiDotsVertical} size={1} />
-                            </Button>
-                          </DropdownTrigger>
-                          <DropdownMenu
-                            aria-label="Action event example"
-                            onAction={(key) =>
-                              switchAction(
-                                key,
-                                getKeyValue(item, 'id_customer')
-                              )
-                            }
-                          >
-                            <DropdownItem
-                              className="text-gray-700 dark:text-white"
-                              key="view"
-                            >
-                              View
-                            </DropdownItem>
-                            <DropdownItem
-                              key="history"
-                              className="text-gray-700 dark:text-white"
-                            >
-                              Booking History
-                            </DropdownItem>
-                            <DropdownItem
-                              key="delete"
-                              className="text-danger"
-                              color="danger"
-                            >
-                              Delete
-                            </DropdownItem>
-                          </DropdownMenu>
-                        </Dropdown>
-                      ) : (
-                        getKeyValue(item, columnKey)
-                      )}
+                      {(() => {
+                        switch (columnKey) {
+                          case 'action':
+                            return (
+                              <Dropdown>
+                                <DropdownTrigger>
+                                  <Button isIconOnly size="sm" variant="light">
+                                    <Icon path={mdiDotsVertical} size={1} />
+                                  </Button>
+                                </DropdownTrigger>
+                                <DropdownMenu
+                                  aria-label="Action event example"
+                                  onAction={(key) =>
+                                    switchAction(
+                                      key,
+                                      getKeyValue(item, 'id_season')
+                                    )
+                                  }
+                                >
+                                  <DropdownItem
+                                    className="text-gray-700 dark:text-white"
+                                    key="view"
+                                  >
+                                    Lihat Detail
+                                  </DropdownItem>
+                                </DropdownMenu>
+                              </Dropdown>
+                            );
+
+                          case 'nama_pegawai_fo':
+                            return item.pegawai_2.nama_pegawai;
+
+                          case 'tanggal_check_in':
+                          case 'tanggal_check_out':
+                            return formatDate(getKeyValue(item, columnKey));
+
+                          default:
+                            return getKeyValue(item, columnKey);
+                        }
+                      })()}
                     </TableCell>
                   )}
                 </TableRow>

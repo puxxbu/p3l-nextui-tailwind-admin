@@ -34,6 +34,7 @@ import TabelTarif from './pages/Data/TabelTarif';
 import TabelCustomer from './pages/Data/TabelCustomer';
 import FormCustomer from './pages/Form/FormCustomer';
 import DetailCustomer from './pages/Form/Detail/DetailCustomer';
+import HistoryBooking from './pages/Data/HistoryBooking';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -89,6 +90,12 @@ function App() {
           <Route path="/data/season" element={<TabelSeason />} />
           <Route path="/data/fasilitas" element={<TabelFasilitas />} />
           <Route path="/data/customer" element={<TabelCustomer />} />
+          <Route path="/data/tarif" element={<TabelTarif />} />
+          <Route
+            path="/data/user/:id/booking-history"
+            element={<HistoryBooking />}
+          />
+
           <Route path="/settings" element={<Settings />} />
           <Route path="/chart" element={<Chart />} />
           <Route path="/ui/alerts" element={<Alerts />} />

@@ -178,3 +178,24 @@ export function getCurrentUser(
       callback(undefined, errorMessage);
     });
 }
+
+export async function fetchBookingHistory(
+  page = 1,
+  id: string,
+  token: string
+): Promise<BookingHistoryResponse> {
+  try {
+    let url = `http://localhost:3000/api/customer/${id}/booking-history?page=${page}`;
+
+    const response = await axios.get(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.data as BookingHistoryResponse;
+  } catch (error) {
+    console.error('Error fetching contacts:', error);
+    throw error;
+  }
+}
