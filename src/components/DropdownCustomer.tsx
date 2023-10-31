@@ -3,9 +3,20 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import UserOne from '../images/user/user-01.png';
 import AuthContext from 'src/contexts/AuthProvider';
+import { useQuery } from '@tanstack/react-query';
+import { getCurrentCustomer } from 'src/hooks/customer/customerController';
+import useAuth from 'src/hooks/useAuth';
 
 const DropdownCustomer = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const { auth } = useAuth();
+  const { status: statusCustomer, data: dataCustomer } = useQuery(
+    ['detailCustomer'],
+    () => getCurrentCustomer(auth.token),
+    {
+      keepPreviousData: true,
+    }
+  );
 
   const trigger = useRef<any>(null);
   const dropdown = useRef<any>(null);
@@ -117,7 +128,7 @@ const DropdownCustomer = () => {
           </li>
           <li>
             <Link
-              to="/user/history"
+              to={`/user/booking-history/${dataCustomer?.data.id_customer}`}
               className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
             >
               <svg

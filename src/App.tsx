@@ -36,6 +36,7 @@ import FormCustomer from './pages/Form/FormCustomer';
 import DetailCustomer from './pages/Form/Detail/DetailCustomer';
 import HistoryBooking from './pages/Data/HistoryBooking';
 import DetailRiwayat from './pages/Form/Detail/DetailRiwayat';
+import HistoryBookingUser from './pages/Data/HistoryBookingUser';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -61,6 +62,10 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route element={<RequireAuth allowedRoles={[2001]} />}>
           <Route path="/user/profile" element={<UserProfile />} />
+          <Route
+            path="/user/booking-history/:id"
+            element={<HistoryBookingUser />}
+          />
         </Route>
         //public routes //TODO add RequireAuth if user alr logged in
         <Route path="/auth/signin" element={<SignIn />} />
