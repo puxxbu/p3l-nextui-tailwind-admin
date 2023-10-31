@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import LogoDark from '../../images/logo/logo-dark.svg';
 import Logo from '../../images/logo/logo.svg';
 import SigninLogo from '../../images/auth/welcome-signin.svg';
@@ -50,6 +50,8 @@ const SignUp = () => {
   const [modalTitle, setModalTitle] = React.useState('');
 
   const [loading, setLoading] = React.useState(false);
+
+  const navigate = useNavigate();
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
@@ -112,6 +114,7 @@ const SignUp = () => {
         onOpen();
       } else {
         setLoading(false);
+        navigate('/auth/signin');
         console.log('Registration successful. Data:', data);
       }
     });
