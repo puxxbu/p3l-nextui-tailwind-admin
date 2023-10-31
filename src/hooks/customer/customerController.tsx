@@ -46,8 +46,8 @@ export function createCustomer(
         email: email,
         alamat: alamat,
         nama_institusi: nama_institusi,
-        jenis_customer: 'Group',
-        tanggal_dibuat: new Date(),
+        // jenis_customer: 'Group',
+        // tanggal_dibuat: new Date(),
       },
       {
         headers: {
