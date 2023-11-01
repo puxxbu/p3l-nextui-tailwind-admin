@@ -112,15 +112,9 @@ const SignIn = () => {
       <div className="flex h-screen flex-wrap items-center  ">
         <div className="hidden w-full xl:block xl:w-1/2">
           <div className="px-26 py-17.5 text-center">
-            <Link className="mb-5.5 inline-block" to="/">
-              <img className="hidden dark:block" src={Logo} alt="Logo" />
-              <img className="dark:hidden" src={LogoDark} alt="Logo" />
-            </Link>
-
-            <p className="2xl:px-20">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit
-              suspendisse.
-            </p>
+          <h2 className="text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
+              Selamat Datang di Grand Atma Hotel
+            </h2>
 
             <span className="mt-15 inline-block">
               <img src={SigninLogo} alt="Logo" />
