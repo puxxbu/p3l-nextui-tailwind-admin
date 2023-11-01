@@ -18,6 +18,7 @@ interface DataJenisKamar {
   jenis_kamar: string;
   jenis_bed: string;
   jumlah_kasur: string;
+  kapasitas : string,
 }
 
 const DetailJenisKamar = () => {
@@ -34,11 +35,13 @@ const DetailJenisKamar = () => {
         keepPreviousData: true,
       }
     );
+    
 
   const [dataJenisKamar, setDataJenisKamar] = useState<DataJenisKamar>({
     jenis_kamar: '',
     jenis_bed: '',
     jumlah_kasur: '',
+    kapasitas: ''
   });
 
   useEffect(() => {
@@ -47,6 +50,7 @@ const DetailJenisKamar = () => {
         jenis_kamar: data.data.jenis_kamar,
         jenis_bed: data.data.jenis_bed,
         jumlah_kasur: data.data.jumlah_kasur.toString(),
+        kapasitas : data.data.kapasitas.toString()
       });
     }
 
@@ -88,6 +92,7 @@ const DetailJenisKamar = () => {
       dataJenisKamar.jenis_kamar || '0',
       dataJenisKamar.jenis_bed || '0',
       dataJenisKamar.jumlah_kasur || '0',
+      dataJenisKamar.kapasitas || '0',
       auth.token,
       (data, error) => {
         if (error) {
@@ -101,7 +106,7 @@ const DetailJenisKamar = () => {
 
   return (
     <DefaultLayout>
-      <Breadcrumb pageName="Create Jenis Kamar" />
+      <Breadcrumb pageName="Update Jenis Kamar" />
       <Toaster />
       {isLoading ? (
         <Spinner color="primary" />
@@ -161,11 +166,27 @@ const DetailJenisKamar = () => {
                         }
                         placeholder="Masukkan Jumlah Kasur"
                       />
+                       
                     </div>
+                    <div className="w-full xl:w-1/2">
+
+                    <Input
+                        isRequired
+                        type="text"
+                        label="Jumlah Kapasitas"
+                        value={dataJenisKamar.kapasitas}
+                        isInvalid={isInvalid}
+                        errorMessage={isInvalid && 'Masukkan input yang valid'}
+                        onValueChange={(value) =>
+                          handleChange('kapasitas', value)
+                        }
+                        placeholder="Masukkan Kapasitas Kamar"
+                      />
+                      </div>
                   </div>
 
                   <button className="flex w-full justify-center rounded bg-primary p-3 font-medium text-white                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ">
-                    Create Jenis Kamar
+                    Update Jenis Kamar
                   </button>
                 </div>
               </form>

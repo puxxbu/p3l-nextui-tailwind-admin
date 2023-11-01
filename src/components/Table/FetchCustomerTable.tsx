@@ -15,6 +15,7 @@ import {
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
+  useDisclosure,
 } from '@nextui-org/react';
 
 import { useQuery, useMutation } from '@tanstack/react-query';
@@ -30,10 +31,26 @@ export default function App() {
   const [page, setPage] = React.useState(1);
   const [items, setItems] = React.useState<Customer[]>([]);
   const { auth } = useAuth();
+  const {isOpen, onOpen, onOpenChange, onClose} = useDisclosure();
+  const [idKamar, setIdKamar] = React.useState("");
   const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
   const [filterValue, setFilterValue] = React.useState('');
 
   const navigate = useNavigate();
+
+  const handleDeleteKamar = async () => {
+    deleteKamar(idKamar, auth.token, (data, error) => {
+      if (error) {
+        console.log(error);
+      } else {
+        refetch();
+        console.log(data);
+      }
+    });
+
+    onClose();
+    setIdKamar('');
+  }
 
   const { data, error, refetch, isLoading } = useQuery(
     ['customers', page, filterValue], // Memasukkan filterValue sebagai bagian dari query key
@@ -189,13 +206,13 @@ export default function App() {
                             >
                               Booking History
                             </DropdownItem>
-                            <DropdownItem
+                            {/* <DropdownItem
                               key="delete"
                               className="text-danger"
                               color="danger"
                             >
                               Delete
-                            </DropdownItem>
+                            </DropdownItem> */}
                           </DropdownMenu>
                         </Dropdown>
                       ) : (

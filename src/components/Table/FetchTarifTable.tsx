@@ -15,6 +15,12 @@ import {
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
+  useDisclosure,
+  ModalContent,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
 } from '@nextui-org/react';
 
 import { useQuery, useMutation } from '@tanstack/react-query';
@@ -37,6 +43,7 @@ export default function App() {
   const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
   const [filterValue, setFilterValue] = React.useState('');
 
+  const [idKamar, setIdKamar] = React.useState("");
   const navigate = useNavigate();
 
   const { status, data, error, refetch, isLoading } = useQuery(
@@ -47,6 +54,9 @@ export default function App() {
       staleTime: 5000,
     }
   );
+
+
+  const {isOpen, onOpen, onOpenChange, onClose} = useDisclosure();
 
   console.log(page);
 
@@ -69,6 +79,21 @@ export default function App() {
     }
   }, []);
 
+  const handleDeleteKamar = async () => {
+    deleteTarif(idKamar, auth.token, (data, error) => {
+      if (error) {
+        console.log(error);
+      } else {
+        refetch();
+        toast.success('Data Tarif berhasil dihapus');
+        console.log(data);
+      }
+    });
+
+    onClose();
+    setIdKamar('');
+  }
+
   const rowsPerPage = 10;
 
   const pages = data?.paging.total_page || 1;
@@ -79,15 +104,8 @@ export default function App() {
         navigate(`/forms/tarif/${id}`);
         break;
       case 'delete':
-        deleteTarif(id, auth.token, (data, error) => {
-          if (error) {
-            console.log(error);
-          } else {
-            refetch();
-            toast.success('Data Tarif berhasil dihapus');
-            console.log(data);
-          }
-        });
+        onOpen();
+        setIdKamar(id);
 
         break;
       default:
@@ -113,6 +131,26 @@ export default function App() {
       return (
         <div className="flex flex-col gap-4">
           <Toaster />
+          <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">Modal Title</ModalHeader>
+              <ModalBody>
+               <p>Apakah Anda ingin menghapus?</p>
+              </ModalBody>
+              <ModalFooter>
+                <Button color="danger" variant="light" onPress={onClose}>
+                  Close
+                </Button>
+                <Button color="primary" onPress={handleDeleteKamar}>
+                  Delete
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
           <div className="flex items-end justify-between gap-3">
             <Input
               isClearable

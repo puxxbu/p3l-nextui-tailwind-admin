@@ -21,6 +21,7 @@ interface DataJenisKamar {
   jenis_kamar: string;
   jenis_bed: string;
   jumlah_kasur: string;
+  kapasitas : string,
 }
 
 const FormJenisKamar = () => {
@@ -29,6 +30,7 @@ const FormJenisKamar = () => {
     jenis_kamar: '',
     jenis_bed: '',
     jumlah_kasur: '',
+    kapasitas: '',
   });
 
   const [value, setValue] = useState<Selection>(new Set([]));
@@ -64,6 +66,7 @@ const FormJenisKamar = () => {
       data.jenis_kamar || '0',
       data.jenis_bed || '0',
       data.jumlah_kasur || '0',
+      data.kapasitas || '0',
       auth.token,
       (data, error) => {
         if (error) {
@@ -77,6 +80,7 @@ const FormJenisKamar = () => {
             jenis_kamar: '',
             jenis_bed: '',
             jumlah_kasur: '',
+            kapasitas : ''
           });
           // setValue(new Set([]));
         }
@@ -149,6 +153,20 @@ const FormJenisKamar = () => {
                         handleChange('jumlah_kasur', value)
                       }
                       placeholder="Masukkan Jumlah Kasur"
+                    />
+                  </div>
+                  <div className="w-full xl:w-1/2">
+                    <Input
+                      isRequired
+                      type="text"
+                      label="Kapasitas"
+                      value={data.kapasitas}
+                      isInvalid={isInvalid}
+                      errorMessage={isInvalid && 'Masukkan input yang valid'}
+                      onValueChange={(value) =>
+                        handleChange('kapasitas', value)
+                      }
+                      placeholder="Masukkan Kapasitas Kamar"
                     />
                   </div>
                 </div>

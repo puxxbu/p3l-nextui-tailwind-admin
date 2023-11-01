@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Table,
   TableHeader,
@@ -15,6 +15,12 @@ import {
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  useDisclosure,
 } from '@nextui-org/react';
 import { users2 as users } from '../../data/data';
 
@@ -31,6 +37,7 @@ import { deleteKamar } from 'src/hooks/kamar/kamarController';
 export default function App() {
   const [page, setPage] = React.useState(1);
   const [items, setItems] = React.useState<Kamar[]>([]);
+  const [idKamar, setIdKamar] = React.useState("");
   const { auth } = useAuth();
   const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
   const [filterValue, setFilterValue] = React.useState('');
@@ -60,10 +67,14 @@ export default function App() {
     refetch();
   }, [page, filterValue, refetch]);
 
+
+  const {isOpen, onOpen, onOpenChange, onClose} = useDisclosure();
   const onClear = React.useCallback(() => {
     setFilterValue('');
     setPage(1);
   }, []);
+
+  
 
   const onSearchChange = React.useCallback((value?: string) => {
     if (value) {
@@ -79,20 +90,30 @@ export default function App() {
 
   const pages = data?.paging.total_page || 1;
 
+  const handleDeleteKamar = async () => {
+    deleteKamar(idKamar, auth.token, (data, error) => {
+      if (error) {
+        console.log(error);
+      } else {
+        refetch();
+        console.log(data);
+      }
+    });
+
+    onClose();
+    setIdKamar('');
+  }
+
   function switchAction(key: any, id: string) {
     switch (key) {
       case 'view':
         navigate(`/forms/kamar/${id}`);
         break;
       case 'delete':
-        deleteKamar(id, auth.token, (data, error) => {
-          if (error) {
-            console.log(error);
-          } else {
-            refetch();
-            console.log(data);
-          }
-        });
+        onOpen();
+        setIdKamar(id);
+
+        
 
         break;
       default:
@@ -116,7 +137,30 @@ export default function App() {
       return Error();
     } else {
       return (
+        
+
+        
         <div className="flex flex-col gap-4">
+          <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">Modal Title</ModalHeader>
+              <ModalBody>
+               <p>Apakah Anda ingin menghapus?</p>
+              </ModalBody>
+              <ModalFooter>
+                <Button color="danger" variant="light" onPress={onClose}>
+                  Close
+                </Button>
+                <Button color="primary" onPress={handleDeleteKamar}>
+                  Delete
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
           <div className="flex items-end justify-between gap-3">
             <Input
               isClearable

@@ -50,6 +50,7 @@ export function createJenisKamar(
   jenis_kamar: string,
   jenis_bed: string,
   jumlah_kasur: string,
+  kapasitas :string,
   token: string,
   callback: (data?: CreateJenisKamarResponse, error?: string) => void
 ): void {
@@ -60,7 +61,7 @@ export function createJenisKamar(
         jenis_kamar: jenis_kamar,
         jenis_bed: jenis_bed,
         jumlah_kasur: parseInt(jumlah_kasur),
-        kapasitas: 2,
+        kapasitas: parseInt(kapasitas),
       },
       {
         headers: {
@@ -87,6 +88,7 @@ export function updateJenisKamar(
   jenis_kamar: string,
   jenis_bed: string,
   jumlah_kasur: string,
+  kapasitas : string,
   token: string,
   callback: (data?: CreateJenisKamarResponse, error?: string) => void
 ): void {
@@ -97,7 +99,7 @@ export function updateJenisKamar(
         jenis_kamar: jenis_kamar,
         jenis_bed: jenis_bed,
         jumlah_kasur: parseInt(jumlah_kasur),
-        kapasitas: 2,
+        kapasitas: parseInt(kapasitas),
       },
       {
         headers: {

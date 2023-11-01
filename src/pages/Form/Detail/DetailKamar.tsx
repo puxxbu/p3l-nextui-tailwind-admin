@@ -6,6 +6,7 @@ import {
   Input,
   Select,
   SelectItem,
+  SelectedItems,
   Selection,
   Spinner,
   useDisclosure,
@@ -21,33 +22,9 @@ import toast, { Toaster } from 'react-hot-toast';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import { MyModal } from 'src/components';
+import { fetchJenisKamarList } from 'src/hooks/jenisKamar/jenisKamarController';
+import { capitalizeFirstLetter } from 'src/utils';
 
-const jenisKamar = [
-  {
-    label: 'Superior (Double)',
-    value: 1,
-  },
-  {
-    label: 'Superior (Twin)',
-    value: 2,
-  },
-  {
-    label: 'Double Deluxe (Double)',
-    value: 3,
-  },
-  {
-    label: 'Double Deluxe (Twin)',
-    value: 4,
-  },
-  {
-    label: 'Junior Suite (King)',
-    value: 5,
-  },
-  {
-    label: 'Executive Deluxe (King)',
-    value: 6,
-  },
-];
 
 interface DataKamar {
   nomor_kamar: string;
@@ -60,11 +37,22 @@ const DetailKamar = () => {
 
   const { id } = useParams<{ id: string }>();
   const [value, setValue] = useState<Selection>(new Set([]));
+  const [selectJK, setSelectJK] = useState<Selection>(new Set([]));
+  const [jenisKamar, setJenisKamar] = useState<JenisKamar[]>([]);
 
   const { status, data, isFetching, isPreviousData, refetch, isLoading } =
     useQuery(
       ['detailKamar', id], // Memasukkan filterValue sebagai bagian dari query key
       () => getKamarById(id || '0', auth.token)
+    );
+
+
+    const { status: statusJenisKamar, data: JenisKamarList } = useQuery(
+      ['JenisKamarList'],
+      () => fetchJenisKamarList(50, auth.token),
+      {
+        keepPreviousData: true,
+      }
     );
 
   const [dataKamar, setDataKamar] = useState<DataKamar>({
@@ -73,13 +61,18 @@ const DetailKamar = () => {
   });
 
   useEffect(() => {
-    if (status === 'success' && data) {
+    if (status === 'success' && data && statusJenisKamar === 'success' &&
+    JenisKamarList) {
       // Memperbarui nilai dataKamar dengan data yang diterima dari useQuery
       setDataKamar({
         nomor_kamar: data.data.nomor_kamar.toString(),
         id_jenis_kamar: data.data.id_jenis_kamar.toString(),
       });
-      setValue(new Set([data.data.id_jenis_kamar.toString()]));
+      setJenisKamar(JenisKamarList.data);
+      // setValue(new Set([data.data.id_jenis_kamar.toString()]));
+      setSelectJK(
+        new Set([data.data.id_jenis_kamar.toString()])
+      );
     }
 
     if (status === 'error') {
@@ -112,6 +105,12 @@ const DetailKamar = () => {
 
   const handleSelectionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setValue(new Set([e.target.value]));
+    handleChange('id_jenis_kamar', e.target.value);
+    console.log(e.target.value);
+  };
+
+  const handleJenisKamar = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectJK(new Set([e.target.value]));
     handleChange('id_jenis_kamar', e.target.value);
     console.log(e.target.value);
   };
@@ -177,19 +176,48 @@ const DetailKamar = () => {
 
                     <div className="w-full xl:w-1/2">
                       <div className="relative z-20 bg-transparent dark:bg-form-input">
-                        <Select
-                          isRequired
-                          label="Pilih Jenis Kamar"
-                          className="relative z-20 bg-transparent dark:bg-form-input"
-                          selectedKeys={value}
-                          onChange={handleSelectionChange}
+                      <Select
+                      isRequired
+                      label="Jenis Kamar"
+                      items={jenisKamar}
+                      placeholder="Pilih Jenis Kamar"
+                      selectedKeys={selectJK}
+                      classNames={{
+                        trigger: 'h-14',
+                      }}
+                      onChange={handleJenisKamar}
+                      renderValue={(items: SelectedItems<JenisKamar>) => {
+                        return items.map((item) => (
+                          <div
+                            key={item.data?.id_jenis_kamar}
+                            className="flex items-center gap-2"
+                          >
+                            <div className="flex flex-col">
+                              <span>{item.data?.jenis_kamar}</span>
+                            </div>
+                          </div>
+                        ));
+                      }}
+                    >
+                      {(jenisKamar) => (
+                        <SelectItem
+                          key={jenisKamar.id_jenis_kamar}
+                          textValue={jenisKamar.jenis_kamar}
                         >
-                          {jenisKamar.map((item) => (
-                            <SelectItem key={item.value} value={item.value}>
-                              {item.label}
-                            </SelectItem>
-                          ))}
-                        </Select>
+                          <div className="flex items-center gap-2">
+                            <div className="flex  flex-col dark:text-white">
+                              <span className="text-small">
+                                {`${
+                                  jenisKamar.jenis_kamar
+                                } (${capitalizeFirstLetter(
+                                  jenisKamar.jenis_bed
+                                )})`}
+                              </span>
+                            </div>
+                          </div>
+                        </SelectItem>
+                      )}
+                    </Select>
                       </div>
                     </div>
                   </div>

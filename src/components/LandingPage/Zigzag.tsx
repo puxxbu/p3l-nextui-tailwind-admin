@@ -6,9 +6,9 @@ export default function Zigzag() {
           {/* Section header */}
           <div className="mx-auto max-w-3xl pb-12 text-center md:pb-16">
             <div className="m-2 mb-4 inline-flex rounded-full bg-green-200 px-3 py-1 text-sm font-semibold text-green-600">
-              Hotel blaHotel blaHotel blaHotel blaHotel bla
+              Hotel nomor #1 terbaik Asia Tenggara menurut PBB
             </div>
-            <h1 className="h2 mb-4">Hotel Kami sangat bagus</h1>
+            <h1 className="h2 mb-4">Grand Atma Hotel</h1>
             <p className="text-xl text-gray-400">
               Banyak sekali fasilitas di Grand Atma Hotel yang sangat menarik
               bagi para tamu yang menginap di hotel kami
@@ -45,9 +45,7 @@ export default function Zigzag() {
                     Kami Menghadirkan fasilitas mutakhir
                   </h3>
                   <p className="mb-4 text-xl text-gray-400">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua.
+                    Banyak fasilitas yang tersedia seperti:
                   </p>
                   <ul className="-mb-2 text-lg text-gray-400">
                     <li className="mb-2 flex items-center">
@@ -58,7 +56,7 @@ export default function Zigzag() {
                       >
                         <path d="M10.28 2.28L3.989 8.575 1.695 6.28A1 1 0 00.28 7.695l3 3a1 1 0 001.414 0l7-7A1 1 0 0010.28 2.28z" />
                       </svg>
-                      <span>Duis aute irure dolor in reprehenderit</span>
+                      <span>Wifi Kamar</span>
                     </li>
                     <li className="mb-2 flex items-center">
                       <svg
@@ -68,7 +66,7 @@ export default function Zigzag() {
                       >
                         <path d="M10.28 2.28L3.989 8.575 1.695 6.28A1 1 0 00.28 7.695l3 3a1 1 0 001.414 0l7-7A1 1 0 0010.28 2.28z" />
                       </svg>
-                      <span>Excepteur sint occaecat</span>
+                      <span>AC Kamar</span>
                     </li>
                     <li className="flex items-center">
                       <svg
@@ -78,7 +76,7 @@ export default function Zigzag() {
                       >
                         <path d="M10.28 2.28L3.989 8.575 1.695 6.28A1 1 0 00.28 7.695l3 3a1 1 0 001.414 0l7-7A1 1 0 0010.28 2.28z" />
                       </svg>
-                      <span>Amet consectetur adipiscing elit</span>
+                      <span>Breakfast dan Message dari terapis terkenal</span>
                     </li>
                   </ul>
                 </div>
@@ -107,15 +105,13 @@ export default function Zigzag() {
               >
                 <div className="md:pr-4 lg:pr-12 xl:pr-16">
                   <div className="font-architects-daughter mb-2 text-xl text-purple-400">
-                    Tidur nyenyak dengan banyak hiburan
+                    Dengan jenis kamar yang beragam
                   </div>
                   <h3 className="h3 mb-3">
-                    Kami Menghadirkan fasilitas mutakhir
+                    Jenis Kamar yang lengkap dan memadai
                   </h3>
                   <p className="mb-4 text-xl text-gray-400">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua.
+                    Berikut beberapa jenis kamar yang tersedia di hotel kami
                   </p>
                   <ul className="-mb-2 text-lg text-gray-400">
                     <li className="mb-2 flex items-center">
@@ -126,7 +122,7 @@ export default function Zigzag() {
                       >
                         <path d="M10.28 2.28L3.989 8.575 1.695 6.28A1 1 0 00.28 7.695l3 3a1 1 0 001.414 0l7-7A1 1 0 0010.28 2.28z" />
                       </svg>
-                      <span>Duis aute irure dolor in reprehenderit</span>
+                      <span>Double Bed King</span>
                     </li>
                     <li className="mb-2 flex items-center">
                       <svg
@@ -136,7 +132,7 @@ export default function Zigzag() {
                       >
                         <path d="M10.28 2.28L3.989 8.575 1.695 6.28A1 1 0 00.28 7.695l3 3a1 1 0 001.414 0l7-7A1 1 0 0010.28 2.28z" />
                       </svg>
-                      <span>Excepteur sint occaecat</span>
+                      <span>King size </span>
                     </li>
                     <li className="flex items-center">
                       <svg
@@ -146,7 +142,7 @@ export default function Zigzag() {
                       >
                         <path d="M10.28 2.28L3.989 8.575 1.695 6.28A1 1 0 00.28 7.695l3 3a1 1 0 001.414 0l7-7A1 1 0 0010.28 2.28z" />
                       </svg>
-                      <span>Amet consectetur adipiscing elit</span>
+                      <span>Triple bed</span>
                     </li>
                   </ul>
                 </div>
@@ -175,15 +171,13 @@ export default function Zigzag() {
               >
                 <div className="md:pr-4 lg:pr-12 xl:pr-16">
                   <div className="font-architects-daughter mb-2 text-xl text-purple-400">
-                    Tidur nyenyak dengan banyak hiburan
+                    Kami Menyediakan beberapa fasilitas
                   </div>
                   <h3 className="h3 mb-3">
-                    Kami Menghadirkan fasilitas mutakhir
+                    Beberapa fasilitas hotel yang dapat disewa
                   </h3>
                   <p className="mb-4 text-xl text-gray-400">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua.
+                   Kami memberikan beberapa persewaan gedung untuk pertemuan
                   </p>
                   <ul className="-mb-2 text-lg text-gray-400">
                     <li className="mb-2 flex items-center">
@@ -194,7 +188,7 @@ export default function Zigzag() {
                       >
                         <path d="M10.28 2.28L3.989 8.575 1.695 6.28A1 1 0 00.28 7.695l3 3a1 1 0 001.414 0l7-7A1 1 0 0010.28 2.28z" />
                       </svg>
-                      <span>Duis aute irure dolor in reprehenderit</span>
+                      <span>Sewa gedung mulai dari 1 juta per hari</span>
                     </li>
                     <li className="mb-2 flex items-center">
                       <svg
@@ -204,7 +198,7 @@ export default function Zigzag() {
                       >
                         <path d="M10.28 2.28L3.989 8.575 1.695 6.28A1 1 0 00.28 7.695l3 3a1 1 0 001.414 0l7-7A1 1 0 0010.28 2.28z" />
                       </svg>
-                      <span>Excepteur sint occaecat</span>
+                      <span>Ballroom yang luas</span>
                     </li>
                     <li className="flex items-center">
                       <svg
@@ -214,7 +208,7 @@ export default function Zigzag() {
                       >
                         <path d="M10.28 2.28L3.989 8.575 1.695 6.28A1 1 0 00.28 7.695l3 3a1 1 0 001.414 0l7-7A1 1 0 0010.28 2.28z" />
                       </svg>
-                      <span>Amet consectetur adipiscing elit</span>
+                      <span>Beberapa kolam renang pribadi</span>
                     </li>
                   </ul>
                 </div>
