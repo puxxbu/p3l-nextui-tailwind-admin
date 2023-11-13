@@ -41,7 +41,11 @@ const TopNavBar = () => {
           className="sm:hidden"
         />
         <NavbarBrand>
-          <p className="font-bold text-inherit">Grand Atma Hotel</p>
+          <img
+            src="https://cdn.discordapp.com/attachments/170900821200994304/1173526610239029279/3_2--removebg-preview.png?ex=656446d2&is=6551d1d2&hm=d0bb91fb104875c9f3e2eba1e80d298d243759f869acb3c1d3e710f78b950f06&"
+            alt="Logo Hotel"
+            className="h-auto w-32"
+          />
         </NavbarBrand>
       </NavbarContent>
 

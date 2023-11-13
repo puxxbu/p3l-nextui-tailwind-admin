@@ -1,4 +1,19 @@
+import { Button } from '@nextui-org/react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 export default function Zigzag() {
+  const navigate = useNavigate();
+  const [bookingDate, setBookingDate] = useState('');
+
+  const handleInputChange = (event: any) => {
+    setBookingDate(event.target.value);
+  };
+
+  const handleNavigate = () => {
+    navigate(`/browse-kamar`);
+  };
+
   return (
     <section>
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
@@ -13,6 +28,26 @@ export default function Zigzag() {
               Banyak sekali fasilitas di Grand Atma Hotel yang sangat menarik
               bagi para tamu yang menginap di hotel kami
             </p>
+          </div>
+
+          <div className="max-w mx-auto max-w-3xl pb-12 text-center md:pb-16">
+            <div className="flex items-center justify-between rounded-lg bg-slate-800 p-8">
+              <div>
+                <h1 className="mb-4 text-2xl font-bold">Ingin Menginap?</h1>
+                <p className="mb-6 text-lg text-gray-400">
+                  Silahkan masukkan tanggal booking di bawah ini:
+                </p>
+              </div>
+              <div>
+                <Button
+                  className="max-w ml-4 mt-4"
+                  size="lg"
+                  onClick={handleNavigate}
+                >
+                  Pesan Sekarang
+                </Button>
+              </div>
+            </div>
           </div>
 
           {/* Items */}
@@ -177,7 +212,7 @@ export default function Zigzag() {
                     Beberapa fasilitas hotel yang dapat disewa
                   </h3>
                   <p className="mb-4 text-xl text-gray-400">
-                   Kami memberikan beberapa persewaan gedung untuk pertemuan
+                    Kami memberikan beberapa persewaan gedung untuk pertemuan
                   </p>
                   <ul className="-mb-2 text-lg text-gray-400">
                     <li className="mb-2 flex items-center">

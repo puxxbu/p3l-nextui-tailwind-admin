@@ -38,6 +38,8 @@ import HistoryBooking from './pages/Data/HistoryBooking';
 import DetailRiwayat from './pages/Form/Detail/DetailRiwayat';
 import HistoryBookingUser from './pages/Data/HistoryBookingUser';
 import DetailRiwayatUser from './pages/Form/Detail/DetailRiwayatUser';
+import BrowseKamar from './pages/BrowseKamar/BrowseKamar';
+import DetailKamarAvail from './pages/BrowseKamar/DetailKamarAvail';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -61,6 +63,8 @@ function App() {
     <>
       <Routes>
         <Route path="/" element={<LandingPage />} />
+        <Route path="/browse-kamar" element={<BrowseKamar />} />
+        <Route path="/browse-kamar/:id" element={<DetailKamarAvail />} />
         <Route element={<RequireAuth allowedRoles={[2001]} />}>
           <Route path="/user/profile" element={<UserProfile />} />
           <Route
