@@ -6,6 +6,8 @@ import AuthContext from 'src/contexts/AuthProvider';
 import { useQuery } from '@tanstack/react-query';
 import { getCurrentCustomer } from 'src/hooks/customer/customerController';
 import useAuth from 'src/hooks/useAuth';
+import Icon from '@mdi/react';
+import { mdiCalendar } from '@mdi/js';
 
 const DropdownCustomer = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -145,6 +147,15 @@ const DropdownCustomer = () => {
                 />
               </svg>
               History
+            </Link>
+          </li>
+          <li>
+            <Link
+              to={`/booking`}
+              className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
+            >
+              <Icon path={mdiCalendar} size={1} />
+              Booking
             </Link>
           </li>
         </ul>

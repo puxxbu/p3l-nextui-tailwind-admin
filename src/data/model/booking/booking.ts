@@ -66,3 +66,36 @@ interface Booking {
 interface BookingApiResponse {
   data: Booking;
 }
+
+interface BookingData {
+  booking: Booking;
+  detail_booking: DetailBooking[];
+  fasilitas: DetailFasilitas[];
+}
+
+interface Booking {
+  id_customer: number;
+  tanggal_booking: string;
+  tanggal_check_in: string;
+  tanggal_check_out: string;
+  tamu_dewasa: number;
+  tamu_anak: number;
+  tanggal_pembayaran: string;
+  jenis_booking: string;
+  status_booking: string;
+  id_pegawai_fo: number;
+  no_rekening: string;
+}
+
+interface DetailBooking {
+  id_jenis_kamar: number;
+  jumlah: number;
+  sub_total: number;
+}
+
+interface DetailFasilitas {
+  id_fasilitas: number;
+  nama_fasilitas: string;
+  jumlah: number;
+  sub_total: number;
+}

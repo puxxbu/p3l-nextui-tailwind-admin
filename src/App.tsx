@@ -40,6 +40,7 @@ import HistoryBookingUser from './pages/Data/HistoryBookingUser';
 import DetailRiwayatUser from './pages/Form/Detail/DetailRiwayatUser';
 import BrowseKamar from './pages/BrowseKamar/BrowseKamar';
 import DetailKamarAvail from './pages/BrowseKamar/DetailKamarAvail';
+import BookingUser from './pages/Booking/BookingUser';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -75,6 +76,7 @@ function App() {
             path="/user/detail-history/:id"
             element={<DetailRiwayatUser />}
           />
+          <Route path="/booking" element={<BookingUser />} />
         </Route>
         //public routes //TODO add RequireAuth if user alr logged in
         <Route path="/auth/signin" element={<SignIn />} />

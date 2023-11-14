@@ -52,6 +52,77 @@ export async function getKamarStatus(
   }
 }
 
+export function createBooking(
+  dataBooking: BookingData,
+  token: string,
+  callback: (data?: BookingResponse, error?: string) => void
+): void {
+  const detailBookingLayanan = dataBooking.fasilitas.map((detailFasilitas) => ({
+    id_fasilitas: detailFasilitas.id_fasilitas,
+    jumlah: detailFasilitas.jumlah,
+    sub_total: detailFasilitas.sub_total,
+  }));
+
+  axios
+    .post<BookingResponse>(
+      `${baseURL}/api/booking`,
+      {
+        booking: dataBooking.booking,
+        detail_booking: dataBooking.detail_booking,
+        fasilitas: detailBookingLayanan,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
+    .then((response) => {
+      const data = response.data;
+      callback(data);
+    })
+    .catch((error) => {
+      const errorResponse = error.response.data as ErrorResponse;
+      const errorMessage = errorResponse.errors;
+      console.error('Error logging in:', errorMessage);
+      callback(undefined, errorMessage);
+    });
+}
+
+export function changeStatusBooking(
+  status_booking: string,
+  id_booking: string,
+  token: string,
+  callback: (data?: BookingApiResponse, error?: string) => void
+): void {
+  axios
+    .put<BookingApiResponse>(
+      `${baseURL}/api/booking/change-status/${id_booking}`,
+      {
+        status_booking: status_booking,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
+    .then((response) => {
+      const data = response.data;
+      callback(data);
+    })
+    .catch((error) => {
+      const errorResponse = error.response.data as ErrorResponse;
+      const errorMessage = errorResponse.errors;
+      console.error('Error logging in:', errorMessage);
+      callback(undefined, errorMessage);
+    });
+}
+
 function formatISOToCustomDateTime(isoDate: string): string {
   const date = new Date(isoDate);
   const year = date.getFullYear();
@@ -62,4 +133,115 @@ function formatISOToCustomDateTime(isoDate: string): string {
   const seconds = String(date.getSeconds()).padStart(2, '0');
 
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+}
+
+interface BookingData {
+  booking: Booking;
+  detail_booking: DetailBookingKamar[];
+  fasilitas: DetailFasilitas[];
+}
+
+interface Booking {
+  id_customer: number;
+  tanggal_booking: string;
+  tanggal_check_in: string;
+  tanggal_check_out: string;
+  tamu_dewasa: number;
+  tamu_anak: number;
+  tanggal_pembayaran?: string | null; // Tanggal pembayaran dapat kosong
+  jenis_booking: string;
+  status_booking: string;
+  id_pegawai_fo?: number | null; // Id pegawai FO dapat kosong
+  no_rekening: string;
+}
+
+interface DetailBookingKamar {
+  id_jenis_kamar: number;
+  jumlah: number;
+  sub_total: number;
+}
+
+interface DetailFasilitas {
+  id_fasilitas: number;
+  nama_fasilitas: string;
+  jumlah: number;
+  sub_total: number;
+}
+
+interface ICustomer {
+  id_customer: number;
+  id_akun: number;
+  jenis_customer: string;
+  nama: string;
+  nomor_identitas: string;
+  nomor_telepon: string;
+  email: string;
+  alamat: string;
+  tanggal_dibuat: string;
+  nama_institusi: string | null;
+}
+
+interface IJenisKamar {
+  id_jenis_kamar: number;
+  jenis_kamar: string;
+  jenis_bed: string;
+  kapasitas: number;
+  jumlah_kasur: number;
+  base_harga: number;
+}
+
+interface IKamar {
+  jenis_kamar: IJenisKamar;
+  nomor_kamar: string;
+}
+
+interface IDetailKetersediaanKamar {
+  kamar: IKamar;
+}
+
+interface IDetailBookingKamar {
+  id_detail_booking_kamar: number;
+  id_booking: string;
+  id_jenis_kamar: number;
+  jumlah: number;
+  sub_total: number;
+  detail_ketersediaan_kamar: IDetailKetersediaanKamar[];
+}
+
+interface IPegawai {
+  id_pegawai: number;
+  id_akun: number;
+  nama_pegawai: string;
+}
+
+interface IDetailBookingLayanan {
+  id_detail_booking_layanan: number;
+  id_fasilitas: number;
+  id_booking: string;
+  jumlah: number;
+  sub_total: number;
+  tanggal: string;
+}
+
+interface IBooking {
+  id_booking: string;
+  customer: ICustomer;
+  tanggal_booking: string;
+  tanggal_check_in: string;
+  tanggal_check_out: string;
+  tamu_dewasa: number;
+  tamu_anak: number;
+  tanggal_pembayaran: string;
+  jenis_booking: string;
+  status_booking: string;
+  no_rekening: string;
+  pegawai_1: IPegawai | null;
+  pegawai_2: IPegawai | null;
+  catatan_tambahan: string | null;
+  detail_booking_kamar: IDetailBookingKamar[];
+  detail_booking_layanan: IDetailBookingLayanan[]; // Tipe belum diketahui, Anda dapat menggantinya sesuai dengan struktur detail_booking_layanan
+}
+
+interface BookingResponse {
+  data: IBooking;
 }

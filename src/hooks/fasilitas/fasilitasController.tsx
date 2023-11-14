@@ -26,6 +26,30 @@ export async function fetchFasilitas(
   }
 }
 
+export async function fetchFasilitasSize(
+  size = 100,
+  nama_layanan = '',
+  token: string
+): Promise<FasilitasResponse> {
+  try {
+    let url = `http://localhost:3000/api/fasilitas?size=${size}`;
+    if (nama_layanan !== '') {
+      url += `&nama_layanan=${nama_layanan}`;
+    }
+
+    const response = await axios.get(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.data as FasilitasResponse;
+  } catch (error) {
+    console.error('Error fetching contacts:', error);
+    throw error;
+  }
+}
+
 export function createFasilitas(
   nama_layanan: string,
   harga: string,

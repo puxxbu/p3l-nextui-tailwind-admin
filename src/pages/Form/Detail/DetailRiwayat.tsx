@@ -35,31 +35,7 @@ interface dataBooking {
 
 const DetailRiwayat = () => {
   const { auth } = useAuth();
-  const [data, setData] = useState<Booking>({
-    id_booking: '',
-    pegawai_1: { id_pegawai: 0, id_akun: 0, nama_pegawai: '' },
-    pegawai_2: { id_pegawai: 0, id_akun: 0, nama_pegawai: '' },
-    customer: {
-      id_customer: 0,
-      id_akun: 0,
-      jenis_customer: '',
-      nama: '',
-      nomor_identitas: '',
-      nomor_telepon: '',
-      email: '',
-      alamat: '',
-      tanggal_dibuat: '',
-      nama_institusi: null,
-    },
-    tanggal_check_in: '',
-    tanggal_check_out: '',
-    tamu_dewasa: 0,
-    tamu_anak: 0,
-    tanggal_pembayaran: '',
-    detail_booking_kamar: [],
-    detail_booking_layanan: [],
-    invoice: [],
-  });
+
   const { id } = useParams<{ id: string }>();
 
   const [value, setValue] = useState<Selection>(new Set([]));
@@ -78,7 +54,7 @@ const DetailRiwayat = () => {
 
   useEffect(() => {
     if (statusBooking === 'success' && dataBooking) {
-      setData(dataBooking.data);
+      // setData(dataBooking.data);
     }
 
     if (statusBooking === 'error') {
@@ -116,7 +92,7 @@ const DetailRiwayat = () => {
               Date: {formatDate(dataBooking?.data.tanggal_pembayaran || '')}
             </div>
             <div className="text-sm">
-              Front Office: {dataBooking?.data.pegawai_2.nama_pegawai}
+              Front Office: {dataBooking?.data.pegawai_2.nama_pegawai || ''}
             </div>
           </div>
         </div>

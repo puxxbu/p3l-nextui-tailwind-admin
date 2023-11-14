@@ -8,6 +8,10 @@ export function formatDate(date: string) {
   return moment(date).locale('id').format('D MMMM YYYY');
 }
 
+export function formatDateWithTime(date: string) {
+  return moment(date).locale('id').format('YYYY-MM-DD HH:mm:ss');
+}
+
 export function rangeDate(start: string, end: string) {
   return `( ${formatDate(start)} - ${formatDate(end)} )`;
 }
