@@ -49,11 +49,8 @@ const DetailRiwayatUser = () => {
   const navigate = useNavigate();
 
   const { status: statusBooking, data: dataBooking } = useQuery(
-    ['detailBooking'],
-    () => fetchDetailBooking(id || '0', auth.token),
-    {
-      keepPreviousData: true,
-    }
+    ['detailBookingUser'],
+    () => fetchDetailBooking(id || '0', auth.token)
   );
 
   useEffect(() => {

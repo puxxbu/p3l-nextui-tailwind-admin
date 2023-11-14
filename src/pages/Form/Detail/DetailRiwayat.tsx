@@ -7,6 +7,7 @@ import {
   SelectItem,
   useDisclosure,
   Selection,
+  Button,
 } from '@nextui-org/react';
 import { useEffect, useMemo, useState } from 'react';
 import useAuth from 'src/hooks/useAuth';
@@ -22,6 +23,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import { fetchDetailBooking } from 'src/hooks/sampleData';
 import { formatDate } from 'src/utils';
+import { changeStatusBooking } from 'src/hooks/booking/bookingController';
 
 interface dataBooking {
   nama: string;
@@ -42,19 +44,48 @@ const DetailRiwayat = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [error, setError] = useState('');
   const [modalTitle, setModalTitle] = useState('');
+  const [dataKamar, setDataKamar] = useState<any[]>([]);
   const navigate = useNavigate();
 
   const { status: statusBooking, data: dataBooking } = useQuery(
     ['detailBooking'],
-    () => fetchDetailBooking(id || '0', auth.token),
-    {
-      keepPreviousData: true,
-    }
+    () => fetchDetailBooking(id || '0', auth.token)
   );
+
+  let isRefundable = false;
+  const tanggalCheckIn = dataBooking?.data.tanggal_check_in;
+
+  if (tanggalCheckIn) {
+    const checkInDate = new Date(tanggalCheckIn);
+
+    // Mendapatkan tanggal hari ini
+    const hariIni = new Date();
+
+    // Menghitung selisih antara tanggal check-in dan hari ini dalam milisekon
+    const selisihWaktu = checkInDate.getTime() - hariIni.getTime();
+
+    // Mengubah selisih waktu menjadi jumlah hari
+    const selisihHari = selisihWaktu / (1000 * 3600 * 24);
+
+    // Jika selisih hari kurang dari 7 (seminggu), maka tidak refundable
+    if (selisihHari < 7) {
+      isRefundable = false;
+    } else {
+      isRefundable = true;
+    }
+  }
 
   useEffect(() => {
     if (statusBooking === 'success' && dataBooking) {
       // setData(dataBooking.data);
+      setDataKamar([]);
+      dataBooking.data.detail_booking_kamar.map((item: any) => {
+        item.detail_ketersediaan_kamar.map((item2: any) => {
+          console.log(item2);
+          setDataKamar((prevDataKamar) => [...prevDataKamar, item2]);
+        });
+      });
+      console.log(dataKamar);
     }
 
     if (statusBooking === 'error') {
@@ -86,15 +117,37 @@ const DetailRiwayat = () => {
               Grand Atma Hotel
             </div>
           </div>
-          <div className="text-gray-700 dark:text-white">
-            <div className="mb-2 text-xl font-bold">Detail Booking</div>
-            <div className="text-sm">
-              Date: {formatDate(dataBooking?.data.tanggal_pembayaran || '')}
+          <Button
+            className="mt-4"
+            color="danger"
+            // onClick={() =>
+            //   changeStatusBooking(
+            //     'Jaminan Sudah Dibayar',
+            //     dataBooking?.data.id_booking || '0',
+            //     auth.token,
+            //     (data, error) => {
+            //       if (error) {
+            //         toast.error(error || 'Terjadi kesalahan');
+            //       } else {
+            //         toast.success('Berhasil mengubah status booking');
+            //       }
+            //     }
+            //   )
+            // }
+          >
+            Cancel Booking
+          </Button>
+          {dataBooking?.data.pegawai_2 !== null && (
+            <div className="text-gray-700 dark:text-white">
+              <div className="mb-2 text-xl font-bold">Detail Booking</div>
+              <div className="text-sm">
+                Date: {formatDate(dataBooking?.data.tanggal_pembayaran || '')}
+              </div>
+              <div className="text-sm">
+                Front Office: {dataBooking?.data.pegawai_2?.nama_pegawai || ''}
+              </div>
             </div>
-            <div className="text-sm">
-              Front Office: {dataBooking?.data.pegawai_2.nama_pegawai || ''}
-            </div>
-          </div>
+          )}
         </div>
         <div className="mb-8 border-b-2 border-gray-300 pb-8 text-gray-700 dark:text-white">
           <h2 className="mb-4 text-2xl font-bold">
@@ -105,6 +158,12 @@ const DetailRiwayat = () => {
             Alamat : {dataBooking?.data.customer.alamat}
           </div>
           <div className="mb-2 ">
+            Mendapat Refund? : {isRefundable ? 'Ya' : 'Tidak'}
+          </div>
+          <div className="mb-2 ">
+            Nomor Rekening : {dataBooking?.data.no_rekening}
+          </div>
+          <div className="mb-2 ">
             Check-in : {formatDate(dataBooking?.data.tanggal_check_in || '')} -
             Check-out : {formatDate(dataBooking?.data.tanggal_check_out || '')}
           </div>
@@ -112,7 +171,58 @@ const DetailRiwayat = () => {
           <div className="mb-2 ">
             Tamu dewasa : {dataBooking?.data.tamu_dewasa}
           </div>
+          <div className="mb-2 ">
+            Status Booking : {dataBooking?.data.status_booking}
+          </div>
+
+          {dataBooking?.data.status_booking !== 'Jaminan Sudah Dibayar' && (
+            <Button
+              className="mt-4"
+              color="primary"
+              onClick={() =>
+                changeStatusBooking(
+                  'Jaminan Sudah Dibayar',
+                  dataBooking?.data.id_booking || '0',
+                  auth.token,
+                  (data, error) => {
+                    if (error) {
+                      toast.error(error || 'Terjadi kesalahan');
+                    } else {
+                      toast.success('Berhasil mengubah status booking');
+                    }
+                  }
+                )
+              }
+            >
+              Lunasi Booking
+            </Button>
+          )}
+          {dataBooking?.data.status_booking !== 'Jaminan Sudah Dibayar' && (
+            <Button
+              className="mt-4"
+              color="primary"
+              onClick={() =>
+                changeStatusBooking(
+                  'Sudah 50% Dibayar',
+                  dataBooking?.data.id_booking || '0',
+                  auth.token,
+                  (data, error) => {
+                    if (error) {
+                      toast.error(error || 'Terjadi kesalahan');
+                    } else {
+                      toast.success('Berhasil mengubah status booking');
+                    }
+                  }
+                )
+              }
+            >
+              {dataBooking?.data.customer.jenis_customer === 'Group'
+                ? 'Bayar DP'
+                : 'Lunasi Booking'}
+            </Button>
+          )}
         </div>
+
         <h3 className="py-2 text-center text-xl font-bold uppercase text-gray-700 dark:text-white ">
           Kamar
         </h3>
@@ -127,13 +237,41 @@ const DetailRiwayat = () => {
             </tr>
           </thead>
           <tbody>
-            {dataBooking?.data.detail_booking_kamar.map((item, index) => (
+            {dataBooking?.data.detail_booking_kamar.map((item: any, index) => (
               <tr key={index}>
                 <td className="py-4">{item.jenis_kamar.jenis_kamar}</td>
                 <td className="py-4">{item.jenis_kamar.jenis_bed}</td>
                 <td className="py-4">{item.jumlah}</td>
                 <td className="py-4">Rp{item.sub_total / item.jumlah}</td>
                 <td className="py-4">Rp{item.sub_total}</td>
+                {/* {item.jenis_kamar.fasilitas.map((jenisKamar, jenisKamarIndex) => (
+                  <td className="py-4">{item.jenis_kamar.jenis_kamar}</td>
+                  <td className="py-4">{item.jenis_kamar.jenis_bed}</td>
+                  <td className="py-4">{item.jumlah}</td>
+                  <td className="py-4">Rp{item.sub_total / item.jumlah}</td>
+                  <td className="py-4">Rp{item.sub_total}</td>
+                ))} */}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <h3 className="py-2 text-center text-xl font-bold uppercase text-gray-700 dark:text-white ">
+          Nomor Kamar
+        </h3>
+        <table className="mb-8 w-full text-left text-gray-700 dark:text-white">
+          <thead>
+            <tr>
+              <th className="py-2 font-bold uppercase ">Jenis Kamar</th>
+              <th className="py-2 font-bold uppercase ">Bed</th>
+              <th className="py-2 font-bold uppercase ">Nomor Kamar</th>
+            </tr>
+          </thead>
+          <tbody>
+            {dataKamar?.map((item: any, index: any) => (
+              <tr key={index}>
+                <td className="py-4">{item.kamar.jenis_kamar.jenis_kamar}</td>
+                <td className="py-4">{item.kamar.jenis_kamar.jenis_bed}</td>
+                <td className="py-4">{item.kamar.nomor_kamar}</td>
               </tr>
             ))}
           </tbody>

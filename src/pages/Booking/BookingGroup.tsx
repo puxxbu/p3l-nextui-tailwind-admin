@@ -1,4 +1,12 @@
-import { useDisclosure, Selection, Input, Button } from '@nextui-org/react';
+import {
+  useDisclosure,
+  Selection,
+  Input,
+  Button,
+  Select,
+  SelectItem,
+  SelectedItems,
+} from '@nextui-org/react';
 import { useEffect, useState } from 'react';
 import useAuth from 'src/hooks/useAuth';
 import toast, { Toaster } from 'react-hot-toast';
@@ -11,7 +19,10 @@ import {
   formatDateWithTime,
 } from 'src/utils';
 import { useQuery } from '@tanstack/react-query';
-import { getCurrentCustomer } from 'src/hooks/customer/customerController';
+import {
+  fetchCustomerGroup,
+  getCurrentCustomer,
+} from 'src/hooks/customer/customerController';
 import Icon from '@mdi/react';
 import { mdiMinusCircle, mdiPlusCircle, mdiTrashCan } from '@mdi/js';
 import {
@@ -19,6 +30,7 @@ import {
   fetchFasilitasSize,
 } from 'src/hooks/fasilitas/fasilitasController';
 import { createBooking } from 'src/hooks/booking/bookingController';
+import DefaultLayout from 'src/layout/DefaultLayout';
 
 interface KeyValues {
   [key: number]: number;
@@ -57,7 +69,7 @@ interface DetailFasilitas {
   sub_total: number;
 }
 
-const BookingUser = () => {
+const BookingGroup = () => {
   const { auth } = useAuth();
 
   const [value, setValue] = useState<Selection>(new Set([]));
@@ -65,6 +77,12 @@ const BookingUser = () => {
   const [error, setError] = useState('');
   const [modalTitle, setModalTitle] = useState('');
   const navigate = useNavigate();
+
+  const [customerGroup, setCustomerGroup] = useState<Customer[]>([]);
+  const [selectJK, setSelectJK] = useState<Selection>(new Set([]));
+  const [idCustomer, setidCustomer] = useState(0);
+  const [nama, setNama] = useState('');
+  const [alamat, setAlamat] = useState('');
 
   const [listKamar, setListKamar] = useState([]);
   const [startDate, setStartDate] = useState('');
@@ -159,13 +177,13 @@ const BookingUser = () => {
     }
   };
 
-  const { status: statusCustomer, data: dataCustomer } = useQuery(
-    ['detailCustomer'],
-    () => getCurrentCustomer(auth.token),
-    {
-      keepPreviousData: true,
-    }
-  );
+  //   const { status: statusCustomer, data: dataCustomer } = useQuery(
+  //     ['detailCustomer'],
+  //     () => getCurrentCustomer(auth.token),
+  //     {
+  //       keepPreviousData: true,
+  //     }
+  //   );
 
   useEffect(() => {
     const dataKamar = localStorage.getItem('listKamar');
@@ -202,6 +220,21 @@ const BookingUser = () => {
     }
   }, [data]);
 
+  const handleJenisKamar = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectJK(new Set([e.target.value]));
+    // handleChangeData('id_jenis_kamar', e.target.value);
+    setidCustomer(parseInt(e.target.value));
+
+    dataCustomer?.data.map((item: Customer) => {
+      if (item.id_customer === parseInt(e.target.value)) {
+        setNama(item.nama);
+        setAlamat(item.alamat);
+      }
+    });
+
+    console.log(e.target.value);
+  };
+
   useEffect(() => {
     let total = 0;
 
@@ -229,6 +262,7 @@ const BookingUser = () => {
     const isValueZero = Object.values(keyValueList).some(
       (value) => value === 0
     );
+
     if (Object.keys(keyValueList).length === 0) {
       toast.error('Kamar harus diisi');
       return;
@@ -245,13 +279,13 @@ const BookingUser = () => {
     }
 
     const dataBooking: Booking = {
-      id_customer: dataCustomer?.data.id_customer || 0,
+      id_customer: idCustomer,
       tanggal_booking: formatDate(new Date().toString()),
       tanggal_check_in: formatDateWithTime(startDate),
       tanggal_check_out: formatDateWithTime(endDate),
       tamu_dewasa: tamuDewasa,
       tamu_anak: tamuAnak,
-      jenis_booking: 'Personal',
+      jenis_booking: 'Group',
       status_booking: 'Belum Dibayar',
       no_rekening: nomorRekening,
     };
@@ -313,27 +347,22 @@ const BookingUser = () => {
     setNomorRekening('');
   };
 
-  // const { status: statusBooking, data: dataBooking } = useQuery(
-  //   ['detailBooking'],
-  //   () => fetchDetailBooking(id || '0', auth.token),
-  //   {
-  //     keepPreviousData: true,
-  //   }
-  // );
+  const { status: statusCustomer, data: dataCustomer } = useQuery(
+    ['dataCustomer'],
+    () => fetchCustomerGroup(100, auth.token),
+    {
+      keepPreviousData: true,
+    }
+  );
 
-  // useEffect(() => {
-  //   if (statusBooking === 'success' && dataBooking) {
-  //     setData(dataBooking.data);
-  //   }
-
-  //   if (statusBooking === 'error') {
-  //     toast.error('Data Booking tidak ditemukan');
-  //     navigate('/admin');
-  //   }
-  // }, [statusBooking, dataBooking]);
+  useEffect(() => {
+    if (statusCustomer === 'success' && dataCustomer) {
+      setCustomerGroup(dataCustomer.data);
+    }
+  }, []);
 
   return (
-    <MainLayout>
+    <DefaultLayout>
       <Toaster />
       <MyModal
         isOpen={isOpen}
@@ -359,8 +388,44 @@ const BookingUser = () => {
         </div>
         <div className="mb-8 border-b-2 border-gray-300 pb-8 text-gray-700 dark:text-white">
           <h2 className="mb-4 text-2xl font-bold">Pemesanan Kamar</h2>
-          <div className="mb-2 ">Nama : {dataCustomer?.data.nama} </div>
-          <div className="mb-2 ">Alamat : {dataCustomer?.data.alamat}</div>
+          <Select
+            isRequired
+            label="Customer Group"
+            items={customerGroup}
+            placeholder="Pilih Jenis Kamar"
+            selectedKeys={selectJK}
+            classNames={{
+              trigger: 'h-14',
+            }}
+            onChange={handleJenisKamar}
+            renderValue={(items: SelectedItems<Customer>) => {
+              return items.map((item) => (
+                <div key={item.key} className="flex items-center gap-2">
+                  <div className="flex flex-col">
+                    <span>{item.data?.nama}</span>
+                  </div>
+                </div>
+              ));
+            }}
+          >
+            {(customerGroup) => (
+              <SelectItem
+                key={customerGroup.id_customer}
+                textValue={customerGroup.nama}
+              >
+                <div className="flex items-center gap-2">
+                  <div className="flex  flex-col dark:text-white">
+                    <span className="text-small">
+                      {`${customerGroup.nama} 
+                      `}
+                    </span>
+                  </div>
+                </div>
+              </SelectItem>
+            )}
+          </Select>
+          <div className="mb-2 ">Nama : {nama} </div>
+          <div className="mb-2 ">Alamat : {alamat} </div>
           <div className="mb-2 ">
             Check-in :{formatDate(startDate)} - Check-out :{' '}
             {formatDate(endDate)}
@@ -544,8 +609,8 @@ const BookingUser = () => {
           </div>
         </div> */}
       </div>
-    </MainLayout>
+    </DefaultLayout>
   );
 };
 
-export default BookingUser;
+export default BookingGroup;

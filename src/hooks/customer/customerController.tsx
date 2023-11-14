@@ -26,6 +26,27 @@ export async function fetchCustomer(
   }
 }
 
+export async function fetchCustomerGroup(
+  size = 1,
+
+  token: string
+): Promise<CustomerResponseGroup> {
+  try {
+    let url = `http://localhost:3000/api/customer/group?size=${size}`;
+
+    const response = await axios.get(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.data as CustomerResponseGroup;
+  } catch (error) {
+    console.error('Error fetching contacts:', error);
+    throw error;
+  }
+}
+
 export function createCustomer(
   nama: string,
   nomor_identitas: string,

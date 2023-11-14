@@ -41,6 +41,9 @@ import DetailRiwayatUser from './pages/Form/Detail/DetailRiwayatUser';
 import BrowseKamar from './pages/BrowseKamar/BrowseKamar';
 import DetailKamarAvail from './pages/BrowseKamar/DetailKamarAvail';
 import BookingUser from './pages/Booking/BookingUser';
+import BrowseKamarGroup from './pages/BrowseKamar/BrowseKamarGroup';
+import DetailKamarAvailGroup from './pages/BrowseKamar/DetailKamarAvailGroup';
+import BookingGroup from './pages/Booking/BookingGroup';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -124,6 +127,15 @@ function App() {
               path="/data/user/detail-history/:id"
               element={<DetailRiwayat />}
             />
+            <Route
+              path="/booking/group/browse"
+              element={<BrowseKamarGroup />}
+            />
+            <Route
+              path="/booking/group/detail/:id"
+              element={<DetailKamarAvailGroup />}
+            />
+            <Route path="/booking/group" element={<BookingGroup />} />
           </Route>
 
           <Route path="/settings" element={<Settings />} />

@@ -33,6 +33,8 @@ import FilterBar from 'src/components/FilterBar';
 import Datepicker from 'react-tailwindcss-datepicker';
 import CardKamar from 'src/components/Card/CardKamar';
 import { fetchKamarTersedia } from 'src/hooks/booking/bookingController';
+import DefaultLayout from 'src/layout/DefaultLayout';
+import CardKamarGroup from 'src/components/Card/CardKamar';
 
 interface DatepickerProps {
   startDate: any;
@@ -45,8 +47,7 @@ interface DataSeason {
   tanggal_selesai: string;
 }
 
-const BrowseKamar = () => {
-  const [users, setUsers] = useState();
+const BrowseKamarGroup = () => {
   const navigate = useNavigate();
   const { auth } = useAuth();
 
@@ -119,26 +120,26 @@ const BrowseKamar = () => {
     }));
   };
 
-  const { status: statusCustomer, data: dataCustomer } = useQuery(
-    ['detailCustomer'],
-    () => getCurrentCustomer(auth.token),
-    {
-      keepPreviousData: true,
-    }
-  );
+  // const { status: statusCustomer, data: dataCustomer } = useQuery(
+  //   ['detailCustomer'],
+  //   () => getCurrentCustomer(auth.token),
+  //   {
+  //     keepPreviousData: true,
+  //   }
+  // );
 
-  useEffect(() => {
-    if (statusCustomer === 'success' && dataCustomer) {
-    }
+  // useEffect(() => {
+  //   if (statusCustomer === 'success' && dataCustomer) {
+  //   }
 
-    if (statusCustomer === 'error') {
-      toast.error('Data Customer tidak ditemukan');
-      navigate('/auth/signin');
-    }
-  }, [statusCustomer, dataCustomer]);
+  //   if (statusCustomer === 'error') {
+  //     toast.error('Data Customer tidak ditemukan');
+  //     navigate('/auth/signin');
+  //   }
+  // }, [statusCustomer, dataCustomer]);
 
   return (
-    <MainLayout>
+    <DefaultLayout>
       <section>
         <Toaster />
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
@@ -189,13 +190,13 @@ const BrowseKamar = () => {
                       Jenis Kamar yang Tersedia
                     </h3>
 
-                    <div className="mt-3 grid grid-cols-1 gap-4 md:grid-cols-3">
+                    <div className="mt-3 grid grid-cols-1 gap-4 md:grid-cols-2">
                       {isLoading ? (
                         <Spinner /> // Ganti dengan komponen spinner yang sesuai
                       ) : (
                         dataKamar?.data.map((item: Kamar) => (
                           <div key={item.id_jenis_kamar}>
-                            <CardKamar
+                            <CardKamarGroup
                               dataKamar={item}
                               tanggal_check_in={value.startDate}
                               tanggal_check_out={value.endDate}
@@ -217,8 +218,8 @@ const BrowseKamar = () => {
           </div>
         </div>
       </section>
-    </MainLayout>
+    </DefaultLayout>
   );
 };
 
-export default BrowseKamar;
+export default BrowseKamarGroup;
