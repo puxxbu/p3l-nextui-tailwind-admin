@@ -43,6 +43,7 @@
     "react-pdf": "^7.5.1",
     "react-router-dom": "^6.8.1",
     "react-tailwindcss-datepicker": "^1.6.6",
+    "react-to-print": "^2.14.15",
     "sort-by": "^0.0.2",
     "styled-components": "^6.1.0",
     "swr": "^2.2.2",

@@ -31,10 +31,10 @@ import { updatePassword } from 'src/hooks/auth/authController';
 import TopNavBar from 'src/components/TopNavBar';
 import FilterBar from 'src/components/FilterBar';
 import Datepicker from 'react-tailwindcss-datepicker';
-import CardKamar from 'src/components/Card/CardKamar';
+import CardKamar from 'src/components/Card/CardKamarGroup';
 import { fetchKamarTersedia } from 'src/hooks/booking/bookingController';
 import DefaultLayout from 'src/layout/DefaultLayout';
-import CardKamarGroup from 'src/components/Card/CardKamar';
+import CardKamarGroup from 'src/components/Card/CardKamarGroup';
 
 interface DatepickerProps {
   startDate: any;

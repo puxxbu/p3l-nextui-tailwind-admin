@@ -392,7 +392,7 @@ const BookingGroup = () => {
             isRequired
             label="Customer Group"
             items={customerGroup}
-            placeholder="Pilih Jenis Kamar"
+            placeholder="Pilih Nama Customer"
             selectedKeys={selectJK}
             classNames={{
               trigger: 'h-14',

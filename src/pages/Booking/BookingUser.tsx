@@ -89,6 +89,12 @@ const BookingUser = () => {
     setError('');
   };
 
+  const handleChangeCatatan = (event: any) => {
+    const inputValue = event.target.value;
+    setNomorRekening(inputValue);
+    setError('');
+  };
+
   const handleDeleteKamar = (index: any) => {
     const updatedList = [...listKamar];
     const kamarToRemove: Kamar = updatedList[index];
@@ -303,7 +309,7 @@ const BookingUser = () => {
         localStorage.removeItem('tanggal_check_in');
         localStorage.removeItem('tanggal_check_out');
 
-        navigate(`/user/detail-history/${data?.data.id_booking}}`);
+        navigate(`/user/detail-history/${data?.data.id_booking}`);
         // navigate('/booking/success');
       }
     });

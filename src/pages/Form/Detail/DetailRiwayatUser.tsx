@@ -1,6 +1,7 @@
 import Breadcrumb from '../../../components/Breadcrumb';
 import DefaultLayout from '../../../layout/DefaultLayout';
 
+import ReactToPrint from 'react-to-print';
 import {
   Input,
   Select,
@@ -9,7 +10,7 @@ import {
   Selection,
   Button,
 } from '@nextui-org/react';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import useAuth from 'src/hooks/useAuth';
 import { createKamar } from 'src/hooks/kamar/kamarController';
 import toast, { Toaster } from 'react-hot-toast';
@@ -26,6 +27,8 @@ import { formatDate } from 'src/utils';
 import MainLayout from 'src/layout/MainLayout';
 import { changeStatusBooking } from 'src/hooks/booking/bookingController';
 
+
+
 interface dataBooking {
   nama: string;
   nomor_identitas: string;
@@ -41,6 +44,7 @@ const DetailRiwayatUser = () => {
 
   const { id } = useParams<{ id: string }>();
 
+  const componentRef = useRef<HTMLDivElement>(null);
   const [value, setValue] = useState<Selection>(new Set([]));
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [error, setError] = useState('');
@@ -56,6 +60,7 @@ const DetailRiwayatUser = () => {
   useEffect(() => {
     if (statusBooking === 'success' && dataBooking) {
       // setData(dataBooking.data);
+      setDataKamar([]);
       dataBooking.data.detail_booking_kamar.map((item: any) => {
         item.detail_ketersediaan_kamar.map((item2: any) => {
           console.log(item2);
@@ -81,7 +86,7 @@ const DetailRiwayatUser = () => {
         title={modalTitle}
         content={error}
       />
-      <div className="mx-auto max-w-5xl rounded-lg bg-white px-8 py-10 shadow-lg dark:bg-boxdark">
+      <div ref={componentRef} className="mx-auto max-w-5xl rounded-lg bg-white px-8 py-10 shadow-lg dark:bg-boxdark">
         <div className="mb-8 flex items-center justify-between">
           <div className="flex items-center">
             <img
@@ -93,6 +98,15 @@ const DetailRiwayatUser = () => {
               Grand Atma Hotel
             </div>
           </div>
+
+          <ReactToPrint
+            trigger={() => <Button color="primary">
+            Cetak
+          
+          </Button>}
+            content={() => componentRef.current}
+          />
+          
           {dataBooking?.data.pegawai_2 !== null && (
             <div className="text-gray-700 dark:text-white">
               <div className="mb-2 text-xl font-bold">Detail Booking</div>
@@ -103,6 +117,7 @@ const DetailRiwayatUser = () => {
                 Front Office: {dataBooking?.data.pegawai_2?.nama_pegawai || ''}
               </div>
             </div>
+            
           )}
         </div>
         <div className="mb-8 border-b-2 border-gray-300 pb-8 text-gray-700 dark:text-white">
