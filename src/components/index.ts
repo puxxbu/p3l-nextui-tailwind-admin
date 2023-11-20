@@ -9,6 +9,7 @@ import FetchTarifTable from './Table/FetchTarifTable';
 import FetchCustomerTable from './Table/FetchCustomerTable';
 import FetchHistoryBooking from './Table/FetchHistoryBooking';
 import FetchHistoryBookingUser from './Table/FetchHistoryBookingUser';
+import FetchAllBooking from './Table/FetchAllBooking';
 
 export {
   DataTable,
@@ -21,4 +22,5 @@ export {
   FetchCustomerTable,
   FetchHistoryBooking,
   FetchHistoryBookingUser,
+  FetchAllBooking
 };

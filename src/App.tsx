@@ -44,6 +44,7 @@ import BookingUser from './pages/Booking/BookingUser';
 import BrowseKamarGroup from './pages/BrowseKamar/BrowseKamarGroup';
 import DetailKamarAvailGroup from './pages/BrowseKamar/DetailKamarAvailGroup';
 import BookingGroup from './pages/Booking/BookingGroup';
+import TabelBooking from './pages/Data/TabelBooking';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -118,6 +119,7 @@ function App() {
             <Route path="/data/season" element={<TabelSeason />} />
             <Route path="/data/fasilitas" element={<TabelFasilitas />} />
             <Route path="/data/customer" element={<TabelCustomer />} />
+            <Route path="/data/booking" element={<TabelBooking />} />
             <Route path="/data/tarif" element={<TabelTarif />} />
             <Route
               path="/data/user/:id/booking-history"

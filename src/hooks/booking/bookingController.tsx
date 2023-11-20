@@ -22,6 +22,31 @@ export async function fetchKamarTersedia(
   }
 }
 
+export async function fetchAllBooking(
+  page = 1,
+  search_params = '',
+  token: string
+): Promise<BookingHistoryResponse> {
+  try {
+    let url = `http://localhost:3000/api/booking/search?page=${page}}`;
+    if (search_params !== '') {
+      url += `&search_params=${search_params}`;
+    }
+
+
+    const response = await axios.get(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.data as BookingHistoryResponse;
+  } catch (error) {
+    console.error('Error fetching contacts:', error);
+    throw error;
+  }
+}
+
 export async function getKamarStatus(
   id_jenis_kamar = 0,
   tanggal_check_in = new Date(),

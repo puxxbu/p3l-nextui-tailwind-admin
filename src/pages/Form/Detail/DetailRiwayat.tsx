@@ -94,6 +94,9 @@ const DetailRiwayat = () => {
     }
   }, [statusBooking, dataBooking]);
 
+  const shouldHideButton = dataBooking?.data.status_booking === 'Dibatalkan' || dataBooking?.data.status_booking === 'Dibatalkan (Uang Kembali)';
+  const showDPButton = dataBooking?.data.status_booking === 'Booked' && dataBooking?.data.jenis_booking === 'Group';
+
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Data Customer" />
@@ -117,28 +120,17 @@ const DetailRiwayat = () => {
               Grand Atma Hotel
             </div>
           </div>
-          <Button
-            className="mt-4"
-            color="danger"
-            // onClick={() =>
-            //   changeStatusBooking(
-            //     'Jaminan Sudah Dibayar',
-            //     dataBooking?.data.id_booking || '0',
-            //     auth.token,
-            //     (data, error) => {
-            //       if (error) {
-            //         toast.error(error || 'Terjadi kesalahan');
-            //       } else {
-            //         toast.success('Berhasil mengubah status booking');
-            //       }
-            //     }
-            //   )
-            // }
-          >
-            Cancel Booking
-          </Button>
-          {dataBooking?.data.pegawai_2 !== null && (
-            <div className="text-gray-700 dark:text-white">
+          <>
+          {!shouldHideButton && (
+            <Button className="mt-4" color="danger" >
+              Cancel Booking
+            </Button>
+          )}
+          </>
+          
+        </div>
+        {dataBooking?.data.pegawai_2 !== null && (
+            <div className="text-gray-700 dark:text-white mb-4 border-b-2 pb-4 border-gray-300">
               <div className="mb-2 text-xl font-bold">Detail Booking</div>
               <div className="text-sm">
                 Date: {formatDate(dataBooking?.data.tanggal_pembayaran || '')}
@@ -148,7 +140,7 @@ const DetailRiwayat = () => {
               </div>
             </div>
           )}
-        </div>
+        
         <div className="mb-8 border-b-2 border-gray-300 pb-8 text-gray-700 dark:text-white">
           <h2 className="mb-4 text-2xl font-bold">
             ID Booking : {dataBooking?.data.id_booking}
@@ -175,7 +167,7 @@ const DetailRiwayat = () => {
             Status Booking : {dataBooking?.data.status_booking}
           </div>
 
-          {dataBooking?.data.status_booking !== 'Jaminan Sudah Dibayar' && (
+          {dataBooking?.data.status_booking === 'Booked' && (
             <Button
               className="mt-4"
               color="primary"
@@ -197,7 +189,7 @@ const DetailRiwayat = () => {
               Lunasi Booking
             </Button>
           )}
-          {dataBooking?.data.status_booking !== 'Jaminan Sudah Dibayar' && (
+          {showDPButton && (
             <Button
               className="mt-4"
               color="primary"
