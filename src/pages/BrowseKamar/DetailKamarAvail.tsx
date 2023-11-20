@@ -41,7 +41,7 @@ import { updatePassword } from 'src/hooks/auth/authController';
 import TopNavBar from 'src/components/TopNavBar';
 import FilterBar from 'src/components/FilterBar';
 import Datepicker from 'react-tailwindcss-datepicker';
-import CardKamar from 'src/components/Card/CardKamar';
+import CardKamar from 'src/components/Card/CardKamarGroup';
 import { formatJenisKamar } from 'src/utils';
 import { getKamarStatus } from 'src/hooks/booking/bookingController';
 

@@ -9,7 +9,7 @@ import {
   Selection,
   Button,
 } from '@nextui-org/react';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import useAuth from 'src/hooks/useAuth';
 import { createKamar } from 'src/hooks/kamar/kamarController';
 import toast, { Toaster } from 'react-hot-toast';
@@ -24,6 +24,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { fetchDetailBooking } from 'src/hooks/sampleData';
 import { formatDate } from 'src/utils';
 import { changeStatusBooking } from 'src/hooks/booking/bookingController';
+import ReactToPrint from 'react-to-print';
 
 interface dataBooking {
   nama: string;
@@ -46,6 +47,7 @@ const DetailRiwayat = () => {
   const [modalTitle, setModalTitle] = useState('');
   const [dataKamar, setDataKamar] = useState<any[]>([]);
   const navigate = useNavigate();
+  const componentRef = useRef<HTMLDivElement>(null);
 
   const { status: statusBooking, data: dataBooking } = useQuery(
     ['detailBooking'],
@@ -108,7 +110,7 @@ const DetailRiwayat = () => {
         title={modalTitle}
         content={error}
       />
-      <div className="mx-auto max-w-5xl rounded-lg bg-white px-8 py-10 shadow-lg dark:bg-boxdark">
+      <div ref={componentRef} className="mx-auto max-w-5xl rounded-lg bg-white px-8 py-10 shadow-lg dark:bg-boxdark">
         <div className="mb-8 flex items-center justify-between">
           <div className="flex items-center">
             <img
@@ -120,6 +122,36 @@ const DetailRiwayat = () => {
               Grand Atma Hotel
             </div>
           </div>
+
+          <ReactToPrint
+            trigger={() => <Button color="primary">
+            Cetak
+          
+          </Button>}
+            content={() => componentRef.current}
+          />
+          {/* <Button
+            className="mt-4"
+            color="danger"
+            // onClick={() =>
+            //   changeStatusBooking(
+            //     'Jaminan Sudah Dibayar',
+            //     dataBooking?.data.id_booking || '0',
+            //     auth.token,
+            //     (data, error) => {
+            //       if (error) {
+            //         toast.error(error || 'Terjadi kesalahan');
+            //       } else {
+            //         toast.success('Berhasil mengubah status booking');
+            //       }
+            //     }
+            //   )
+            // }
+          >
+            Cancel Booking
+          </Button> */}
+          {dataBooking?.data.pegawai_2 !== null && (
+            <div className="text-gray-700 dark:text-white">
           <>
           {!shouldHideButton && (
             <Button className="mt-4" color="danger" >

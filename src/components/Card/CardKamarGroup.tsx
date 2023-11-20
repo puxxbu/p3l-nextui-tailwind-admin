@@ -8,7 +8,7 @@ type CardKamarProps = {
   tanggal_check_out: string;
 };
 
-const CardKamar: React.FC<CardKamarProps> = ({
+const CardKamarGroup: React.FC<CardKamarProps> = ({
   dataKamar,
   tanggal_check_in,
   tanggal_check_out,
@@ -53,7 +53,7 @@ const CardKamar: React.FC<CardKamarProps> = ({
           radius="full"
           size="sm"
           onClick={() =>
-            navigate(`/browse-kamar/${dataKamar.id_jenis_kamar}`, {
+            navigate(`/booking/group/detail/${dataKamar.id_jenis_kamar}`, {
               state: { dataKamar, tanggal_check_in, tanggal_check_out },
             })
           }
@@ -65,4 +65,4 @@ const CardKamar: React.FC<CardKamarProps> = ({
   );
 };
 
-export default CardKamar;
+export default CardKamarGroup;
