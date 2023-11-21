@@ -28,12 +28,10 @@ export async function fetchAllBooking(
   token: string
 ): Promise<BookingHistoryResponse> {
   try {
-    let url = `http://localhost:3000/api/booking/search?page=${page}}`;
+    let url = `http://localhost:3000/api/booking/search?page=${page}`;
     if (search_params !== '') {
       url += `&search_params=${search_params}`;
     }
-
-
     const response = await axios.get(url, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -141,6 +139,74 @@ export function changeStatusBooking(
       callback(data);
     })
     .catch((error) => {
+     
+      const errorResponse = error.response.data as ErrorResponse;
+      const errorMessage = errorResponse.errors;
+      console.error('Error logging in:', errorMessage);
+      callback(undefined, errorMessage);
+    });
+}
+
+export function updateNoRekening(
+  status_booking: string,
+  id_booking: string,
+  no_rekening: string,
+  token: string,
+  callback: (data?: BookingApiResponse, error?: string) => void
+): void {
+  axios
+    .put<BookingApiResponse>(
+      `${baseURL}/api/booking/no-rekening/${id_booking}`,
+      {
+        status_booking: status_booking,
+        no_rekening : no_rekening
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
+    .then((response) => {
+      const data = response.data;
+      callback(data);
+    })
+    .catch((error) => {
+      console.error('Error logging in:', error);
+      const errorResponse = error.response.data as ErrorResponse;
+      const errorMessage = errorResponse.errors;
+      console.error('Error logging in:', errorMessage);
+      callback(undefined, errorMessage);
+    });
+}
+
+export function cancelBooking(
+  id_booking: string,
+  token: string,
+  callback: (data?: BookingApiResponse, error?: string) => void
+): void {
+  axios
+    .put<BookingApiResponse>(
+      `${baseURL}/api/booking/cancel/${id_booking}`,
+      {
+       
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
+    .then((response) => {
+      const data = response.data;
+      callback(data);
+    })
+    .catch((error) => {
+      console.error('Error logging in:', error);
       const errorResponse = error.response.data as ErrorResponse;
       const errorMessage = errorResponse.errors;
       console.error('Error logging in:', errorMessage);

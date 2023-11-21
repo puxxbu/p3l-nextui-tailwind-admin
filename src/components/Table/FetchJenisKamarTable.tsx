@@ -111,10 +111,7 @@ export default function App() {
         break;
       case 'delete':
         onOpen()
-        setIdKamar(id)
-
-        
-
+        setIdKamar(id);
         break;
       default:
         break;

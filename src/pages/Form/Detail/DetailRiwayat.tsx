@@ -8,8 +8,13 @@ import {
   useDisclosure,
   Selection,
   Button,
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
 } from '@nextui-org/react';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import useAuth from 'src/hooks/useAuth';
 import { createKamar } from 'src/hooks/kamar/kamarController';
 import toast, { Toaster } from 'react-hot-toast';
@@ -23,8 +28,8 @@ import { useQuery } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import { fetchDetailBooking } from 'src/hooks/sampleData';
 import { formatDate } from 'src/utils';
-import { changeStatusBooking } from 'src/hooks/booking/bookingController';
-import ReactToPrint from 'react-to-print';
+import { cancelBooking, changeStatusBooking, updateNoRekening } from 'src/hooks/booking/bookingController';
+import { on } from 'process';
 
 interface dataBooking {
   nama: string;
@@ -42,12 +47,19 @@ const DetailRiwayat = () => {
   const { id } = useParams<{ id: string }>();
 
   const [value, setValue] = useState<Selection>(new Set([]));
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const [error, setError] = useState('');
   const [modalTitle, setModalTitle] = useState('');
   const [dataKamar, setDataKamar] = useState<any[]>([]);
+  const [nomorRekening, setNomorRekening] = useState('');
+
   const navigate = useNavigate();
-  const componentRef = useRef<HTMLDivElement>(null);
+
+  const handleChange = (event: any) => {
+    const inputValue = event.target.value;
+    setNomorRekening(inputValue);
+    setError('');
+  };
 
   const { status: statusBooking, data: dataBooking } = useQuery(
     ['detailBooking'],
@@ -76,6 +88,56 @@ const DetailRiwayat = () => {
       isRefundable = true;
     }
   }
+  
+
+  const handleChangeStatus = async () => {
+
+
+    if (dataBooking?.data.no_rekening === '' || dataBooking?.data.no_rekening === null ) {
+      const regex = /^\d{8}$/;
+      if (!regex.test(nomorRekening)) {
+        toast.error('Nomor rekening harus terdiri dari 8 digit angka');
+      }else{
+        updateNoRekening('Jaminan Sudah Dibayar',dataBooking?.data.id_booking || '0',nomorRekening,auth.token,(data, error) => {
+          if (error) {
+            toast.error(error || 'Terjadi kesalahan');
+          } else {
+            toast.success('Berhasil mengubah status booking');
+            onClose();
+          }
+        })
+      }
+    }else{
+      changeStatusBooking(
+        'Jaminan Sudah Dibayar',
+        dataBooking?.data.id_booking || '0',
+        auth.token,
+        (data, error) => {
+          if (error) {
+            toast.error(error || 'Terjadi kesalahan');
+          } else {
+            toast.success('Berhasil mengubah status booking');
+          }
+        }
+      )
+      onClose();
+    }
+    
+
+    
+    
+  }
+
+  const handleCancelBooking = async () => {
+
+    cancelBooking(dataBooking?.data.id_booking || '0', auth.token, (data, error) => { 
+      if(error){
+        toast.error(error || 'Terjadi kesalahan');
+      }else{
+        toast.success('Berhasil membatalkan booking');
+      }
+    })
+  }
 
   useEffect(() => {
     if (statusBooking === 'success' && dataBooking) {
@@ -97,20 +159,46 @@ const DetailRiwayat = () => {
   }, [statusBooking, dataBooking]);
 
   const shouldHideButton = dataBooking?.data.status_booking === 'Dibatalkan' || dataBooking?.data.status_booking === 'Dibatalkan (Uang Kembali)';
-  const showDPButton = dataBooking?.data.status_booking === 'Booked' && dataBooking?.data.jenis_booking === 'Group';
+  const showDPButton = dataBooking?.data.status_booking === 'Booked' && dataBooking?.data.jenis_booking === 'Group'; 
+  const showLunasButton = dataBooking?.data.status_booking === 'Booked' || dataBooking?.data.status_booking === 'Sudah 50% Dibayar';
 
+  console.log(`${dataBooking?.data.jenis_booking} ${dataBooking?.data.status_booking}`);
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Data Customer" />
       <Toaster />
-      <MyModal
-        isOpen={isOpen}
-        onOpen={onOpen}
-        onOpenChange={onOpenChange}
-        title={modalTitle}
-        content={error}
-      />
-      <div ref={componentRef} className="mx-auto max-w-5xl rounded-lg bg-white px-8 py-10 shadow-lg dark:bg-boxdark">
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">Pelunasan Booking</ModalHeader>
+              <ModalBody>
+               <p>Apakah Anda yakin ingin melunasi booking ini?</p>
+               {dataBooking?.data.no_rekening === '' || dataBooking?.data.no_rekening === null  && (
+                <Input
+                isRequired
+                className="mt-4 w-100"
+                type="text"
+                value={nomorRekening}
+                onChange={handleChange}
+                label="Nomor Rekening"
+                placeholder="Masukkan Nomor Rekening"
+              />
+               )}
+              </ModalBody>
+              <ModalFooter>
+                <Button color="danger" variant="light" onPress={onClose}>
+                  Close
+                </Button>
+                <Button color="primary" variant="light" onPress={handleChangeStatus}>
+                  Lunasi Booking
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
+      <div className="mx-auto max-w-5xl rounded-lg bg-white px-8 py-10 shadow-lg dark:bg-boxdark">
         <div className="mb-8 flex items-center justify-between">
           <div className="flex items-center">
             <img
@@ -122,39 +210,9 @@ const DetailRiwayat = () => {
               Grand Atma Hotel
             </div>
           </div>
-
-          <ReactToPrint
-            trigger={() => <Button color="primary">
-            Cetak
-          
-          </Button>}
-            content={() => componentRef.current}
-          />
-          {/* <Button
-            className="mt-4"
-            color="danger"
-            // onClick={() =>
-            //   changeStatusBooking(
-            //     'Jaminan Sudah Dibayar',
-            //     dataBooking?.data.id_booking || '0',
-            //     auth.token,
-            //     (data, error) => {
-            //       if (error) {
-            //         toast.error(error || 'Terjadi kesalahan');
-            //       } else {
-            //         toast.success('Berhasil mengubah status booking');
-            //       }
-            //     }
-            //   )
-            // }
-          >
-            Cancel Booking
-          </Button> */}
-          {dataBooking?.data.pegawai_2 !== null && (
-            <div className="text-gray-700 dark:text-white">
           <>
           {!shouldHideButton && (
-            <Button className="mt-4" color="danger" >
+            <Button className="mt-4" color="danger" onClick={handleCancelBooking} >
               Cancel Booking
             </Button>
           )}
@@ -199,23 +257,12 @@ const DetailRiwayat = () => {
             Status Booking : {dataBooking?.data.status_booking}
           </div>
 
-          {dataBooking?.data.status_booking === 'Booked' && (
+          {showLunasButton && (
             <Button
               className="mt-4"
               color="primary"
               onClick={() =>
-                changeStatusBooking(
-                  'Jaminan Sudah Dibayar',
-                  dataBooking?.data.id_booking || '0',
-                  auth.token,
-                  (data, error) => {
-                    if (error) {
-                      toast.error(error || 'Terjadi kesalahan');
-                    } else {
-                      toast.success('Berhasil mengubah status booking');
-                    }
-                  }
-                )
+                onOpen()
               }
             >
               Lunasi Booking
@@ -223,7 +270,7 @@ const DetailRiwayat = () => {
           )}
           {showDPButton && (
             <Button
-              className="mt-4"
+              className="mt-4 ml-3"
               color="primary"
               onClick={() =>
                 changeStatusBooking(
