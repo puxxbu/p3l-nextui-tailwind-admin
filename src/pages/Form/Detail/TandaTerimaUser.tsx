@@ -1,35 +1,33 @@
 import Breadcrumb from '../../../components/Breadcrumb';
 import DefaultLayout from '../../../layout/DefaultLayout';
 
+import LogoGah from '../../../images/logo/logo-gah2.png'
+
 import {
-  Input,
-  Select,
-  SelectItem,
-  useDisclosure,
-  Selection,
   Button,
+  Input,
   Modal,
-  ModalContent,
-  ModalHeader,
   ModalBody,
+  ModalContent,
   ModalFooter,
+  ModalHeader,
+  Selection,
+  useDisclosure
 } from '@nextui-org/react';
-import { useEffect, useMemo, useState } from 'react';
-import useAuth from 'src/hooks/useAuth';
-import { createKamar } from 'src/hooks/kamar/kamarController';
-import toast, { Toaster } from 'react-hot-toast';
-import { MyModal } from 'src/components';
-import { jenisKamar } from 'src/utils/const';
-import {
-  createCustomer,
-  getCustomerById,
-} from 'src/hooks/customer/customerController';
 import { useQuery } from '@tanstack/react-query';
+import { useEffect, useRef, useState } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
 import { useNavigate, useParams } from 'react-router-dom';
-import { fetchDetailBooking } from 'src/hooks/sampleData';
-import { formatDate } from 'src/utils';
 import { cancelBooking, changeStatusBooking, updateNoRekening } from 'src/hooks/booking/bookingController';
-import { on } from 'process';
+import { fetchDetailBooking } from 'src/hooks/sampleData';
+import useAuth from 'src/hooks/useAuth';
+import { formatDate } from 'src/utils';
+
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
+import DarkModeSwitcher from 'src/components/DarkModeSwitcher';
+
+import {useReactToPrint} from 'react-to-print';
 import MainLayout from 'src/layout/MainLayout';
 
 interface dataBooking {
@@ -42,10 +40,12 @@ interface dataBooking {
   nama_institusi: string;
 }
 
-const DetailRiwayat = () => {
+const TandaTerima = () => {
   const { auth } = useAuth();
 
   const { id } = useParams<{ id: string }>();
+
+  const pdfRef = useRef<HTMLDivElement | null>(null);
 
   const [value, setValue] = useState<Selection>(new Set([]));
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
@@ -61,6 +61,31 @@ const DetailRiwayat = () => {
     setNomorRekening(inputValue);
     setError('');
   };
+
+  // const downloadPdf = () => {
+  //   if (pdfRef.current) {
+  //     const input = pdfRef.current;
+  //     html2canvas(input).then((canvas) => {
+  //       const imgData = canvas.toDataURL('image/png');
+  //       const pdf = new jsPDF('p', 'mm', 'a4');
+  
+  //       // Mengubah warna latar belakang PDF
+
+  //       pdf.setFillColor(255, 255, 255);
+  //        // Ubah nilai RGB sesuai dengan warna yang Anda inginkan
+  //       pdf.rect(0, 0, pdf.internal.pageSize.getWidth(), pdf.internal.pageSize.getHeight(), 'F');
+  
+  //       const imgProps = pdf.getImageProperties(imgData);
+  //       const pdfWidth = pdf.internal.pageSize.getWidth();
+  //       const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+  //       pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+  //       pdf.save('tanda-terima.pdf');
+  //     });
+  //   }
+  // }
+  const downloadPdf = useReactToPrint({
+    content: () => pdfRef.current,
+  })
 
   const { status: statusBooking, data: dataBooking } = useQuery(
     ['detailBooking'],
@@ -166,6 +191,13 @@ const DetailRiwayat = () => {
   console.log(`${dataBooking?.data.jenis_booking} ${dataBooking?.data.status_booking}`);
   return (
     <MainLayout>
+     
+      <div className="flex justify-center">
+      <Button className="m-3" color="primary" onClick={downloadPdf} >
+              Cetak PDF
+            </Button>
+    </div>
+      
       <Toaster />
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
@@ -198,30 +230,23 @@ const DetailRiwayat = () => {
           )}
         </ModalContent>
       </Modal>
-      <div className="mx-auto max-w-5xl rounded-lg bg-white px-8 py-10 shadow-lg dark:bg-boxdark">
+      <div  className="mx-auto max-w-5xl  bg-white px-8 py-10 shadow-lg dark:bg-boxdark" ref={pdfRef}>
         <div className="mb-8 flex items-center justify-between">
           <div className="flex items-center">
-            <img
-              className="mr-2 h-8 w-8"
-              src="https://tailwindflex.com/public/images/logos/favicon-32x32.png"
-              alt="Logo"
+          <img
+              src={LogoGah}
+              alt="Logo Hotel"
+              className="h-auto w-32"
             />
-            <div className="text-lg font-semibold text-gray-700 dark:text-white">
-              Grand Atma Hotel
-            </div>
+            
           </div>
           <>
-          <div>
-            <Button className="mt-4 mx-2" color="primary" onClick={() => navigate(`/user/tanda-terima/${id}`)} >
-              Show Tanda Terima 
-            </Button>
-          {!shouldHideButton && (
+          
+          {/* {!shouldHideButton && (
             <Button className="mt-4" color="danger" onClick={handleCancelBooking} >
               Cancel Booking
             </Button>
-          )}
-          </div>
-          
+          )} */}
           </>
           
         </div>
@@ -229,10 +254,10 @@ const DetailRiwayat = () => {
             <div className="text-gray-700 dark:text-white mb-4 border-b-2 pb-4 border-gray-300">
               <div className="mb-2 text-xl font-bold">Detail Booking</div>
               <div className="text-sm">
-                Date: {formatDate(dataBooking?.data.tanggal_booking || '')}
+              Date: {formatDate(dataBooking?.data.tanggal_booking || '')}
               </div>
               <div className="text-sm">
-              PIC: {dataBooking?.data.pegawai_1?.nama_pegawai || ''}
+                PIC: {dataBooking?.data.pegawai_1?.nama_pegawai || ''}
               </div>
             </div>
           )}
@@ -263,7 +288,7 @@ const DetailRiwayat = () => {
             Status Booking : {dataBooking?.data.status_booking}
           </div>
 
-          {showLunasButton && (
+          {/* {showLunasButton && (
             <Button
               className="mt-4"
               color="primary"
@@ -297,7 +322,7 @@ const DetailRiwayat = () => {
                 ? 'Bayar DP'
                 : 'Lunasi Booking'}
             </Button>
-          )}
+          )} */}
         </div>
 
         <h3 className="py-2 text-center text-xl font-bold uppercase text-gray-700 dark:text-white ">
@@ -410,4 +435,4 @@ const DetailRiwayat = () => {
   );
 };
 
-export default DetailRiwayat;
+export default TandaTerima;

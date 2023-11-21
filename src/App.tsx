@@ -45,6 +45,8 @@ import BrowseKamarGroup from './pages/BrowseKamar/BrowseKamarGroup';
 import DetailKamarAvailGroup from './pages/BrowseKamar/DetailKamarAvailGroup';
 import BookingGroup from './pages/Booking/BookingGroup';
 import TabelBooking from './pages/Data/TabelBooking';
+import TandaTerimaUser from './pages/Form/Detail/TandaTerimaUser';
+import TandaTerima from './pages/Form/Detail/TandaTerima';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -79,6 +81,10 @@ function App() {
           <Route
             path="/user/detail-history/:id"
             element={<DetailRiwayatUser />}
+          />
+          <Route
+            path="/user/tanda-terima/:id"
+            element={<TandaTerimaUser />}
           />
           <Route path="/booking" element={<BookingUser />} />
         </Route>
@@ -128,6 +134,10 @@ function App() {
             <Route
               path="/data/user/detail-history/:id"
               element={<DetailRiwayat />}
+            />
+            <Route
+              path="/data/user/tanda-terima/:id"
+              element={<TandaTerima />}
             />
             <Route
               path="/booking/group/browse"

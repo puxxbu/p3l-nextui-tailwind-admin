@@ -211,11 +211,17 @@ const DetailRiwayat = () => {
             </div>
           </div>
           <>
+          <div>
+            <Button className="mt-4 mx-2" color="primary" onClick={() => navigate(`/data/user/tanda-terima/${id}`)} >
+              Show Tanda Terima 
+            </Button>
           {!shouldHideButton && (
             <Button className="mt-4" color="danger" onClick={handleCancelBooking} >
               Cancel Booking
             </Button>
           )}
+          </div>
+          
           </>
           
         </div>
@@ -223,10 +229,10 @@ const DetailRiwayat = () => {
             <div className="text-gray-700 dark:text-white mb-4 border-b-2 pb-4 border-gray-300">
               <div className="mb-2 text-xl font-bold">Detail Booking</div>
               <div className="text-sm">
-                Date: {formatDate(dataBooking?.data.tanggal_pembayaran || '')}
+                Date: {formatDate(dataBooking?.data.tanggal_booking || '')}
               </div>
               <div className="text-sm">
-                Front Office: {dataBooking?.data.pegawai_2?.nama_pegawai || ''}
+              PIC: {dataBooking?.data.pegawai_1?.nama_pegawai || ''}
               </div>
             </div>
           )}

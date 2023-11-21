@@ -21,7 +21,13 @@ const TopNavBar = () => {
 
   const navigate = useNavigate();
 
+  const adminRoles = [1001,1002,1003,1004];
+
   const { auth } = useAuth();
+
+  if(adminRoles.includes(auth.role.id_role)){
+    navigate('/admin');
+  }
 
   const menuItems = [
     'Profile',
