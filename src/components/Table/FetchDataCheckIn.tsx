@@ -29,7 +29,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { deleteKamar } from 'src/hooks/kamar/kamarController';
 import { fetchBookingHistory } from 'src/hooks/sampleData';
 import { formatDate } from 'src/utils';
-import { fetchAllBooking } from 'src/hooks/booking/bookingController';
+import { fetchAllBooking, fetchDataCheckIn } from 'src/hooks/booking/bookingController';
 
 export default function App() {
   const [page, setPage] = React.useState(1);
@@ -43,7 +43,7 @@ export default function App() {
 
   const { data, error, refetch, isLoading } = useQuery(
     ['bookHistory', page, filterValue], // Memasukkan filterValue sebagai bagian dari query key
-    () => fetchAllBooking(page, filterValue, auth.token),
+    () => fetchDataCheckIn(page, filterValue, auth.token),
     {
       keepPreviousData: true,
       staleTime: 5000,
@@ -81,6 +81,8 @@ export default function App() {
         navigate(`/data/user/detail-history/${id}`);
         break;
 
+      case 'check-in':
+        navigate(`/fo/user/detail-booking/${id}`);
         break;
       default:
         break;
@@ -172,6 +174,12 @@ export default function App() {
                                     key="view"
                                   >
                                     Lihat Detail
+                                  </DropdownItem>
+                                  <DropdownItem
+                                    className="text-gray-700 dark:text-white"
+                                    key="check-in"
+                                  >
+                                    Check-in
                                   </DropdownItem>
                                 </DropdownMenu>
                               </Dropdown>

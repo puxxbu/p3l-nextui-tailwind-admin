@@ -1,6 +1,6 @@
 import Breadcrumb from '../../../components/Breadcrumb';
 import DefaultLayout from '../../../layout/DefaultLayout';
-
+import LogoGah from '../../../images/logo/logo-gah2.png'
 import {
   Input,
   Select,
@@ -54,6 +54,7 @@ const DetailRiwayat = () => {
   const [nomorRekening, setNomorRekening] = useState('');
 
   const navigate = useNavigate();
+  const [total, setTotal] = useState(0);
 
   const handleChange = (event: any) => {
     const inputValue = event.target.value;
@@ -143,12 +144,19 @@ const DetailRiwayat = () => {
     if (statusBooking === 'success' && dataBooking) {
       // setData(dataBooking.data);
       setDataKamar([]);
+      let total = 0;
       dataBooking.data.detail_booking_kamar.map((item: any) => {
+        total += item.sub_total;
+        
         item.detail_ketersediaan_kamar.map((item2: any) => {
           console.log(item2);
           setDataKamar((prevDataKamar) => [...prevDataKamar, item2]);
         });
       });
+      if(dataBooking.data.status_booking === 'Sudah 50% Dibayar'){
+        total = total / 2;
+      }
+      setTotal(total);
       console.log(dataKamar);
     }
 
@@ -161,6 +169,8 @@ const DetailRiwayat = () => {
   const shouldHideButton = dataBooking?.data.status_booking === 'Dibatalkan' || dataBooking?.data.status_booking === 'Dibatalkan (Uang Kembali)';
   const showDPButton = dataBooking?.data.status_booking === 'Booked' && dataBooking?.data.jenis_booking === 'Group'; 
   const showLunasButton = dataBooking?.data.status_booking === 'Booked' || dataBooking?.data.status_booking === 'Sudah 50% Dibayar';
+
+
 
   console.log(`${dataBooking?.data.jenis_booking} ${dataBooking?.data.status_booking}`);
   return (
@@ -201,14 +211,13 @@ const DetailRiwayat = () => {
       <div className="mx-auto max-w-5xl rounded-lg bg-white px-8 py-10 shadow-lg dark:bg-boxdark">
         <div className="mb-8 flex items-center justify-between">
           <div className="flex items-center">
-            <img
-              className="mr-2 h-8 w-8"
-              src="https://tailwindflex.com/public/images/logos/favicon-32x32.png"
-              alt="Logo"
+          <img
+              src={LogoGah}
+              alt="Logo Hotel"
+              className="h-auto w-32"
             />
-            <div className="text-lg font-semibold text-gray-700 dark:text-white">
-              Grand Atma Hotel
-            </div>
+            
+            
           </div>
           <>
           <div>
@@ -330,6 +339,14 @@ const DetailRiwayat = () => {
                 ))} */}
               </tr>
             ))}
+             <tr >
+                <td className="py-4"></td>
+                <td className="py-4"></td>
+                <td className="py-4"></td>
+                <td className="py-4 font-bold">{dataBooking?.data.jenis_booking === "Group" ? "Jumlah Jaminan" : "Subtotal"}</td>
+                <td className="py-4">Rp{total}</td>
+               
+              </tr>
           </tbody>
         </table>
         <h3 className="py-2 text-center text-xl font-bold uppercase text-gray-700 dark:text-white ">

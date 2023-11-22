@@ -539,7 +539,6 @@ const BookingGroup = () => {
           <thead>
             <tr>
               <th className="py-2 font-bold uppercase ">Layanan</th>
-
               <th className="py-2 font-bold uppercase ">Jumlah</th>
               <th className="py-2 font-bold uppercase ">Harga</th>
               <th className="py-2 font-bold uppercase ">Sub Total</th>

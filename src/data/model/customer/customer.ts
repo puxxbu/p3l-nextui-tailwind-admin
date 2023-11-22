@@ -46,6 +46,7 @@ interface BookingItem {
   tanggal_check_in: string;
   tanggal_check_out: string;
   status_booking: string;
+  customer: Customer;
 }
 
 interface Pegawai {

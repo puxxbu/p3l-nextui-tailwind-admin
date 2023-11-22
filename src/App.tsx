@@ -47,6 +47,9 @@ import BookingGroup from './pages/Booking/BookingGroup';
 import TabelBooking from './pages/Data/TabelBooking';
 import TandaTerimaUser from './pages/Form/Detail/TandaTerimaUser';
 import TandaTerima from './pages/Form/Detail/TandaTerima';
+import TabelBookingFO from './pages/Data/TabelBookingFO';
+import TabelCheckIn from './pages/Data/TabelCheckIn';
+import DetailBooking from './pages/Form/Detail/DetailBooking';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -140,7 +143,7 @@ function App() {
               element={<TandaTerima />}
             />
             <Route
-              path="/booking/group/browse"
+            path="/booking/group/browse"
               element={<BrowseKamarGroup />}
             />
             <Route
@@ -148,6 +151,14 @@ function App() {
               element={<DetailKamarAvailGroup />}
             />
             <Route path="/booking/group" element={<BookingGroup />} />
+          </Route>
+          <Route element={<RequireAuth allowedRoles={[1002]} />}>
+            <Route path="/fo/booking" element={<TabelBookingFO />} />
+            <Route path="/fo/list/check-in" element={<TabelCheckIn />} />
+            <Route
+              path="/fo/user/detail-booking/:id"
+              element={<DetailBooking />}
+            />
           </Route>
 
           <Route path="/settings" element={<Settings />} />

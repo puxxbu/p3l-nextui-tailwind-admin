@@ -5,7 +5,7 @@ import TableTwo from '../../components/Table/TableTwo';
 import DefaultLayout from '../../layout/DefaultLayout';
 import { DataTable, FetchAllBooking, FetchCustomerTable, FetchKamarTable } from 'Components';
 import { Button } from '@nextui-org/react';
-const TabelBooking = () => {
+const TabelBookingFO = () => {
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Data Booking" />
@@ -17,4 +17,4 @@ const TabelBooking = () => {
   );
 };
 
-export default TabelBooking;
+export default TabelBookingFO;

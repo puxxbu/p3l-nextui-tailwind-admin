@@ -1,50 +1,47 @@
 import Breadcrumb from '../../../components/Breadcrumb';
 import DefaultLayout from '../../../layout/DefaultLayout';
-
 import LogoGah from '../../../images/logo/logo-gah2.png'
-
 import {
-  Button,
   Input,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
+  Select,
+  SelectItem,
+  useDisclosure,
   Selection,
-  useDisclosure
+  Button,
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
 } from '@nextui-org/react';
-import { useQuery } from '@tanstack/react-query';
-import { useEffect, useRef, useState } from 'react';
-import toast, { Toaster } from 'react-hot-toast';
-import { useNavigate, useParams } from 'react-router-dom';
-import { cancelBooking, changeStatusBooking, updateNoRekening } from 'src/hooks/booking/bookingController';
-import { fetchDetailBooking } from 'src/hooks/sampleData';
+import { useEffect, useMemo, useState } from 'react';
 import useAuth from 'src/hooks/useAuth';
+import { createKamar } from 'src/hooks/kamar/kamarController';
+import toast, { Toaster } from 'react-hot-toast';
+import { MyModal } from 'src/components';
+import { jenisKamar } from 'src/utils/const';
+import {
+  createCustomer,
+  getCustomerById,
+} from 'src/hooks/customer/customerController';
+import { useQuery } from '@tanstack/react-query';
+import { useNavigate, useParams } from 'react-router-dom';
+import { fetchDetailBooking } from 'src/hooks/sampleData';
 import { formatDate } from 'src/utils';
+import { cancelBooking, changeStatusBooking, updateNoRekening } from 'src/hooks/booking/bookingController';
+import { on } from 'process';
+import Icon from '@mdi/react';
+import { mdiMinusCircle, mdiPlusCircle } from '@mdi/js';
+import { fetchFasilitasSize } from 'src/hooks/fasilitas/fasilitasController';
 
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
-import DarkModeSwitcher from 'src/components/DarkModeSwitcher';
-
-import {useReactToPrint} from 'react-to-print';
-
-interface dataBooking {
-  nama: string;
-  nomor_identitas: string;
-  nomor_telepon: string;
-  email: string;
-  alamat: string;
-  tanggal_dibuat: string;
-  nama_institusi: string;
+interface KeyValues {
+  [key: number]: number;
 }
 
-const TandaTerima = () => {
+const DetailBooking = () => {
   const { auth } = useAuth();
 
   const { id } = useParams<{ id: string }>();
-
-  const pdfRef = useRef<HTMLDivElement | null>(null);
 
   const [value, setValue] = useState<Selection>(new Set([]));
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
@@ -52,9 +49,12 @@ const TandaTerima = () => {
   const [modalTitle, setModalTitle] = useState('');
   const [dataKamar, setDataKamar] = useState<any[]>([]);
   const [nomorRekening, setNomorRekening] = useState('');
-  const [total, setTotal] = useState(0);
+
+  const [keyValueList, setKeyValueList] = useState<KeyValues>({});
+  const [layananList, setLayananList] = useState<KeyValues>({});
 
   const navigate = useNavigate();
+  const [total, setTotal] = useState(0);
 
   const handleChange = (event: any) => {
     const inputValue = event.target.value;
@@ -62,35 +62,17 @@ const TandaTerima = () => {
     setError('');
   };
 
-  // const downloadPdf = () => {
-  //   if (pdfRef.current) {
-  //     const input = pdfRef.current;
-  //     html2canvas(input).then((canvas) => {
-  //       const imgData = canvas.toDataURL('image/png');
-  //       const pdf = new jsPDF('p', 'mm', 'a4');
-  
-  //       // Mengubah warna latar belakang PDF
-
-  //       pdf.setFillColor(255, 255, 255);
-  //        // Ubah nilai RGB sesuai dengan warna yang Anda inginkan
-  //       pdf.rect(0, 0, pdf.internal.pageSize.getWidth(), pdf.internal.pageSize.getHeight(), 'F');
-  
-  //       const imgProps = pdf.getImageProperties(imgData);
-  //       const pdfWidth = pdf.internal.pageSize.getWidth();
-  //       const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-  //       pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-  //       pdf.save('tanda-terima.pdf');
-  //     });
-  //   }
-  // }
-  const downloadPdf = useReactToPrint({
-    content: () => pdfRef.current,
-  })
-
   const { status: statusBooking, data: dataBooking } = useQuery(
     ['detailBooking'],
     () => fetchDetailBooking(id || '0', auth.token)
   );
+
+  const { status, data : dataFasilitas, refetch, isLoading } = useQuery(
+    ['fasilitas'], // Memasukkan filterValue sebagai bagian dari query key
+    () => fetchFasilitasSize(100, '', auth.token),
+     // Menambahkan opsi enabled: false
+  );
+
 
   let isRefundable = false;
   const tanggalCheckIn = dataBooking?.data.tanggal_check_in;
@@ -165,6 +147,24 @@ const TandaTerima = () => {
     })
   }
 
+  const handleIncrementLayanan = (key: number) => {
+    setLayananList((prevState) => ({
+      ...prevState,
+      [key]: prevState[key] + 1,
+    }));
+    console.log(layananList);
+  };
+
+  const handleDecrementLayanan = (key: number) => {
+    if (layananList[key] > 0) {
+      setLayananList((prevState) => ({
+        ...prevState,
+        [key]: prevState[key] - 1,
+      }));
+    }
+  };
+
+
   useEffect(() => {
     if (statusBooking === 'success' && dataBooking) {
       // setData(dataBooking.data);
@@ -172,6 +172,7 @@ const TandaTerima = () => {
       let total = 0;
       dataBooking.data.detail_booking_kamar.map((item: any) => {
         total += item.sub_total;
+        
         item.detail_ketersediaan_kamar.map((item2: any) => {
           console.log(item2);
           setDataKamar((prevDataKamar) => [...prevDataKamar, item2]);
@@ -180,27 +181,48 @@ const TandaTerima = () => {
       if(dataBooking.data.status_booking === 'Sudah 50% Dibayar'){
         total = total / 2;
       }
-      setTotal(total);
-      console.log(dataKamar);
-    }
 
+      const jumlah = dataBooking.data.detail_booking_layanan.find((item2: any) => item2.layanan.id_fasilitas === 1)?.jumlah;
+      console.log(jumlah);
+      setTotal(total);
+
+      const layananKeyValue: KeyValues = {};
+      dataFasilitas?.data.forEach((item: any) => {
+        const jumlah = dataBooking.data.detail_booking_layanan.find((item2: any) => item2.layanan.id_fasilitas === item.id_fasilitas)?.jumlah || 0;
+
+        console.log(jumlah);
+        if (jumlah > 0) {
+          layananKeyValue[item.id_fasilitas] = jumlah;
+        } else{
+          layananKeyValue[item.id_fasilitas] = 0;
+        }
+        
+      });
+
+
+
+      setLayananList(layananKeyValue);
+
+
+      console.log(layananKeyValue['1']);
+    }
     if (statusBooking === 'error') {
       toast.error('Data Booking tidak ditemukan');
       navigate('/admin');
     }
   }, [statusBooking, dataBooking]);
 
-  
+
+  const shouldHideButton = dataBooking?.data.status_booking === 'Dibatalkan' || dataBooking?.data.status_booking === 'Dibatalkan (Uang Kembali)';
+  const showDPButton = dataBooking?.data.status_booking === 'Booked' && dataBooking?.data.jenis_booking === 'Group'; 
+  const showLunasButton = dataBooking?.data.status_booking === 'Booked' || dataBooking?.data.status_booking === 'Sudah 50% Dibayar';
+
+
+
   console.log(`${dataBooking?.data.jenis_booking} ${dataBooking?.data.status_booking}`);
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Data Customer" />
-      <div className="flex justify-end">
-      <Button className="m-3" color="primary" onClick={downloadPdf} >
-              Cetak PDF
-            </Button>
-    </div>
-      
       <Toaster />
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
@@ -233,7 +255,7 @@ const TandaTerima = () => {
           )}
         </ModalContent>
       </Modal>
-      <div  className="mx-auto max-w-5xl  bg-white px-8 py-10 shadow-lg dark:bg-boxdark" ref={pdfRef}>
+      <div className="mx-auto max-w-5xl rounded-lg bg-white px-8 py-10 shadow-lg dark:bg-boxdark">
         <div className="mb-8 flex items-center justify-between">
           <div className="flex items-center">
           <img
@@ -242,14 +264,20 @@ const TandaTerima = () => {
               className="h-auto w-32"
             />
             
+            
           </div>
           <>
-          
-          {/* {!shouldHideButton && (
+          <div>
+            <Button className="mt-4 mx-2" color="primary" onClick={() => navigate(`/data/user/tanda-terima/${id}`)} >
+              Show Tanda Terima 
+            </Button>
+          {!shouldHideButton && (
             <Button className="mt-4" color="danger" onClick={handleCancelBooking} >
               Cancel Booking
             </Button>
-          )} */}
+          )}
+          </div>
+          
           </>
           
         </div>
@@ -257,10 +285,10 @@ const TandaTerima = () => {
             <div className="text-gray-700 dark:text-white mb-4 border-b-2 pb-4 border-gray-300">
               <div className="mb-2 text-xl font-bold">Detail Booking</div>
               <div className="text-sm">
-              Date: {formatDate(dataBooking?.data.tanggal_booking || '')}
+                Date: {formatDate(dataBooking?.data.tanggal_booking || '')}
               </div>
               <div className="text-sm">
-                PIC: {dataBooking?.data.pegawai_1?.nama_pegawai || ''}
+              PIC: {dataBooking?.data.pegawai_1?.nama_pegawai || ''}
               </div>
             </div>
           )}
@@ -291,7 +319,7 @@ const TandaTerima = () => {
             Status Booking : {dataBooking?.data.status_booking}
           </div>
 
-          {/* {showLunasButton && (
+          {showLunasButton && (
             <Button
               className="mt-4"
               color="primary"
@@ -325,7 +353,7 @@ const TandaTerima = () => {
                 ? 'Bayar DP'
                 : 'Lunasi Booking'}
             </Button>
-          )} */}
+          )}
         </div>
 
         <h3 className="py-2 text-center text-xl font-bold uppercase text-gray-700 dark:text-white ">
@@ -349,6 +377,7 @@ const TandaTerima = () => {
                 <td className="py-4">{item.jumlah}</td>
                 <td className="py-4">Rp{item.sub_total / item.jumlah}</td>
                 <td className="py-4">Rp{item.sub_total}</td>
+               
               </tr>
             ))}
              <tr >
@@ -389,22 +418,46 @@ const TandaTerima = () => {
           <thead>
             <tr>
               <th className="py-2 font-bold uppercase ">Layanan</th>
-              <th className="py-2 font-bold uppercase ">Tanggal</th>
               <th className="py-2 font-bold uppercase ">Jumlah</th>
               <th className="py-2 font-bold uppercase ">Harga</th>
               <th className="py-2 font-bold uppercase ">Sub Total</th>
             </tr>
           </thead>
           <tbody>
-            {dataBooking?.data.detail_booking_layanan.map((item, index) => (
-              <tr key={index}>
-                <td className="py-4">{item.layanan.nama_layanan}</td>
-                <td className="py-4">{formatDate(item.tanggal)}</td>
-                <td className="py-4">{item.jumlah}</td>
-                <td className="py-4">Rp{item.layanan.harga}</td>
-                <td className="py-4">Rp{item.sub_total}</td>
-              </tr>
-            ))}
+            {dataFasilitas?.data.map((item, index) => {
+              return (
+                <tr key={index}>
+                  <td className="py-4">{item.nama_layanan}</td>
+                  <td className="py-4">
+                    <div className="flex items-center">
+                      <button
+                        onClick={() =>
+                          handleDecrementLayanan(item.id_fasilitas)
+                        }
+                        className="p-1"
+                      >
+                        <Icon path={mdiMinusCircle} size={1} />
+                      </button>
+                      <span className="mx-2">
+                        {layananList[item.id_fasilitas]}
+                      </span>
+                      <button
+                        onClick={() =>
+                          handleIncrementLayanan(item.id_fasilitas)
+                        }
+                        className="p-1"
+                      >
+                        <Icon path={mdiPlusCircle} size={1} />
+                      </button>
+                    </div>
+                  </td>
+                  <td className="py-4">Rp{item.harga}</td>
+                  <td className="py-4">
+                    Rp{item.harga * layananList[item.id_fasilitas]}
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
         {dataBooking?.data.invoice && dataBooking?.data.invoice.length > 0 && (
@@ -439,4 +492,4 @@ const TandaTerima = () => {
   );
 };
 
-export default TandaTerima;
+export default DetailBooking;

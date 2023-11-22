@@ -27,7 +27,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
   console.log(auth.role.id_role);
 
-  const showDataMaster = auth.role.id_role === 1002 || auth.role.id_role === 1003;
+  const showDataMaster = auth.role.id_role === 1002 || auth.role.id_role === 1001;
 
   const logout = async () => {
     setAuth({});
@@ -270,7 +270,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               {/* <!-- Menu Item Profile --> */}
 
               {/* <!-- Menu Item Forms --> */}
-              <SidebarLinkGroup
+              {showDataMaster && (<SidebarLinkGroup
                 activeCondition={
                   pathname === '/forms' || pathname.includes('forms')
                 }
@@ -453,7 +453,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     </React.Fragment>
                   );
                 }}
-              </SidebarLinkGroup>
+              </SidebarLinkGroup>)}
+              
               {/* <!-- Menu Item Forms --> */}
 
               {showDataMaster && (
@@ -694,13 +695,24 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                         <ul className="mb-5.5 mt-4 flex flex-col gap-2.5 pl-6">
                           <li>
                             <NavLink
-                              to="/fo/kamar"
+                              to="/fo/booking"
                               className={({ isActive }) =>
                                 'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
                                 (isActive && '!text-white')
                               }
                             >
-                              Data Kamar
+                              Data Booking
+                            </NavLink>
+                          </li>
+                          <li>
+                            <NavLink
+                              to="/fo/list/check-in"
+                              className={({ isActive }) =>
+                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
+                                (isActive && '!text-white')
+                              }
+                            >
+                              List Check In
                             </NavLink>
                           </li>
                           
