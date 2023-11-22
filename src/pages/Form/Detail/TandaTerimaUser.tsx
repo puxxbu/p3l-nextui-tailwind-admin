@@ -1,7 +1,5 @@
-import Breadcrumb from '../../../components/Breadcrumb';
-import DefaultLayout from '../../../layout/DefaultLayout';
 
-import LogoGah from '../../../images/logo/logo-gah2.png'
+import LogoGah from '../../../images/logo/logo-gah2.png';
 
 import {
   Button,
@@ -23,11 +21,8 @@ import { fetchDetailBooking } from 'src/hooks/sampleData';
 import useAuth from 'src/hooks/useAuth';
 import { formatDate } from 'src/utils';
 
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
-import DarkModeSwitcher from 'src/components/DarkModeSwitcher';
 
-import {useReactToPrint} from 'react-to-print';
+import { useReactToPrint } from 'react-to-print';
 import MainLayout from 'src/layout/MainLayout';
 
 interface dataBooking {
@@ -184,10 +179,7 @@ const TandaTerima = () => {
     }
   }, [statusBooking, dataBooking]);
 
-  const shouldHideButton = dataBooking?.data.status_booking === 'Dibatalkan' || dataBooking?.data.status_booking === 'Dibatalkan (Uang Kembali)';
-  const showDPButton = dataBooking?.data.status_booking === 'Booked' && dataBooking?.data.jenis_booking === 'Group'; 
-  const showLunasButton = dataBooking?.data.status_booking === 'Booked' || dataBooking?.data.status_booking === 'Sudah 50% Dibayar';
-
+  
   console.log(`${dataBooking?.data.jenis_booking} ${dataBooking?.data.status_booking}`);
   return (
     <MainLayout>

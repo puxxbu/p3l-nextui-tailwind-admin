@@ -99,7 +99,7 @@ const BrowseKamarGroup = () => {
     isLoading,
   } = useQuery(
     ['listKamarTersedia', value.startDate, filterValue], // Memasukkan filterValue sebagai bagian dari query key
-    () => fetchKamarTersedia(100, value.startDate, filterValue),
+    () => fetchKamarTersedia(100, value.startDate,value.endDate, filterValue),
     {
       keepPreviousData: true,
       staleTime: 5000,

@@ -5,10 +5,11 @@ const baseURL = 'http://localhost:3000';
 export async function fetchKamarTersedia(
   size = 100,
   tanggal_check_in = new Date(),
+  tanggal_check_out = new Date(),
   kamar_attribute = ''
 ): Promise<SearchKamarResponse> {
   try {
-    let url = `http://localhost:3000/api/booking/kamar?size=${size}&tanggal_check_in=${tanggal_check_in.toString()}`;
+    let url = `http://localhost:3000/api/booking/kamar?size=${size}&tanggal_check_in=${tanggal_check_in.toString()}&tanggal_check_out=${tanggal_check_out.toString()}`;
     if (kamar_attribute !== '') {
       url += `&kamar_attribute=${kamar_attribute}`;
     }
@@ -243,7 +244,7 @@ interface Booking {
   jenis_booking: string;
   status_booking: string;
   id_pegawai_fo?: number | null; // Id pegawai FO dapat kosong
-  no_rekening: string;
+  no_rekening?: string;
 }
 
 interface DetailBookingKamar {
