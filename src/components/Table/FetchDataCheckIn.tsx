@@ -84,6 +84,10 @@ export default function App() {
       case 'check-in':
         navigate(`/fo/user/detail-booking/${id}`);
         break;
+
+      case 'detail-check-in':
+        navigate(`/fo/user/detail-booking/check-in/${id}`);
+        break;
       default:
         break;
     }
@@ -153,37 +157,76 @@ export default function App() {
                       {(() => {
                         switch (columnKey) {
                           case 'action':
-                            return (
-                              <Dropdown>
-                                <DropdownTrigger>
-                                  <Button isIconOnly size="sm" variant="light">
-                                    <Icon path={mdiDotsVertical} size={1} />
-                                  </Button>
-                                </DropdownTrigger>
-                                <DropdownMenu
-                                  aria-label="Action event example"
-                                  onAction={(key) =>
-                                    switchAction(
-                                      key,
-                                      getKeyValue(item, 'id_booking')
-                                    )
-                                  }
-                                >
-                                  <DropdownItem
-                                    className="text-gray-700 dark:text-white"
-                                    key="view"
+                            if(item.status_booking === 'Check In'){
+                              return (
+                                <Dropdown>
+                                  <DropdownTrigger>
+                                    <Button isIconOnly size="sm" variant="light">
+                                      <Icon path={mdiDotsVertical} size={1} />
+                                    </Button>
+                                  </DropdownTrigger>
+                                  <DropdownMenu
+                                    aria-label="Action event example"
+                                    onAction={(key) =>
+                                      switchAction(
+                                        key,
+                                        getKeyValue(item, 'id_booking')
+                                      )
+                                    }
                                   >
-                                    Lihat Detail
-                                  </DropdownItem>
-                                  <DropdownItem
-                                    className="text-gray-700 dark:text-white"
-                                    key="check-in"
+                                    <DropdownItem
+                                      className="text-gray-700 dark:text-white"
+                                      key="view"
+                                    >
+                                      Lihat Detail
+                                    </DropdownItem>
+                                  
+  
+                                    <DropdownItem
+                                      className="text-gray-700 dark:text-white"
+                                      key="detail-check-in"
+                                    >
+                                      Detail Check-in 
+                                    </DropdownItem>
+                                  </DropdownMenu>
+                                </Dropdown>
+                              );
+                            }else{
+                              return (
+                                <Dropdown>
+                                  <DropdownTrigger>
+                                    <Button isIconOnly size="sm" variant="light">
+                                      <Icon path={mdiDotsVertical} size={1} />
+                                    </Button>
+                                  </DropdownTrigger>
+                                  <DropdownMenu
+                                    aria-label="Action event example"
+                                    onAction={(key) =>
+                                      switchAction(
+                                        key,
+                                        getKeyValue(item, 'id_booking')
+                                      )
+                                    }
                                   >
-                                    Check-in
-                                  </DropdownItem>
-                                </DropdownMenu>
-                              </Dropdown>
-                            );
+                                    <DropdownItem
+                                      className="text-gray-700 dark:text-white"
+                                      key="view"
+                                    >
+                                      Lihat Detail
+                                    </DropdownItem>
+                                    <DropdownItem
+                                      className="text-gray-700 dark:text-white"
+                                      key="check-in"
+                                    >
+                                      Check-in
+                                    </DropdownItem>
+  
+                                    
+                                  </DropdownMenu>
+                                </Dropdown>
+                              );
+                            }
+                      
 
                           case 'nama_pegawai_fo':
                             return item.customer.nama

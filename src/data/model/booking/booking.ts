@@ -95,7 +95,13 @@ interface DetailBooking {
 
 interface DetailFasilitas {
   id_fasilitas: number;
-  nama_fasilitas: string;
+  nama_fasilitas?: string;
+  jumlah: number;
+  sub_total: number;
+}
+
+interface DetailFasilitas2 {
+  id_fasilitas: number;
   jumlah: number;
   sub_total: number;
 }

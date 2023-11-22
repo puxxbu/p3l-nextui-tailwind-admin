@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Navbar,
   NavbarBrand,
@@ -25,9 +25,11 @@ const TopNavBar = () => {
 
   const { auth } = useAuth();
 
+ useEffect(() => {
   if(adminRoles.includes(auth.role.id_role)){
     navigate('/admin');
   }
+ });
 
   const menuItems = [
     'Profile',

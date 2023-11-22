@@ -49,6 +49,7 @@ const DetailRiwayat = () => {
 
   const [value, setValue] = useState<Selection>(new Set([]));
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
+  const { isOpen : isCancelModalOpen, onOpen : onCancelOpen, onOpenChange : onCancelOpenChange, onClose  : onCloseCancel } = useDisclosure();
   const [error, setError] = useState('');
   const [modalTitle, setModalTitle] = useState('');
   const [dataKamar, setDataKamar] = useState<any[]>([]);
@@ -198,6 +199,27 @@ const DetailRiwayat = () => {
           )}
         </ModalContent>
       </Modal>
+      <Modal isOpen={isCancelModalOpen} onOpenChange={onCancelOpenChange}>
+        <ModalContent>
+          {(onCloseCancel) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">Pelunasan Booking</ModalHeader>
+              <ModalBody>
+               <p>Apakah Anda yakin ingin membatalkan booking ini?</p>
+               
+              </ModalBody>
+              <ModalFooter>
+                <Button color="danger" variant="light" onPress={onCloseCancel}>
+                  Close
+                </Button>
+                <Button color="primary" variant="light" onPress={handleCancelBooking}>
+                  Cancel Booking
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
       <div className="mx-auto max-w-5xl rounded-lg bg-white px-8 py-10 shadow-lg dark:bg-boxdark">
         <div className="mb-8 flex items-center justify-between">
           <div className="flex items-center">
@@ -216,7 +238,7 @@ const DetailRiwayat = () => {
               Show Tanda Terima 
             </Button>
           {!shouldHideButton && (
-            <Button className="mt-4" color="danger" onClick={handleCancelBooking} >
+            <Button className="mt-4" color="danger" onClick={onCancelOpen} >
               Cancel Booking
             </Button>
           )}

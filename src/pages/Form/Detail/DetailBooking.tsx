@@ -30,12 +30,15 @@ import { fetchDetailBooking } from 'src/hooks/sampleData';
 import { formatDate } from 'src/utils';
 import { cancelBooking, changeStatusBooking, updateNoRekening } from 'src/hooks/booking/bookingController';
 import { on } from 'process';
-import Icon from '@mdi/react';
-import { mdiMinusCircle, mdiPlusCircle } from '@mdi/js';
-import { fetchFasilitasSize } from 'src/hooks/fasilitas/fasilitasController';
 
-interface KeyValues {
-  [key: number]: number;
+interface dataBooking {
+  nama: string;
+  nomor_identitas: string;
+  nomor_telepon: string;
+  email: string;
+  alamat: string;
+  tanggal_dibuat: string;
+  nama_institusi: string;
 }
 
 const DetailBooking = () => {
@@ -50,11 +53,9 @@ const DetailBooking = () => {
   const [dataKamar, setDataKamar] = useState<any[]>([]);
   const [nomorRekening, setNomorRekening] = useState('');
 
-  const [keyValueList, setKeyValueList] = useState<KeyValues>({});
-  const [layananList, setLayananList] = useState<KeyValues>({});
-
   const navigate = useNavigate();
   const [total, setTotal] = useState(0);
+  const [totalHargaFasilitas, setTotalHargaFasilitas] = useState(0);
 
   const handleChange = (event: any) => {
     const inputValue = event.target.value;
@@ -62,17 +63,12 @@ const DetailBooking = () => {
     setError('');
   };
 
+  const { isOpen : isCancelModalOpen, onOpen : onCancelOpen, onOpenChange : onCancelOpenChange, onClose  : onCloseCancel } = useDisclosure();
+
   const { status: statusBooking, data: dataBooking } = useQuery(
     ['detailBooking'],
     () => fetchDetailBooking(id || '0', auth.token)
   );
-
-  const { status, data : dataFasilitas, refetch, isLoading } = useQuery(
-    ['fasilitas'], // Memasukkan filterValue sebagai bagian dari query key
-    () => fetchFasilitasSize(100, '', auth.token),
-     // Menambahkan opsi enabled: false
-  );
-
 
   let isRefundable = false;
   const tanggalCheckIn = dataBooking?.data.tanggal_check_in;
@@ -99,39 +95,20 @@ const DetailBooking = () => {
   
 
   const handleChangeStatus = async () => {
-
-
-    if (dataBooking?.data.no_rekening === '' || dataBooking?.data.no_rekening === null ) {
-      const regex = /^\d{8}$/;
-      if (!regex.test(nomorRekening)) {
-        toast.error('Nomor rekening harus terdiri dari 8 digit angka');
-      }else{
-        updateNoRekening('Jaminan Sudah Dibayar',dataBooking?.data.id_booking || '0',nomorRekening,auth.token,(data, error) => {
-          if (error) {
-            toast.error(error || 'Terjadi kesalahan');
-          } else {
-            toast.success('Berhasil mengubah status booking');
-            onClose();
-          }
-        })
-      }
-    }else{
-      changeStatusBooking(
-        'Jaminan Sudah Dibayar',
-        dataBooking?.data.id_booking || '0',
-        auth.token,
-        (data, error) => {
-          if (error) {
-            toast.error(error || 'Terjadi kesalahan');
-          } else {
-            toast.success('Berhasil mengubah status booking');
-          }
+    changeStatusBooking(
+      'Check In',
+      dataBooking?.data.id_booking || '0',
+      auth.token,
+      (data, error) => {
+        if (error) {
+          toast.error(error || 'Terjadi kesalahan');
+        } else {
+          toast.success('Berhasil mengubah status booking');
+          navigate(`/fo/user/detail-booking/check-in/${dataBooking?.data.id_booking}`)
         }
-      )
-      onClose();
-    }
-    
-
+      }
+    )
+    onClose();
     
     
   }
@@ -146,24 +123,6 @@ const DetailBooking = () => {
       }
     })
   }
-
-  const handleIncrementLayanan = (key: number) => {
-    setLayananList((prevState) => ({
-      ...prevState,
-      [key]: prevState[key] + 1,
-    }));
-    console.log(layananList);
-  };
-
-  const handleDecrementLayanan = (key: number) => {
-    if (layananList[key] > 0) {
-      setLayananList((prevState) => ({
-        ...prevState,
-        [key]: prevState[key] - 1,
-      }));
-    }
-  };
-
 
   useEffect(() => {
     if (statusBooking === 'success' && dataBooking) {
@@ -181,74 +140,71 @@ const DetailBooking = () => {
       if(dataBooking.data.status_booking === 'Sudah 50% Dibayar'){
         total = total / 2;
       }
-
-      const jumlah = dataBooking.data.detail_booking_layanan.find((item2: any) => item2.layanan.id_fasilitas === 1)?.jumlah;
-      console.log(jumlah);
       setTotal(total);
 
-      const layananKeyValue: KeyValues = {};
-      dataFasilitas?.data.forEach((item: any) => {
-        const jumlah = dataBooking.data.detail_booking_layanan.find((item2: any) => item2.layanan.id_fasilitas === item.id_fasilitas)?.jumlah || 0;
-
-        console.log(jumlah);
-        if (jumlah > 0) {
-          layananKeyValue[item.id_fasilitas] = jumlah;
-        } else{
-          layananKeyValue[item.id_fasilitas] = 0;
-        }
+      let totalHargaFasilitas = 0;
+      dataBooking.data.detail_booking_layanan.map((item: any) => {
         
+        totalHargaFasilitas += item.sub_total;
       });
+      setTotalHargaFasilitas(totalHargaFasilitas);
 
-
-
-      setLayananList(layananKeyValue);
-
-
-      console.log(layananKeyValue['1']);
+      console.log(dataKamar);
     }
+
     if (statusBooking === 'error') {
       toast.error('Data Booking tidak ditemukan');
       navigate('/admin');
     }
   }, [statusBooking, dataBooking]);
 
-
   const shouldHideButton = dataBooking?.data.status_booking === 'Dibatalkan' || dataBooking?.data.status_booking === 'Dibatalkan (Uang Kembali)';
   const showDPButton = dataBooking?.data.status_booking === 'Booked' && dataBooking?.data.jenis_booking === 'Group'; 
   const showLunasButton = dataBooking?.data.status_booking === 'Booked' || dataBooking?.data.status_booking === 'Sudah 50% Dibayar';
-
+  const showCheckIn = dataBooking?.data.status_booking === 'Sudah 50% Dibayar' || dataBooking?.data.status_booking === 'Jaminan Sudah Dibayar';
 
 
   console.log(`${dataBooking?.data.jenis_booking} ${dataBooking?.data.status_booking}`);
   return (
     <DefaultLayout>
-      <Breadcrumb pageName="Data Customer" />
+      <Breadcrumb pageName="Detail Booking" />
       <Toaster />
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">Pelunasan Booking</ModalHeader>
+              <ModalHeader className="flex flex-col gap-1">Check In</ModalHeader>
               <ModalBody>
-               <p>Apakah Anda yakin ingin melunasi booking ini?</p>
-               {dataBooking?.data.no_rekening === '' || dataBooking?.data.no_rekening === null  && (
-                <Input
-                isRequired
-                className="mt-4 w-100"
-                type="text"
-                value={nomorRekening}
-                onChange={handleChange}
-                label="Nomor Rekening"
-                placeholder="Masukkan Nomor Rekening"
-              />
-               )}
+               <p>Apakah Anda yakin ingin melakukan check-in pada booking ini?</p>
+               
               </ModalBody>
               <ModalFooter>
                 <Button color="danger" variant="light" onPress={onClose}>
                   Close
                 </Button>
                 <Button color="primary" variant="light" onPress={handleChangeStatus}>
-                  Lunasi Booking
+                  Proses Check-In
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
+      <Modal isOpen={isCancelModalOpen} onOpenChange={onCancelOpenChange}>
+        <ModalContent>
+          {(onCloseCancel) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">Pelunasan Booking</ModalHeader>
+              <ModalBody>
+               <p>Apakah Anda yakin ingin membatalkan booking ini?</p>
+               
+              </ModalBody>
+              <ModalFooter>
+                <Button color="danger" variant="light" onPress={onCloseCancel}>
+                  Close
+                </Button>
+                <Button color="primary" variant="light" onPress={handleCancelBooking}>
+                  Cancel Booking
                 </Button>
               </ModalFooter>
             </>
@@ -268,11 +224,12 @@ const DetailBooking = () => {
           </div>
           <>
           <div>
-            <Button className="mt-4 mx-2" color="primary" onClick={() => navigate(`/data/user/tanda-terima/${id}`)} >
-              Show Tanda Terima 
-            </Button>
+            {showCheckIn && ( <Button className="mt-4 mx-2" color="primary" onClick={onOpen} >
+              Proses Check-in
+            </Button>)}
+           
           {!shouldHideButton && (
-            <Button className="mt-4" color="danger" onClick={handleCancelBooking} >
+            <Button className="mt-4" color="danger" onClick={onCancelOpen} >
               Cancel Booking
             </Button>
           )}
@@ -319,7 +276,7 @@ const DetailBooking = () => {
             Status Booking : {dataBooking?.data.status_booking}
           </div>
 
-          {showLunasButton && (
+          {/* {showLunasButton && (
             <Button
               className="mt-4"
               color="primary"
@@ -353,7 +310,7 @@ const DetailBooking = () => {
                 ? 'Bayar DP'
                 : 'Lunasi Booking'}
             </Button>
-          )}
+          )} */}
         </div>
 
         <h3 className="py-2 text-center text-xl font-bold uppercase text-gray-700 dark:text-white ">
@@ -377,7 +334,13 @@ const DetailBooking = () => {
                 <td className="py-4">{item.jumlah}</td>
                 <td className="py-4">Rp{item.sub_total / item.jumlah}</td>
                 <td className="py-4">Rp{item.sub_total}</td>
-               
+                {/* {item.jenis_kamar.fasilitas.map((jenisKamar, jenisKamarIndex) => (
+                  <td className="py-4">{item.jenis_kamar.jenis_kamar}</td>
+                  <td className="py-4">{item.jenis_kamar.jenis_bed}</td>
+                  <td className="py-4">{item.jumlah}</td>
+                  <td className="py-4">Rp{item.sub_total / item.jumlah}</td>
+                  <td className="py-4">Rp{item.sub_total}</td>
+                ))} */}
               </tr>
             ))}
              <tr >
@@ -418,46 +381,28 @@ const DetailBooking = () => {
           <thead>
             <tr>
               <th className="py-2 font-bold uppercase ">Layanan</th>
+              
               <th className="py-2 font-bold uppercase ">Jumlah</th>
               <th className="py-2 font-bold uppercase ">Harga</th>
               <th className="py-2 font-bold uppercase ">Sub Total</th>
             </tr>
           </thead>
           <tbody>
-            {dataFasilitas?.data.map((item, index) => {
-              return (
-                <tr key={index}>
-                  <td className="py-4">{item.nama_layanan}</td>
-                  <td className="py-4">
-                    <div className="flex items-center">
-                      <button
-                        onClick={() =>
-                          handleDecrementLayanan(item.id_fasilitas)
-                        }
-                        className="p-1"
-                      >
-                        <Icon path={mdiMinusCircle} size={1} />
-                      </button>
-                      <span className="mx-2">
-                        {layananList[item.id_fasilitas]}
-                      </span>
-                      <button
-                        onClick={() =>
-                          handleIncrementLayanan(item.id_fasilitas)
-                        }
-                        className="p-1"
-                      >
-                        <Icon path={mdiPlusCircle} size={1} />
-                      </button>
-                    </div>
-                  </td>
-                  <td className="py-4">Rp{item.harga}</td>
-                  <td className="py-4">
-                    Rp{item.harga * layananList[item.id_fasilitas]}
-                  </td>
-                </tr>
-              );
-            })}
+            {dataBooking?.data.detail_booking_layanan.map((item, index) => (
+              <tr key={index}>
+                <td className="py-4">{item.layanan.nama_layanan}</td>
+                <td className="py-4">{item.jumlah}</td>
+                <td className="py-4">Rp{item.layanan.harga}</td>
+                <td className="py-4">Rp{item.sub_total}</td>
+              </tr>
+            ))}
+            <tr >
+                <td className="py-4"></td>
+                <td className="py-4"></td>
+                
+                <td className="py-4 font-bold">Sub Total Layanan</td>
+                <td className="py-4">Rp{totalHargaFasilitas}</td>
+              </tr>
           </tbody>
         </table>
         {dataBooking?.data.invoice && dataBooking?.data.invoice.length > 0 && (

@@ -29,6 +29,14 @@ interface LoginResponse {
   };
 }
 
+interface PegawaiResponse {
+  data: {
+    id_pegawai: number;
+    nama_pegawai: string;
+    id_akun: number;
+  };
+}
+
 // export async function fetchContacts(page = 1): Promise<ApiResponse> {
 //   try {
 //     const response = await axios.get('https://catfact.ninja/fact', {
@@ -162,6 +170,30 @@ export function getCurrentUser(
 ): void {
   axios
     .get<LoginResponse>('http://localhost:3000/api/users/current', {
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
+      const data = response.data;
+      callback(data);
+    })
+    .catch((error) => {
+      const errorResponse = error.response.data as ErrorResponse;
+      const errorMessage = errorResponse.errors;
+      console.error('Error logging in:', errorMessage);
+      callback(undefined, errorMessage);
+    });
+}
+
+export function getCurrentPegawai(
+  token: string,
+  callback: (data?: PegawaiResponse, error?: string) => void
+): void {
+  axios
+    .get<PegawaiResponse>('http://localhost:3000/api/pegawai/current', {
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',

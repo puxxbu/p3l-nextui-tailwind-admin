@@ -138,6 +138,45 @@ export function createBooking(
     });
 }
 
+export function createInvoice(
+  id_booking: string,
+  id_pegawai_fo: number,
+  fasilitas : DetailFasilitas2[],
+  token: string,
+  callback: (data?: InvoiceResponse, error?: string) => void
+): void {
+ 
+
+  axios
+    .post<InvoiceResponse>(
+      `${baseURL}/api/invoice`,
+      {
+        invoice :{
+          id_booking : id_booking,
+          id_pegawai_fo : id_pegawai_fo,
+        },
+        fasilitas : fasilitas
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
+    .then((response) => {
+      const data = response.data;
+      callback(data);
+    })
+    .catch((error) => {
+      const errorResponse = error.response.data as ErrorResponse;
+      const errorMessage = errorResponse.errors;
+      console.error('Error logging in:', errorMessage);
+      callback(undefined, errorMessage);
+    });
+}
+
 export function changeStatusBooking(
   status_booking: string,
   id_booking: string,
@@ -254,6 +293,17 @@ interface BookingData {
   booking: Booking;
   detail_booking: DetailBookingKamar[];
   fasilitas: DetailFasilitas[];
+}
+
+interface InvoiceResponse {
+  data: {
+    id_invoice: string;
+    id_booking: string;
+    tanggal_pelunasan: string;
+    total_pajak: number;
+    jumlah_jaminan: number;
+    total_pembayaran: number;
+  };
 }
 
 interface Booking {

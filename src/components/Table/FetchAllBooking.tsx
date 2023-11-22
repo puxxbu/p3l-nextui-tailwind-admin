@@ -75,9 +75,15 @@ export default function App() {
 
   const pages = data?.paging.total_page || 1;
 
-  function switchAction(key: any, id: string) {
+  function switchAction(key: any, id: string , status: string) {
     switch (key) {
       case 'view':
+
+        if(status === "Check Out"){
+          navigate(`/data/user/detail-invoice/${id}`);
+          break;
+        }
+
         navigate(`/data/user/detail-history/${id}`);
         break;
 
@@ -163,7 +169,8 @@ export default function App() {
                                   onAction={(key) =>
                                     switchAction(
                                       key,
-                                      getKeyValue(item, 'id_booking')
+                                      getKeyValue(item, 'id_booking'),
+                                      item.status_booking
                                     )
                                   }
                                 >

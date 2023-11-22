@@ -50,6 +50,7 @@ import TandaTerima from './pages/Form/Detail/TandaTerima';
 import TabelBookingFO from './pages/Data/TabelBookingFO';
 import TabelCheckIn from './pages/Data/TabelCheckIn';
 import DetailBooking from './pages/Form/Detail/DetailBooking';
+import DetailCheckIn from './pages/Form/Detail/DetailCheckIn';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -85,10 +86,12 @@ function App() {
             path="/user/detail-history/:id"
             element={<DetailRiwayatUser />}
           />
+
           <Route
-            path="/user/tanda-terima/:id"
-            element={<TandaTerimaUser />}
+            path="/user/detail-invoice/:id"
+            element={<DetailRiwayatUser />}
           />
+          <Route path="/user/tanda-terima/:id" element={<TandaTerimaUser />} />
           <Route path="/booking" element={<BookingUser />} />
         </Route>
         //public routes //TODO add RequireAuth if user alr logged in
@@ -138,12 +141,13 @@ function App() {
               path="/data/user/detail-history/:id"
               element={<DetailRiwayat />}
             />
+
             <Route
               path="/data/user/tanda-terima/:id"
               element={<TandaTerima />}
             />
             <Route
-            path="/booking/group/browse"
+              path="/booking/group/browse"
               element={<BrowseKamarGroup />}
             />
             <Route
@@ -158,6 +162,10 @@ function App() {
             <Route
               path="/fo/user/detail-booking/:id"
               element={<DetailBooking />}
+            />
+            <Route
+              path="/fo/user/detail-booking/check-in/:id"
+              element={<DetailCheckIn />}
             />
           </Route>
 
