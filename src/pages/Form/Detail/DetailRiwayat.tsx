@@ -158,6 +158,7 @@ const DetailRiwayat = () => {
           toast.error(error || 'Terjadi kesalahan');
         } else {
           toast.success('Berhasil membatalkan booking');
+          onCloseCancel();
         }
       }
     );

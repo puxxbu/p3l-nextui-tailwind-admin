@@ -99,7 +99,7 @@ const BrowseKamarGroup = () => {
     isLoading,
   } = useQuery(
     ['listKamarTersedia', value.startDate, filterValue], // Memasukkan filterValue sebagai bagian dari query key
-    () => fetchKamarTersedia(100, value.startDate,value.endDate, filterValue),
+    () => fetchKamarTersedia(100, value.startDate, value.endDate, filterValue),
     {
       keepPreviousData: true,
       staleTime: 5000,
@@ -138,10 +138,19 @@ const BrowseKamarGroup = () => {
   //   }
   // }, [statusCustomer, dataCustomer]);
 
+  const handleButtonClick = () => {
+    navigate('/booking/group');
+  };
+
   return (
     <DefaultLayout>
       <section>
         <Toaster />
+        <div className="mx-auto my-5 max-w-5xl">
+          <Button color="primary" onClick={handleButtonClick}>
+            Lihat Pesanan Terkini
+          </Button>
+        </div>
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <div className=" border-gray-800  ">
             <div className="mx-auto max-w-6xl px-4 sm:px-6">

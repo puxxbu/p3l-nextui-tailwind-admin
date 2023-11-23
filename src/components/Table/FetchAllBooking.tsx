@@ -75,14 +75,13 @@ export default function App() {
 
   const pages = data?.paging.total_page || 1;
 
-  function switchAction(key: any, id: string , status: string) {
+  function switchAction(key: any, id: string, status: string) {
     switch (key) {
       case 'view':
-
-        if(status === "Check Out"){
-          navigate(`/data/user/detail-invoice/${id}`);
-          break;
-        }
+        // if(status === "Check Out"){
+        //   navigate(`/data/user/detail-invoice/${id}`);
+        //   break;
+        // }
 
         navigate(`/data/user/detail-history/${id}`);
         break;
@@ -185,7 +184,7 @@ export default function App() {
                             );
 
                           case 'nama_pegawai_fo':
-                            return item.customer.nama
+                            return item.customer.nama;
 
                           case 'tanggal_check_in':
                           case 'tanggal_check_out':

@@ -141,21 +141,21 @@ export function createBooking(
 export function createInvoice(
   id_booking: string,
   id_pegawai_fo: number,
-  fasilitas : DetailFasilitas2[],
+  fasilitas: DetailFasilitas2[],
   token: string,
   callback: (data?: InvoiceResponse, error?: string) => void
 ): void {
- 
+  console.log(id_pegawai_fo);
 
   axios
     .post<InvoiceResponse>(
       `${baseURL}/api/invoice`,
       {
-        invoice :{
-          id_booking : id_booking,
-          id_pegawai_fo : id_pegawai_fo,
+        invoice: {
+          id_booking: id_booking,
+          id_pegawai_fo: id_pegawai_fo,
         },
-        fasilitas : fasilitas
+        fasilitas: fasilitas,
       },
       {
         headers: {
@@ -202,7 +202,6 @@ export function changeStatusBooking(
       callback(data);
     })
     .catch((error) => {
-     
       const errorResponse = error.response.data as ErrorResponse;
       const errorMessage = errorResponse.errors;
       console.error('Error logging in:', errorMessage);
@@ -222,7 +221,7 @@ export function updateNoRekening(
       `${baseURL}/api/booking/no-rekening/${id_booking}`,
       {
         status_booking: status_booking,
-        no_rekening : no_rekening
+        no_rekening: no_rekening,
       },
       {
         headers: {
@@ -253,9 +252,7 @@ export function cancelBooking(
   axios
     .put<BookingApiResponse>(
       `${baseURL}/api/booking/cancel/${id_booking}`,
-      {
-       
-      },
+      {},
       {
         headers: {
           'Content-Type': 'application/json',

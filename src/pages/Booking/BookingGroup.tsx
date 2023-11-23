@@ -286,7 +286,7 @@ const BookingGroup = () => {
       tamu_dewasa: tamuDewasa,
       tamu_anak: tamuAnak,
       jenis_booking: 'Group',
-      status_booking: 'Belum Dibayar',
+      status_booking: 'Booked',
       no_rekening: nomorRekening,
     };
     const detailBookingKamar: DetailBookingKamar[] = [];
@@ -337,8 +337,9 @@ const BookingGroup = () => {
         localStorage.removeItem('tanggal_check_in');
         localStorage.removeItem('tanggal_check_out');
 
-        navigate(`/user/detail-history/${data?.data.id_booking}}`);
-        // navigate('/booking/success');
+        setTimeout(() => {
+          navigate(`/data/user/detail-history/${data?.data.id_booking}`);
+        }, 1000);
       }
     });
 
@@ -359,7 +360,10 @@ const BookingGroup = () => {
     if (statusCustomer === 'success' && dataCustomer) {
       setCustomerGroup(dataCustomer.data);
     }
-  }, []);
+  }, [dataCustomer]);
+  const handleButtonClick = () => {
+    navigate('/booking/group/browse');
+  };
 
   return (
     <DefaultLayout>
@@ -371,6 +375,12 @@ const BookingGroup = () => {
         title={modalTitle}
         content={error}
       />
+      <div className="mx-auto my-5 max-w-5xl">
+        <Button color="primary" onClick={handleButtonClick}>
+          Pesan Kamar Lagi
+        </Button>
+      </div>
+
       <div className="mx-auto max-w-5xl rounded-lg bg-white px-8 py-10 shadow-lg dark:bg-boxdark">
         <div className="mb-8 flex items-center justify-between">
           <div className="flex items-center">

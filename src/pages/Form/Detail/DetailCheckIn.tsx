@@ -73,6 +73,15 @@ const DetailCheckIn = () => {
     setError('');
   };
 
+  getCurrentPegawai(auth.token, (data, error) => {
+    if (error) {
+      console.log('data :' + error);
+    } else {
+      console.log(data?.data.id_pegawai);
+      setPegawaiID(data?.data.id_pegawai || 0);
+    }
+  });
+
   const { status: statusBooking, data: dataBooking } = useQuery(
     ['detailBooking'],
     () => fetchDetailBooking(id || '0', auth.token)
@@ -84,7 +93,7 @@ const DetailCheckIn = () => {
     refetch,
     isLoading,
   } = useQuery(
-    ['fasilitas'], // Memasukkan filterValue sebagai bagian dari query key
+    ['fasilitasSize'], // Memasukkan filterValue sebagai bagian dari query key
     () => fetchFasilitasSize(100, '', auth.token)
     // Menambahkan opsi enabled: false
   );
@@ -113,15 +122,6 @@ const DetailCheckIn = () => {
   }
 
   const handleCheckOut = async () => {
-    getCurrentPegawai(auth.token, (data, error) => {
-      if (error) {
-        console.log('data :' + error);
-      } else {
-        console.log(data?.data.id_pegawai);
-        setPegawaiID(data?.data.id_pegawai || 0);
-      }
-    });
-
     const detailFasilitas: DetailFasilitas[] = [];
 
     dataFasilitas?.data.forEach((item: any) => {
@@ -134,7 +134,7 @@ const DetailCheckIn = () => {
       }
     });
 
-    console.log(detailFasilitas);
+    console.log(pegawaiID);
 
     createInvoice(
       dataBooking?.data.id_booking || '0',
@@ -146,7 +146,7 @@ const DetailCheckIn = () => {
           toast.error(error || 'Terjadi kesalahan');
         } else {
           console.log(data);
-          navigate;
+          navigate(`/data/user/detail-history/${id}`);
         }
       }
     );
