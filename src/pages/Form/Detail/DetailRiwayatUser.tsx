@@ -283,7 +283,7 @@ const DetailRiwayatUser = () => {
               <Button
                 className="mx-2 mt-4"
                 color="primary"
-                onClick={() => navigate(`/data/user/tanda-terima/${id}`)}
+                onClick={() => navigate(`/user/tanda-terima/${id}`)}
               >
                 Show Tanda Terima
               </Button>

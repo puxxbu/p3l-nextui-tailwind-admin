@@ -1,3 +1,5 @@
+import Breadcrumb from '../../../components/Breadcrumb';
+import DefaultLayout from '../../../layout/DefaultLayout';
 
 import LogoGah from '../../../images/logo/logo-gah2.png';
 
@@ -10,17 +12,24 @@ import {
   ModalFooter,
   ModalHeader,
   Selection,
-  useDisclosure
+  useDisclosure,
 } from '@nextui-org/react';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useRef, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { useNavigate, useParams } from 'react-router-dom';
-import { cancelBooking, changeStatusBooking, updateNoRekening } from 'src/hooks/booking/bookingController';
+import {
+  cancelBooking,
+  changeStatusBooking,
+  updateNoRekening,
+} from 'src/hooks/booking/bookingController';
 import { fetchDetailBooking } from 'src/hooks/sampleData';
 import useAuth from 'src/hooks/useAuth';
 import { formatDate } from 'src/utils';
 
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
+import DarkModeSwitcher from 'src/components/DarkModeSwitcher';
 
 import { useReactToPrint } from 'react-to-print';
 import MainLayout from 'src/layout/MainLayout';
@@ -35,7 +44,7 @@ interface dataBooking {
   nama_institusi: string;
 }
 
-const TandaTerima = () => {
+const TandaTerimaUser = () => {
   const { auth } = useAuth();
 
   const { id } = useParams<{ id: string }>();
@@ -48,8 +57,11 @@ const TandaTerima = () => {
   const [modalTitle, setModalTitle] = useState('');
   const [dataKamar, setDataKamar] = useState<any[]>([]);
   const [nomorRekening, setNomorRekening] = useState('');
+  const [totalHargaFasilitas, setTotalHargaFasilitas] = useState(0);
+  const [deposit, setDeposit] = useState(300000);
 
   const navigate = useNavigate();
+  const [total, setTotal] = useState(0);
 
   const handleChange = (event: any) => {
     const inputValue = event.target.value;
@@ -57,30 +69,9 @@ const TandaTerima = () => {
     setError('');
   };
 
-  // const downloadPdf = () => {
-  //   if (pdfRef.current) {
-  //     const input = pdfRef.current;
-  //     html2canvas(input).then((canvas) => {
-  //       const imgData = canvas.toDataURL('image/png');
-  //       const pdf = new jsPDF('p', 'mm', 'a4');
-  
-  //       // Mengubah warna latar belakang PDF
-
-  //       pdf.setFillColor(255, 255, 255);
-  //        // Ubah nilai RGB sesuai dengan warna yang Anda inginkan
-  //       pdf.rect(0, 0, pdf.internal.pageSize.getWidth(), pdf.internal.pageSize.getHeight(), 'F');
-  
-  //       const imgProps = pdf.getImageProperties(imgData);
-  //       const pdfWidth = pdf.internal.pageSize.getWidth();
-  //       const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-  //       pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-  //       pdf.save('tanda-terima.pdf');
-  //     });
-  //   }
-  // }
   const downloadPdf = useReactToPrint({
     content: () => pdfRef.current,
-  })
+  });
 
   const { status: statusBooking, data: dataBooking } = useQuery(
     ['detailBooking'],
@@ -89,6 +80,11 @@ const TandaTerima = () => {
 
   let isRefundable = false;
   const tanggalCheckIn = dataBooking?.data.tanggal_check_in;
+
+  let totalFasilitas = 0;
+  useEffect(() => {
+    setTotalHargaFasilitas(totalFasilitas);
+  });
 
   if (tanggalCheckIn) {
     const checkInDate = new Date(tanggalCheckIn);
@@ -109,26 +105,32 @@ const TandaTerima = () => {
       isRefundable = true;
     }
   }
-  
 
   const handleChangeStatus = async () => {
-
-
-    if (dataBooking?.data.no_rekening === '' || dataBooking?.data.no_rekening === null ) {
+    if (
+      dataBooking?.data.no_rekening === '' ||
+      dataBooking?.data.no_rekening === null
+    ) {
       const regex = /^\d{8}$/;
       if (!regex.test(nomorRekening)) {
         toast.error('Nomor rekening harus terdiri dari 8 digit angka');
-      }else{
-        updateNoRekening('Jaminan Sudah Dibayar',dataBooking?.data.id_booking || '0',nomorRekening,auth.token,(data, error) => {
-          if (error) {
-            toast.error(error || 'Terjadi kesalahan');
-          } else {
-            toast.success('Berhasil mengubah status booking');
-            onClose();
+      } else {
+        updateNoRekening(
+          'Jaminan Sudah Dibayar',
+          dataBooking?.data.id_booking || '0',
+          nomorRekening,
+          auth.token,
+          (data, error) => {
+            if (error) {
+              toast.error(error || 'Terjadi kesalahan');
+            } else {
+              toast.success('Berhasil mengubah status booking');
+              onClose();
+            }
           }
-        })
+        );
       }
-    }else{
+    } else {
       changeStatusBooking(
         'Jaminan Sudah Dibayar',
         dataBooking?.data.id_booking || '0',
@@ -140,36 +142,41 @@ const TandaTerima = () => {
             toast.success('Berhasil mengubah status booking');
           }
         }
-      )
+      );
       onClose();
     }
-    
-
-    
-    
-  }
+  };
 
   const handleCancelBooking = async () => {
-
-    cancelBooking(dataBooking?.data.id_booking || '0', auth.token, (data, error) => { 
-      if(error){
-        toast.error(error || 'Terjadi kesalahan');
-      }else{
-        toast.success('Berhasil membatalkan booking');
+    cancelBooking(
+      dataBooking?.data.id_booking || '0',
+      auth.token,
+      (data, error) => {
+        if (error) {
+          toast.error(error || 'Terjadi kesalahan');
+        } else {
+          toast.success('Berhasil membatalkan booking');
+        }
       }
-    })
-  }
+    );
+  };
 
   useEffect(() => {
     if (statusBooking === 'success' && dataBooking) {
       // setData(dataBooking.data);
       setDataKamar([]);
+      let total = 0;
       dataBooking.data.detail_booking_kamar.map((item: any) => {
+        total += item.sub_total;
         item.detail_ketersediaan_kamar.map((item2: any) => {
           console.log(item2);
           setDataKamar((prevDataKamar) => [...prevDataKamar, item2]);
         });
       });
+      if (dataBooking.data.status_booking === 'Sudah 50% Dibayar') {
+        total = total / 2;
+      }
+      setTotal(total);
       console.log(dataKamar);
     }
 
@@ -179,42 +186,49 @@ const TandaTerima = () => {
     }
   }, [statusBooking, dataBooking]);
 
-  
-  console.log(`${dataBooking?.data.jenis_booking} ${dataBooking?.data.status_booking}`);
+  console.log(
+    `${dataBooking?.data.jenis_booking} ${dataBooking?.data.status_booking}`
+  );
   return (
     <MainLayout>
-     
       <div className="flex justify-center">
-      <Button className="m-3" color="primary" onClick={downloadPdf} >
-              Cetak PDF
-            </Button>
-    </div>
-      
+        <Button className="m-3" color="primary" onClick={downloadPdf}>
+          Cetak PDF
+        </Button>
+      </div>
+
       <Toaster />
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">Pelunasan Booking</ModalHeader>
+              <ModalHeader className="flex flex-col gap-1">
+                Pelunasan Booking
+              </ModalHeader>
               <ModalBody>
-               <p>Apakah Anda yakin ingin melunasi booking ini?</p>
-               {dataBooking?.data.no_rekening === '' || dataBooking?.data.no_rekening === null  && (
-                <Input
-                isRequired
-                className="mt-4 w-100"
-                type="text"
-                value={nomorRekening}
-                onChange={handleChange}
-                label="Nomor Rekening"
-                placeholder="Masukkan Nomor Rekening"
-              />
-               )}
+                <p>Apakah Anda yakin ingin melunasi booking ini?</p>
+                {dataBooking?.data.no_rekening === '' ||
+                  (dataBooking?.data.no_rekening === null && (
+                    <Input
+                      isRequired
+                      className="mt-4 w-100"
+                      type="text"
+                      value={nomorRekening}
+                      onChange={handleChange}
+                      label="Nomor Rekening"
+                      placeholder="Masukkan Nomor Rekening"
+                    />
+                  ))}
               </ModalBody>
               <ModalFooter>
                 <Button color="danger" variant="light" onPress={onClose}>
                   Close
                 </Button>
-                <Button color="primary" variant="light" onPress={handleChangeStatus}>
+                <Button
+                  color="primary"
+                  variant="light"
+                  onPress={handleChangeStatus}
+                >
                   Lunasi Booking
                 </Button>
               </ModalFooter>
@@ -222,38 +236,34 @@ const TandaTerima = () => {
           )}
         </ModalContent>
       </Modal>
-      <div  className="mx-auto max-w-5xl  bg-white px-8 py-10 shadow-lg dark:bg-boxdark" ref={pdfRef}>
+      <div
+        className="mx-auto max-w-5xl  bg-white px-8 py-10 shadow-lg dark:bg-boxdark"
+        ref={pdfRef}
+      >
         <div className="mb-8 flex items-center justify-between">
           <div className="flex items-center">
-          <img
-              src={LogoGah}
-              alt="Logo Hotel"
-              className="h-auto w-32"
-            />
-            
+            <img src={LogoGah} alt="Logo Hotel" className="h-auto w-32" />
           </div>
           <>
-          
-          {/* {!shouldHideButton && (
+            {/* {!shouldHideButton && (
             <Button className="mt-4" color="danger" onClick={handleCancelBooking} >
               Cancel Booking
             </Button>
           )} */}
           </>
-          
         </div>
         {dataBooking?.data.pegawai_2 !== null && (
-            <div className="text-gray-700 dark:text-white mb-4 border-b-2 pb-4 border-gray-300">
-              <div className="mb-2 text-xl font-bold">Detail Booking</div>
-              <div className="text-sm">
+          <div className="mb-4 border-b-2 border-gray-300 pb-4 text-gray-700 dark:text-white">
+            <div className="mb-2 text-xl font-bold">Detail Booking</div>
+            <div className="text-sm">
               Date: {formatDate(dataBooking?.data.tanggal_booking || '')}
-              </div>
-              <div className="text-sm">
-                PIC: {dataBooking?.data.pegawai_1?.nama_pegawai || ''}
-              </div>
             </div>
-          )}
-        
+            <div className="text-sm">
+              PIC: {dataBooking?.data.pegawai_1?.nama_pegawai || ''}
+            </div>
+          </div>
+        )}
+
         <div className="mb-8 border-b-2 border-gray-300 pb-8 text-gray-700 dark:text-white">
           <h2 className="mb-4 text-2xl font-bold">
             ID Booking : {dataBooking?.data.id_booking}
@@ -338,15 +348,19 @@ const TandaTerima = () => {
                 <td className="py-4">{item.jumlah}</td>
                 <td className="py-4">Rp{item.sub_total / item.jumlah}</td>
                 <td className="py-4">Rp{item.sub_total}</td>
-                {/* {item.jenis_kamar.fasilitas.map((jenisKamar, jenisKamarIndex) => (
-                  <td className="py-4">{item.jenis_kamar.jenis_kamar}</td>
-                  <td className="py-4">{item.jenis_kamar.jenis_bed}</td>
-                  <td className="py-4">{item.jumlah}</td>
-                  <td className="py-4">Rp{item.sub_total / item.jumlah}</td>
-                  <td className="py-4">Rp{item.sub_total}</td>
-                ))} */}
               </tr>
             ))}
+            <tr>
+              <td className="py-4"></td>
+              <td className="py-4"></td>
+              <td className="py-4"></td>
+              <td className="py-4 font-bold">
+                {dataBooking?.data.jenis_booking === 'Group'
+                  ? 'Jumlah Jaminan'
+                  : 'Subtotal'}
+              </td>
+              <td className="py-4">Rp{total}</td>
+            </tr>
           </tbody>
         </table>
         <h3 className="py-2 text-center text-xl font-bold uppercase text-gray-700 dark:text-white ">
@@ -384,30 +398,60 @@ const TandaTerima = () => {
             </tr>
           </thead>
           <tbody>
-            {dataBooking?.data.detail_booking_layanan.map((item, index) => (
-              <tr key={index}>
-                <td className="py-4">{item.layanan.nama_layanan}</td>
-                <td className="py-4">{formatDate(item.tanggal)}</td>
-                <td className="py-4">{item.jumlah}</td>
-                <td className="py-4">Rp{item.layanan.harga}</td>
-                <td className="py-4">Rp{item.sub_total}</td>
-              </tr>
-            ))}
+            {dataBooking?.data.detail_booking_layanan.map((item, index) => {
+              totalFasilitas += item.sub_total;
+              return (
+                <tr key={index}>
+                  <td className="py-4">{item.layanan.nama_layanan}</td>
+                  <td className="py-4">{formatDate(item.tanggal)}</td>
+                  <td className="py-4">{item.jumlah}</td>
+                  <td className="py-4">Rp{item.layanan.harga}</td>
+                  <td className="py-4">Rp{item.sub_total}</td>
+                </tr>
+              );
+            })}
+            <tr>
+              <td className="py-4"></td>
+              <td className="py-4"></td>
+              <td className="py-4"></td>
+              <td className="py-4"></td>
+              <td className="py-4 font-bold">Rp{totalHargaFasilitas}</td>
+            </tr>
           </tbody>
         </table>
         {dataBooking?.data.invoice && dataBooking?.data.invoice.length > 0 && (
-          <div className="mb-8 flex justify-end text-gray-700 dark:text-white">
-            <div className="mr-2">Pajak:</div>
-            <div className="">Rp{dataBooking?.data.invoice[0].total_pajak}</div>
+          <div className="mb-8 flex justify-end text-2xl text-gray-700 dark:text-white">
+            <div className="mr-2 font-bold">Pajak:</div>
+            <div className="">Rp {dataBooking.data.invoice[0].total_pajak}</div>
           </div>
         )}
 
         {dataBooking?.data.invoice && dataBooking?.data.invoice.length > 0 && (
           <div className="mb-8 flex justify-end text-gray-700 dark:text-white">
-            <div className="mr-2 ">Total:</div>
-            <div className="text-xl font-bold ">
-              Rp{dataBooking?.data.invoice[0].total_pembayaran}
+            <div className="mb-8 flex justify-end text-2xl text-gray-700 dark:text-white">
+              <div className="mr-2 font-bold">TOTAL:</div>
+              <div className="">
+                Rp {dataBooking.data.invoice[0].total_pembayaran}
+              </div>
             </div>
+          </div>
+        )}
+        {dataBooking?.data.invoice && dataBooking?.data.invoice.length > 0 && (
+          <div className="mb-8 flex justify-end text-2xl text-gray-700 dark:text-white">
+            <div className="mr-2 font-bold">Jaminan:</div>
+            <div className="">Rp {total}</div>
+          </div>
+        )}
+        {dataBooking?.data.invoice && dataBooking?.data.invoice.length > 0 && (
+          <div className="mb-8 flex justify-end text-2xl text-gray-700 dark:text-white">
+            <div className="mr-2 font-bold">Deposit:</div>
+            <div className="">Rp {deposit}</div>
+          </div>
+        )}
+        {dataBooking?.data.invoice && dataBooking?.data.invoice.length > 0 && (
+          <div className="mb-8 flex justify-end text-2xl text-gray-700 dark:text-white">
+            <div className="mr-2 font-bold">Cash:</div>
+            <div className="">Rp {totalHargaFasilitas - deposit}</div>
           </div>
         )}
 
@@ -427,4 +471,4 @@ const TandaTerima = () => {
   );
 };
 
-export default TandaTerima;
+export default TandaTerimaUser;
