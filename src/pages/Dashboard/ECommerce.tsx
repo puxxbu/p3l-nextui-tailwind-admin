@@ -4,7 +4,7 @@ import CardThree from '../../components/Card/CardThree.tsx';
 import CardTwo from '../../components/Card/CardTwo.tsx';
 import ChartOne from '../../components/Chart/ChartOne.tsx';
 import ChartThree from '../../components/Chart/ChartThree.tsx';
-import ChartTwo from '../../components/Chart/ChartTwo.tsx';
+import ChartTwo from '../../components/Chart/ChartLaporanDua.tsx';
 import ChatCard from '../../components/Chart/ChatCard.tsx';
 import MapOne from '../../components/MapOne.tsx';
 import TableOne from '../../components/Table/TableOne.tsx';

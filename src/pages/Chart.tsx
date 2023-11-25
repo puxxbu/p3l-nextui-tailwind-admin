@@ -2,7 +2,7 @@ import Breadcrumb from '../components/Breadcrumb.tsx';
 import ChartFour from '../components/Chart/ChartFour.tsx';
 import ChartOne from '../components/Chart/ChartOne.tsx';
 import ChartThree from '../components/Chart/ChartThree.tsx';
-import ChartTwo from '../components/Chart/ChartTwo.tsx';
+import ChartTwo from '../components/Chart/ChartLaporanDua.tsx';
 import DefaultLayout from '../layout/DefaultLayout';
 
 const Chart = () => {
