@@ -54,6 +54,7 @@ import DetailCheckIn from './pages/Form/Detail/DetailCheckIn';
 import LaporanDua from './pages/Laporan/LaporanAll';
 import CetakLaporanDua from './pages/Laporan/CetakLaporanDua';
 import CetakLaporanTiga from './pages/Laporan/CetakLaporanTiga';
+import CetakLaporanSatu from './pages/Laporan/CetakLaporanSatu';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -174,6 +175,11 @@ function App() {
 
           <Route element={<RequireAuth allowedRoles={[1002, 1003, 1004]} />}>
             <Route path="/laporan/all" element={<LaporanDua />} />
+
+            <Route
+              path="/laporan/customer-baru/print/:tahun"
+              element={<CetakLaporanSatu />}
+            />
             <Route
               path="/laporan/pendapatan-bulanan/print/:tahun"
               element={<CetakLaporanDua />}

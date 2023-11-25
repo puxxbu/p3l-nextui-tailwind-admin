@@ -1,19 +1,10 @@
-import Breadcrumb from '../../components/Breadcrumb';
-import TableOne from '../../components/Table/TableOne';
-import TableThree from '../../components/Table/TableThree';
-import TableTwo from '../../components/Table/TableTwo';
-import DefaultLayout from '../../layout/DefaultLayout';
 import {
-  DataTable,
-  FetchAllBooking,
-  FetchCustomerTable,
-  FetchKamarTable,
-} from 'Components';
-import { Button } from '@nextui-org/react';
-import ChartOne from 'src/components/Chart/ChartOne';
-import ChartTwo from 'src/components/Chart/ChartLaporanDua';
-import { useNavigate } from 'react-router-dom';
+  default as ChartLaporanDua,
+  default as ChartTwo,
+} from 'src/components/Chart/ChartLaporanDua';
 import ChartLaporanTiga from 'src/components/Chart/ChartLaporanTiga';
+import DefaultLayout from '../../layout/DefaultLayout';
+import ChartLaporanSatu from 'src/components/Chart/ChartLaporanSatu';
 const LaporanAll = () => {
   return (
     <DefaultLayout>
@@ -22,7 +13,7 @@ const LaporanAll = () => {
           Laporan Customer Baru
         </h2>
         <div className="flex flex-col gap-10">
-          <ChartTwo />
+          <ChartLaporanSatu />
         </div>
       </div>
       <div className="mt-8">
@@ -30,7 +21,7 @@ const LaporanAll = () => {
           Laporan Pendapatan Perbulan
         </h2>
         <div className="flex flex-col gap-10">
-          <ChartTwo />
+          <ChartLaporanDua />
         </div>
       </div>
       <div className="mt-8">

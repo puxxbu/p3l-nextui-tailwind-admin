@@ -2,6 +2,17 @@ import axios from 'axios';
 
 const baseURL = 'http://localhost:3000';
 
+interface LaporanSatuResponse {
+  data: {
+    laporan: {
+      nama_bulan: string;
+      customer_baru: number;
+    }[];
+    tahun: number;
+    total: number;
+  };
+}
+
 interface LaporanDuaResponse {
   data: {
     laporan: {
@@ -28,6 +39,25 @@ interface LaporanTigaResponse {
   };
 }
 
+export async function fetchLaporanSatu(
+  tahun = new Date().getFullYear(),
+  token: string
+): Promise<LaporanSatuResponse> {
+  try {
+    let url = `${baseURL}/api/laporan/customer-baru?tahun=${tahun}`;
+
+    const response = await axios.get(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.data as LaporanSatuResponse;
+  } catch (error) {
+    console.error('Error fetching contacts:', error);
+    throw error;
+  }
+}
 export async function fetchLaporanDua(
   tahun = new Date().getFullYear(),
   token: string
