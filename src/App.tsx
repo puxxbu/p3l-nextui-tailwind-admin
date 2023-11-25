@@ -51,8 +51,9 @@ import TabelBookingFO from './pages/Data/TabelBookingFO';
 import TabelCheckIn from './pages/Data/TabelCheckIn';
 import DetailBooking from './pages/Form/Detail/DetailBooking';
 import DetailCheckIn from './pages/Form/Detail/DetailCheckIn';
-import LaporanDua from './pages/Laporan/LaporanDua';
+import LaporanDua from './pages/Laporan/LaporanAll';
 import CetakLaporanDua from './pages/Laporan/CetakLaporanDua';
+import CetakLaporanTiga from './pages/Laporan/CetakLaporanTiga';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -172,13 +173,14 @@ function App() {
           </Route>
 
           <Route element={<RequireAuth allowedRoles={[1002, 1003, 1004]} />}>
-            <Route
-              path="/laporan/pendapatan-bulanan"
-              element={<LaporanDua />}
-            />
+            <Route path="/laporan/all" element={<LaporanDua />} />
             <Route
               path="/laporan/pendapatan-bulanan/print/:tahun"
               element={<CetakLaporanDua />}
+            />
+            <Route
+              path="/laporan/jumlah-tamu/print/:tahun/:bulan"
+              element={<CetakLaporanTiga />}
             />
           </Route>
 

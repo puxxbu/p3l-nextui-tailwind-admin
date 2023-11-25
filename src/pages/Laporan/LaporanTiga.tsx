@@ -13,16 +13,16 @@ import { Button } from '@nextui-org/react';
 import ChartOne from 'src/components/Chart/ChartOne';
 import ChartTwo from 'src/components/Chart/ChartLaporanDua';
 import { useNavigate } from 'react-router-dom';
-const LaporanDua = () => {
+import ChartLaporanDua from 'src/components/Chart/ChartLaporanDua';
+const LaporanTiga = () => {
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Laporan Pendapatan Bulanan" />
-
       <div className="flex flex-col gap-10">
-        <ChartTwo />
+        <ChartLaporanDua />
       </div>
     </DefaultLayout>
   );
 };
 
-export default LaporanDua;
+export default LaporanTiga;

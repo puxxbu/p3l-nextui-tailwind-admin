@@ -10,23 +10,48 @@ import { useParams } from 'react-router-dom';
 import useAuth from 'src/hooks/useAuth';
 
 import { useReactToPrint } from 'react-to-print';
+import {
+  fetchLaporanDua,
+  fetchLaporanTiga,
+} from 'src/hooks/laporan/laporanController';
+import { useQuery } from '@tanstack/react-query';
 
-interface dataBooking {
-  nama: string;
-  nomor_identitas: string;
-  nomor_telepon: string;
-  email: string;
-  alamat: string;
-  tanggal_dibuat: string;
-  nama_institusi: string;
-}
+const namaBulan = [
+  'Januari',
+  'Februari',
+  'Maret',
+  'April',
+  'Mei',
+  'Juni',
+  'Juli',
+  'Agustus',
+  'September',
+  'Oktober',
+  'November',
+  'Desember',
+];
 
-const CetakLaporanDua = () => {
+const CetakLaporanTiga = () => {
   const { auth } = useAuth();
 
-  const { id } = useParams<{ id: string }>();
+  const { tahun } = useParams<{ tahun: string }>();
+  const { bulan } = useParams<{ bulan: string }>();
 
   const pdfRef = useRef<HTMLDivElement | null>(null);
+
+  const { status, data, error, refetch, isLoading } = useQuery(
+    ['laporanDuaCetak'], // Memasukkan filterValue sebagai bagian dari query key
+    () =>
+      fetchLaporanTiga(
+        parseInt(tahun || '2023'),
+        parseInt(bulan || '11'),
+        auth.token
+      ),
+    {
+      keepPreviousData: true,
+      staleTime: 5000,
+    }
+  );
 
   const downloadPdf = useReactToPrint({
     content: () => pdfRef.current,
@@ -60,110 +85,83 @@ const CetakLaporanDua = () => {
           </>
         </div>
 
-        <div className="mb-8 border-b-2 border-gray-300 pb-8 text-gray-700 dark:text-white">
+        <div className="mb-8 border-b-2 border-black pb-8 text-gray-700 dark:border-gray-300  dark:text-white">
           <h2 className="mb-4 text-2xl font-bold">
             Laporan Pendapatan Bulanan
           </h2>
-          <div className="mb-2 ">Tahun :</div>
-          <div className="mb-2 ">Bulan :</div>
+          <div className="mb-2 ">Tahun : {tahun}</div>
+          <div className="mb-2 ">
+            Bulan : {namaBulan[parseInt(bulan || '0') - 1]}
+          </div>
+          <div className="mb-2 ">
+            Dicetak tanggal : {new Date().toLocaleDateString('id-ID')}
+          </div>
         </div>
 
-        <h3 className="py-2 text-center text-xl font-bold uppercase text-gray-700 dark:text-white ">
+        {/* <h3 className="py-2 text-center text-xl font-bold uppercase text-gray-700 dark:text-white ">
           Kamar
-        </h3>
-        <table className="mb-8 w-full border border-gray-300 text-left  text-gray-700 dark:text-white">
+        </h3> */}
+        <table className="mb-8 w-full  border-black text-left  text-gray-700 dark:border-gray-300 dark:text-white">
           <thead>
             <tr>
-              <th className="border border-gray-300 py-2 font-bold uppercase  ">
+              <th className="border-2 border-black px-2 py-3 font-bold uppercase dark:border-gray-300  ">
+                No
+              </th>
+              <th className="border-2 border-black px-2 py-3 font-bold uppercase dark:border-gray-300  ">
                 Jenis Kamar
               </th>
-              <th className="border border-gray-300 py-2 font-bold uppercase ">
-                Bed
+              <th className="border-2 border-black px-2 py-3 font-bold uppercase dark:border-gray-300  ">
+                Grup
               </th>
-              <th className="border border-gray-300 py-2 font-bold uppercase ">
-                Jumlah
+              <th className="border-2 border-black px-2 py-3 font-bold uppercase dark:border-gray-300  ">
+                Personal
               </th>
-              <th className="border border-gray-300 py-2 font-bold uppercase ">
-                Harga
-              </th>
-              <th className="border border-gray-300 py-2 font-bold uppercase ">
-                Subtotal
+              <th className="border-2 border-black px-2 py-3 font-bold uppercase dark:border-gray-300  ">
+                Total
               </th>
             </tr>
           </thead>
           <tbody>
+            {data?.data.laporan.map((item: any, index: any) => (
+              <tr key={index}>
+                <td className="border-2 border-black  px-2 py-3 font-semibold dark:border-gray-300">
+                  {index + 1}
+                </td>
+                <td className="border-2 border-black px-2 py-3 font-semibold dark:border-gray-300">
+                  {item.jenis_kamar}
+                </td>
+                <td className="border-2 border-black px-2 py-3 font-semibold dark:border-gray-300">
+                  {item.Group}
+                </td>
+                <td className="border-2 border-black px-2 py-3 font-semibold dark:border-gray-300">
+                  {item.Personal}
+                </td>
+                <td className="border-2 border-black px-2 py-3 font-semibold dark:border-gray-300">
+                  {item.Total}
+                </td>
+              </tr>
+            ))}
             <tr>
-              <td className="border border-gray-300 py-4">Tes Tes</td>
-              <td className="border border-gray-300 py-4">Tes Tes</td>
-              <td className="border border-gray-300 py-4">Tes Tes</td>
-              <td className="border border-gray-300 py-4">Tes Tes</td>
-              <td className="border border-gray-300 py-4">Tes Tes</td>
+              <td className=" px-2 py-3 "></td>
+              <td className=" px-2 py-3 "></td>
+              <td className=" px-2 py-3 "></td>
+              <td className="border-2 border-black px-2 py-3 font-semibold dark:border-gray-300">
+                Total
+              </td>
+              <td className="border-2 border-black px-2 py-3 font-semibold dark:border-gray-300">
+                {data?.data.total.toLocaleString('id-ID')}
+              </td>
             </tr>
+
             {/* {dataBooking?.data.detail_booking_kamar.map((item: any, index) => (
               <tr key={index}>
-                <td className="py-4">{item.jenis_kamar.jenis_kamar}</td>
-                <td className="py-4">{item.jenis_kamar.jenis_bed}</td>
-                <td className="py-4">{item.jumlah}</td>
-                <td className="py-4">Rp{item.sub_total / item.jumlah}</td>
-                <td className="py-4">Rp{item.sub_total}</td>
+                <td className="py-3">{item.jenis_kamar.jenis_kamar}</td>
+                <td className="py-3">{item.jenis_kamar.jenis_bed}</td>
+                <td className="py-3">{item.jumlah}</td>
+                <td className="py-3">Rp{item.sub_total / item.jumlah}</td>
+                <td className="py-3">Rp{item.sub_total}</td>
               </tr>
             ))} */}
-          </tbody>
-        </table>
-        <h3 className="py-2 text-center text-xl font-bold uppercase text-gray-700 dark:text-white ">
-          Nomor Kamar
-        </h3>
-        <table className="mb-8 w-full text-left text-gray-700 dark:text-white">
-          <thead>
-            <tr>
-              <th className="py-2 font-bold uppercase ">Jenis Kamar</th>
-              <th className="py-2 font-bold uppercase ">Bed</th>
-              <th className="py-2 font-bold uppercase ">Nomor Kamar</th>
-            </tr>
-          </thead>
-          <tbody>
-            {/* {dataKamar?.map((item: any, index: any) => (
-              <tr key={index}>
-                <td className="py-4">{item.kamar.jenis_kamar.jenis_kamar}</td>
-                <td className="py-4">{item.kamar.jenis_kamar.jenis_bed}</td>
-                <td className="py-4">{item.kamar.nomor_kamar}</td>
-              </tr>
-            ))} */}
-          </tbody>
-        </table>
-        <h3 className="py-2 text-center text-xl font-bold uppercase text-gray-700 dark:text-white ">
-          Layanan
-        </h3>
-        <table className="mb-8 w-full text-left text-gray-700 dark:text-white">
-          <thead>
-            <tr>
-              <th className="py-2 font-bold uppercase ">Layanan</th>
-              <th className="py-2 font-bold uppercase ">Tanggal</th>
-              <th className="py-2 font-bold uppercase ">Jumlah</th>
-              <th className="py-2 font-bold uppercase ">Harga</th>
-              <th className="py-2 font-bold uppercase ">Sub Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            {/* {dataBooking?.data.detail_booking_layanan.map((item, index) => {
-              totalFasilitas += item.sub_total;
-              return (
-                <tr key={index}>
-                  <td className="py-4">{item.layanan.nama_layanan}</td>
-                  <td className="py-4">{formatDate(item.tanggal)}</td>
-                  <td className="py-4">{item.jumlah}</td>
-                  <td className="py-4">Rp{item.layanan.harga}</td>
-                  <td className="py-4">Rp{item.sub_total}</td>
-                </tr>
-              );
-            })} */}
-            <tr>
-              <td className="py-4"></td>
-              <td className="py-4"></td>
-              <td className="py-4"></td>
-              <td className="py-4"></td>
-              <td className="py-4 font-bold">Rp asdasdsa</td>
-            </tr>
           </tbody>
         </table>
       </div>
@@ -171,4 +169,4 @@ const CetakLaporanDua = () => {
   );
 };
 
-export default CetakLaporanDua;
+export default CetakLaporanTiga;
