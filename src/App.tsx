@@ -4,7 +4,7 @@ import { Route, Routes } from 'react-router-dom';
 import SignIn from './pages/Authentication/SignIn';
 import SignUp from './pages/Authentication/SignUp';
 import Calendar from './pages/Calendar';
-import Chart from './pages/Chart';
+// import Chart from './pages/Chart';
 import ECommerce from './pages/Dashboard/ECommerce';
 import FormElements from './pages/Form/FormElements';
 import FormLayout from './pages/Form/FormLayout';
@@ -52,6 +52,7 @@ import TabelCheckIn from './pages/Data/TabelCheckIn';
 import DetailBooking from './pages/Form/Detail/DetailBooking';
 import DetailCheckIn from './pages/Form/Detail/DetailCheckIn';
 import LaporanDua from './pages/Laporan/LaporanDua';
+import CetakLaporanDua from './pages/Laporan/CetakLaporanDua';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -176,13 +177,13 @@ function App() {
               element={<LaporanDua />}
             />
             <Route
-              path="/laporan/pendapatan-bulanan/print"
-              element={<LaporanDua />}
+              path="/laporan/pendapatan-bulanan/print/:tahun"
+              element={<CetakLaporanDua />}
             />
           </Route>
 
           <Route path="/settings" element={<Settings />} />
-          <Route path="/chart" element={<Chart />} />
+          {/* <Route path="/chart" element={<Chart />} /> */}
           <Route path="/ui/alerts" element={<Alerts />} />
           <Route path="/ui/buttons" element={<Buttons />} />
         </Route>

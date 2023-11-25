@@ -27,10 +27,6 @@ import { fetchDetailBooking } from 'src/hooks/sampleData';
 import useAuth from 'src/hooks/useAuth';
 import { formatDate } from 'src/utils';
 
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
-import DarkModeSwitcher from 'src/components/DarkModeSwitcher';
-
 import { useReactToPrint } from 'react-to-print';
 
 interface dataBooking {

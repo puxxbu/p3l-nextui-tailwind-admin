@@ -1,8 +1,9 @@
-import { Select, SelectItem, Selection } from '@nextui-org/react';
+import { Button, Select, SelectItem, Selection } from '@nextui-org/react';
 import { useQuery } from '@tanstack/react-query';
 import { ApexOptions } from 'apexcharts';
 import React, { useEffect, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
+import { useNavigate } from 'react-router-dom';
 import { fetchLaporanDua } from 'src/hooks/laporan/laporanController';
 import useAuth from 'src/hooks/useAuth';
 
@@ -93,10 +94,11 @@ function convertToInt(data: any): number {
   return selectTahunInt;
 }
 
-const ChartTwo: React.FC = () => {
+const ChartLaporanDua: React.FC = () => {
   const { auth } = useAuth();
   const [selectTahun, setSelectTahun] = useState<Selection>(new Set(['2023']));
 
+  const navigate = useNavigate();
   const { status, data, error, refetch, isLoading } = useQuery(
     ['laporanDua', selectTahun], // Memasukkan filterValue sebagai bagian dari query key
     () => fetchLaporanDua(convertToInt(selectTahun), auth.token),
@@ -171,61 +173,76 @@ const ChartTwo: React.FC = () => {
   };
 
   return (
-    <div className="col-span-12 rounded-sm border border-stroke bg-white p-7.5 shadow-default dark:border-strokedark dark:bg-boxdark xl:col-span-4">
-      <div className="mb-4 justify-between gap-4 sm:flex">
-        <div>
-          <h4 className="text-xl font-semibold text-black dark:text-white">
-            Laporan Pendapat Bulanan
-          </h4>
-        </div>
-        <div>
-          <div className="relative z-20 inline-block">
-            <Select
-              variant="bordered"
-              label="Tahun"
-              placeholder="Pilih Range Tahun"
-              selectedKeys={selectTahun}
-              className="relative z-20 inline-flex w-50 py-1 pl-3 pr-8 text-sm font-medium outline-none"
-              onChange={handleTahun}
-            >
-              <SelectItem key="2020" value="2020">
-                Tahun 2020
-              </SelectItem>
-              <SelectItem key="2021" value="2021">
-                Tahun 2021
-              </SelectItem>
-              <SelectItem key="2022" value="2022">
-                Tahun 2022
-              </SelectItem>
-              <SelectItem key="2023" value="2023">
-                Tahun 2023
-              </SelectItem>
-              <SelectItem key="2024" value="2024">
-                Tahun 2024
-              </SelectItem>
-              <SelectItem key="2025" value="2025">
-                Tahun 2025
-              </SelectItem>
-              <SelectItem key="2026" value="2026">
-                Tahun 2026
-              </SelectItem>
-            </Select>
+    <div>
+      <div className="flex justify-end">
+        <Button
+          className="m-3"
+          color="primary"
+          onClick={() =>
+            navigate(
+              `/laporan/pendapatan-bulanan/print/${convertToInt(selectTahun)}`
+            )
+          }
+        >
+          Cetak Laporan Dua
+        </Button>
+      </div>
+      <div className="col-span-12 rounded-sm border border-stroke bg-white p-7.5 shadow-default dark:border-strokedark dark:bg-boxdark xl:col-span-4">
+        <div className="mb-4 justify-between gap-4 sm:flex">
+          <div>
+            <h4 className="text-xl font-semibold text-black dark:text-white">
+              Laporan Pendapat Bulanan
+            </h4>
+          </div>
+          <div>
+            <div className="relative z-20 inline-block">
+              <Select
+                variant="bordered"
+                label="Tahun"
+                placeholder="Pilih Range Tahun"
+                selectedKeys={selectTahun}
+                className="relative z-20 inline-flex w-50 py-1 pl-3 pr-8 text-sm font-medium outline-none"
+                onChange={handleTahun}
+              >
+                <SelectItem key="2020" value="2020">
+                  Tahun 2020
+                </SelectItem>
+                <SelectItem key="2021" value="2021">
+                  Tahun 2021
+                </SelectItem>
+                <SelectItem key="2022" value="2022">
+                  Tahun 2022
+                </SelectItem>
+                <SelectItem key="2023" value="2023">
+                  Tahun 2023
+                </SelectItem>
+                <SelectItem key="2024" value="2024">
+                  Tahun 2024
+                </SelectItem>
+                <SelectItem key="2025" value="2025">
+                  Tahun 2025
+                </SelectItem>
+                <SelectItem key="2026" value="2026">
+                  Tahun 2026
+                </SelectItem>
+              </Select>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div>
-        <div id="chartTwo" className="-mb-9 -ml-5">
-          <ReactApexChart
-            options={options}
-            series={state.series}
-            type="bar"
-            height={350}
-          />
+        <div>
+          <div id="chartTwo" className="-mb-9 -ml-5">
+            <ReactApexChart
+              options={options}
+              series={state.series}
+              type="bar"
+              height={350}
+            />
+          </div>
         </div>
       </div>
     </div>
   );
 };
 
-export default ChartTwo;
+export default ChartLaporanDua;
