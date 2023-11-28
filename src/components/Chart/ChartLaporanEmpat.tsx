@@ -10,7 +10,10 @@ import { ApexOptions } from 'apexcharts';
 import React, { useEffect, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 import { useNavigate } from 'react-router-dom';
-import { fetchLaporanTiga } from 'src/hooks/laporan/laporanController';
+import {
+  fetchLaporanEmpat,
+  fetchLaporanTiga,
+} from 'src/hooks/laporan/laporanController';
 import useAuth from 'src/hooks/useAuth';
 
 const namaBulan = [
@@ -114,16 +117,16 @@ function convertTahunToInt(data: any): number {
   const selectTahunInt = parseInt(selectTahunArray[0] as string);
   return selectTahunInt;
 }
-function converBulantToInt(data: any): number {
-  const selectBulanArray = Array.from(data);
-  const selectBulanInt = parseInt(selectBulanArray[0] as string);
-  return selectBulanInt + 1;
-}
+// function converBulantToInt(data: any): number {
+//   const selectBulanArray = Array.from(data);
+//   const selectBulanInt = parseInt(selectBulanArray[0] as string);
+//   return selectBulanInt + 1;
+// }
 
-const ChartLaporanTiga: React.FC = () => {
+const ChartLaporanEmpat: React.FC = () => {
   const { auth } = useAuth();
   const [selectTahun, setSelectTahun] = useState<Selection>(new Set(['2023']));
-  const [selectBulan, setSelectBulan] = useState<Selection>(new Set(['10']));
+  // const [selectBulan, setSelectBulan] = useState<Selection>(new Set(['10']));
   const [options, setOptions] = useState<ApexOptions>({
     colors: ['#3C50E0', '#80CAEE', '#C71585'],
     chart: {
@@ -210,13 +213,8 @@ const ChartLaporanTiga: React.FC = () => {
 
   const navigate = useNavigate();
   const { status, data, error, refetch, isLoading } = useQuery(
-    ['laporanTiga', selectTahun, selectBulan], // Memasukkan filterValue sebagai bagian dari query key
-    () =>
-      fetchLaporanTiga(
-        convertTahunToInt(selectTahun),
-        converBulantToInt(selectBulan),
-        auth.token
-      ),
+    ['laporanEmpat', selectTahun], // Memasukkan filterValue sebagai bagian dari query key
+    () => fetchLaporanEmpat(convertTahunToInt(selectTahun), auth.token),
     {
       keepPreviousData: true,
       staleTime: 5000,
@@ -226,20 +224,16 @@ const ChartLaporanTiga: React.FC = () => {
   useEffect(() => {
     console.log(convertTahunToInt(selectTahun));
     refetch();
-  }, [selectTahun, selectBulan, refetch]);
+  }, [selectTahun, refetch]);
 
   const [state, setState] = useState<ChartTwoState>({
     series: [
       {
-        name: 'Group',
-        data: [44, 55, 41, 67, 22, 43, 65],
-      },
-      {
-        name: 'Personal',
+        name: 'Jumlah Reservasi',
         data: [13, 23, 20, 8, 13, 27, 15],
       },
       {
-        name: 'Total',
+        name: 'Total Pembayaran',
         data: [13, 23, 20, 8, 13, 27, 15],
       },
     ],
@@ -249,34 +243,29 @@ const ChartLaporanTiga: React.FC = () => {
     console.log(selectTahun);
     if (status === 'success' && data) {
       const dataPersonal: number[] = [];
-      const dataGroup: number[] = [];
-      const dataTotal: number[] = [];
-      const dataJenisKamar: string[] = [];
+      const dataJumlahReservasi: number[] = [];
+      const dataTotalPembayaran: number[] = [];
+      const dataNamaCustomer: string[] = [];
 
-      data.data.laporan.forEach((item) => {
-        dataJenisKamar.push(item.jenis_kamar);
-        dataPersonal.push(item.Personal);
-        dataGroup.push(item.Group);
-        dataTotal.push(item.total);
+      data.data.topCustomers.forEach((item) => {
+        dataNamaCustomer.push(item.nama_customer);
+        dataJumlahReservasi.push(item.jumlah_reservasi);
+        dataTotalPembayaran.push(item.total_pembayaran);
       });
 
       updateXAxis({
-        categories: dataJenisKamar,
+        categories: dataNamaCustomer,
       });
 
       setState({
         series: [
           {
-            name: 'Group',
-            data: dataGroup,
+            name: 'Jumlah Reservasi',
+            data: dataJumlahReservasi,
           },
           {
-            name: 'Personal',
-            data: dataPersonal,
-          },
-          {
-            name: 'Total',
-            data: dataTotal,
+            name: 'Total Pembayaran',
+            data: dataTotalPembayaran,
           },
         ],
       });
@@ -291,9 +280,9 @@ const ChartLaporanTiga: React.FC = () => {
     setSelectTahun(new Set([e.target.value]));
   };
 
-  const handleBulan = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectBulan(new Set([e.target.value]));
-  };
+  // const handleBulan = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  //   setSelectBulan(new Set([e.target.value]));
+  // };
 
   return (
     <div>
@@ -303,13 +292,11 @@ const ChartLaporanTiga: React.FC = () => {
           color="primary"
           onClick={() =>
             navigate(
-              `/laporan/jumlah-tamu/print/${convertTahunToInt(
-                selectTahun
-              )}/${converBulantToInt(selectBulan)}`
+              `/laporan/top-customer/print/${convertTahunToInt(selectTahun)}`
             )
           }
         >
-          Cetak Laporan Tiga
+          Cetak Laporan Empat
         </Button>
       </div>
       <div className="col-span-12 rounded-sm border border-stroke bg-white p-7.5 shadow-default dark:border-strokedark dark:bg-boxdark xl:col-span-4">
@@ -351,32 +338,18 @@ const ChartLaporanTiga: React.FC = () => {
                   Tahun 2026
                 </SelectItem>
               </Select>
-              <Select
-                variant="bordered"
-                label="Bulan"
-                placeholder="Pilih Range Bulan"
-                selectedKeys={selectBulan}
-                className="relative z-20 inline-flex w-50 py-1 pl-3 pr-8 text-sm font-medium outline-none"
-                onChange={handleBulan}
-              >
-                {namaBulan.map((item, index) => (
-                  <SelectItem key={index} value={index}>
-                    {item}
-                  </SelectItem>
-                ))}
-              </Select>
             </div>
           </div>
         </div>
 
         <div>
           <div id="chartTwo" className="-mb-9 -ml-5">
-            <ReactApexChart
+            {/* <ReactApexChart
               options={options}
               series={state.series}
               type="bar"
               height={350}
-            />
+            /> */}
           </div>
         </div>
       </div>
@@ -384,4 +357,4 @@ const ChartLaporanTiga: React.FC = () => {
   );
 };
 
-export default ChartLaporanTiga;
+export default ChartLaporanEmpat;

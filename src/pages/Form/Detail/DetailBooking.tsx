@@ -112,9 +112,12 @@ const DetailBooking = () => {
           toast.error(error || 'Terjadi kesalahan');
         } else {
           toast.success('Berhasil mengubah status booking');
-          navigate(
-            `/fo/user/detail-booking/check-in/${dataBooking?.data.id_booking}`
-          );
+          //timeout 2s
+          setTimeout(() => {
+            navigate(
+              `/fo/user/detail-booking/check-in/${dataBooking?.data.id_booking}`
+            );
+          }, 2000);
         }
       }
     );

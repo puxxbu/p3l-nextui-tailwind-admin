@@ -447,7 +447,10 @@ const TandaTerima = () => {
         {dataBooking?.data.invoice && dataBooking?.data.invoice.length > 0 && (
           <div className="mb-8 flex justify-end text-2xl text-gray-700 dark:text-white">
             <div className="mr-2 font-bold">Cash:</div>
-            <div className="">Rp {totalHargaFasilitas - deposit}</div>
+            <div className="">
+              Rp {totalHargaFasilitas - deposit}{' '}
+              {totalHargaFasilitas - deposit < 0 ? '+' : ''}
+            </div>
           </div>
         )}
 

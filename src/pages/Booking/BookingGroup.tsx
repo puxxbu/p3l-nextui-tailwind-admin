@@ -53,7 +53,7 @@ interface Booking {
   jenis_booking: string;
   status_booking: string;
   id_pegawai_fo?: number | null; // Id pegawai FO dapat kosong
-  no_rekening: string;
+  no_rekening?: string;
 }
 
 interface DetailBookingKamar {
@@ -255,10 +255,10 @@ const BookingGroup = () => {
 
   const handleBook = () => {
     const regex = /^\d{8}$/;
-    if (!regex.test(nomorRekening)) {
-      toast.error('Nomor rekening harus terdiri dari 8 digit angka');
-      return;
-    }
+    // if (!regex.test(nomorRekening)) {
+    //   toast.error('Nomor rekening harus terdiri dari 8 digit angka');
+    //   return;
+    // }
     const isValueZero = Object.values(keyValueList).some(
       (value) => value === 0
     );
@@ -287,7 +287,6 @@ const BookingGroup = () => {
       tamu_anak: tamuAnak,
       jenis_booking: 'Group',
       status_booking: 'Booked',
-      no_rekening: nomorRekening,
     };
     const detailBookingKamar: DetailBookingKamar[] = [];
     const detailFasilitas: DetailFasilitas[] = [];
@@ -470,7 +469,7 @@ const BookingGroup = () => {
                 </button>
               </div>
             </div>
-            <Input
+            {/* <Input
               isRequired
               className="mt-4 w-100"
               type="text"
@@ -478,7 +477,7 @@ const BookingGroup = () => {
               onChange={handleChange}
               label="Nomor Rekening"
               placeholder="Masukkan Nomor Rekening"
-            />
+            /> */}
           </div>
         </div>
         <h3 className="py-2 text-center text-xl font-bold uppercase text-gray-700 dark:text-white ">

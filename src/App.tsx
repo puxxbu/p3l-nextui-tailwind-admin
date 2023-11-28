@@ -55,6 +55,7 @@ import LaporanDua from './pages/Laporan/LaporanAll';
 import CetakLaporanDua from './pages/Laporan/CetakLaporanDua';
 import CetakLaporanTiga from './pages/Laporan/CetakLaporanTiga';
 import CetakLaporanSatu from './pages/Laporan/CetakLaporanSatu';
+import CetakLaporanEmpat from './pages/Laporan/CetakLaporanEmpat';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -131,7 +132,11 @@ function App() {
             <Route path="/data/kamar" element={<TabelKamar />} />
             <Route path="/data/jenis-kamar" element={<TabelJenisKamar />} />
           </Route>
-          <Route element={<RequireAuth allowedRoles={[1002, 1003, 1004]} />}>
+          <Route
+            element={
+              <RequireAuth allowedRoles={[1001, 1002, 1003, 1004, 1005]} />
+            }
+          >
             <Route path="/data/season" element={<TabelSeason />} />
             <Route path="/data/fasilitas" element={<TabelFasilitas />} />
             <Route path="/data/customer" element={<TabelCustomer />} />
@@ -160,7 +165,11 @@ function App() {
             />
             <Route path="/booking/group" element={<BookingGroup />} />
           </Route>
-          <Route element={<RequireAuth allowedRoles={[1002, 1003, 1004]} />}>
+          <Route
+            element={
+              <RequireAuth allowedRoles={[1001, 1002, 1003, 1004, 1005]} />
+            }
+          >
             <Route path="/fo/booking" element={<TabelBookingFO />} />
             <Route path="/fo/list/check-in" element={<TabelCheckIn />} />
             <Route
@@ -173,7 +182,11 @@ function App() {
             />
           </Route>
 
-          <Route element={<RequireAuth allowedRoles={[1002, 1003, 1004]} />}>
+          <Route
+            element={
+              <RequireAuth allowedRoles={[1001, 1002, 1003, 1004, 1005]} />
+            }
+          >
             <Route path="/laporan/all" element={<LaporanDua />} />
 
             <Route
@@ -187,6 +200,11 @@ function App() {
             <Route
               path="/laporan/jumlah-tamu/print/:tahun/:bulan"
               element={<CetakLaporanTiga />}
+            />
+
+            <Route
+              path="/laporan/top-customer/print/:tahun"
+              element={<CetakLaporanEmpat />}
             />
           </Route>
 

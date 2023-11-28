@@ -507,7 +507,10 @@ const DetailRiwayat = () => {
         {dataBooking?.data.invoice && dataBooking?.data.invoice.length > 0 && (
           <div className="mb-8 flex justify-end text-2xl text-gray-700 dark:text-white">
             <div className="mr-2 font-bold">Cash:</div>
-            <div className="">Rp {totalHargaFasilitas - deposit}</div>
+            <div className="">
+              Rp {totalHargaFasilitas - deposit < 0 ? '+' : ''}{' '}
+              {Math.abs(totalHargaFasilitas - deposit)}{' '}
+            </div>
           </div>
         )}
 

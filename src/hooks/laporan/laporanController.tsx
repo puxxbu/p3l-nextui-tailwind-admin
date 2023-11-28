@@ -39,6 +39,18 @@ interface LaporanTigaResponse {
   };
 }
 
+interface TopCustomer {
+  nama_customer: string;
+  jumlah_reservasi: number;
+  total_pembayaran: number;
+}
+
+interface TopCustomersResponse {
+  data: {
+    topCustomers: TopCustomer[];
+  };
+}
+
 export async function fetchLaporanSatu(
   tahun = new Date().getFullYear(),
   token: string
@@ -93,6 +105,26 @@ export async function fetchLaporanTiga(
     });
 
     return response.data as LaporanTigaResponse;
+  } catch (error) {
+    console.error('Error fetching contacts:', error);
+    throw error;
+  }
+}
+
+export async function fetchLaporanEmpat(
+  tahun = new Date().getFullYear(),
+  token: string
+): Promise<TopCustomersResponse> {
+  try {
+    let url = `${baseURL}/api/laporan/top-customer?tahun=${tahun}`;
+
+    const response = await axios.get(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.data as TopCustomersResponse;
   } catch (error) {
     console.error('Error fetching contacts:', error);
     throw error;
