@@ -29,7 +29,10 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { deleteKamar } from 'src/hooks/kamar/kamarController';
 import { fetchBookingHistory } from 'src/hooks/sampleData';
 import { formatDate } from 'src/utils';
-import { fetchAllBooking, fetchDataCheckIn } from 'src/hooks/booking/bookingController';
+import {
+  fetchAllBooking,
+  fetchDataCheckIn,
+} from 'src/hooks/booking/bookingController';
 
 export default function App() {
   const [page, setPage] = React.useState(1);
@@ -42,7 +45,7 @@ export default function App() {
   const navigate = useNavigate();
 
   const { data, error, refetch, isLoading } = useQuery(
-    ['bookHistory', page, filterValue], // Memasukkan filterValue sebagai bagian dari query key
+    ['checkInList', page, filterValue], // Memasukkan filterValue sebagai bagian dari query key
     () => fetchDataCheckIn(page, filterValue, auth.token),
     {
       keepPreviousData: true,
@@ -157,11 +160,15 @@ export default function App() {
                       {(() => {
                         switch (columnKey) {
                           case 'action':
-                            if(item.status_booking === 'Check In'){
+                            if (item.status_booking === 'Check In') {
                               return (
                                 <Dropdown>
                                   <DropdownTrigger>
-                                    <Button isIconOnly size="sm" variant="light">
+                                    <Button
+                                      isIconOnly
+                                      size="sm"
+                                      variant="light"
+                                    >
                                       <Icon path={mdiDotsVertical} size={1} />
                                     </Button>
                                   </DropdownTrigger>
@@ -180,22 +187,25 @@ export default function App() {
                                     >
                                       Lihat Detail
                                     </DropdownItem>
-                                  
-  
+
                                     <DropdownItem
                                       className="text-gray-700 dark:text-white"
                                       key="detail-check-in"
                                     >
-                                      Detail Check-in 
+                                      Detail Check-in
                                     </DropdownItem>
                                   </DropdownMenu>
                                 </Dropdown>
                               );
-                            }else{
+                            } else {
                               return (
                                 <Dropdown>
                                   <DropdownTrigger>
-                                    <Button isIconOnly size="sm" variant="light">
+                                    <Button
+                                      isIconOnly
+                                      size="sm"
+                                      variant="light"
+                                    >
                                       <Icon path={mdiDotsVertical} size={1} />
                                     </Button>
                                   </DropdownTrigger>
@@ -220,16 +230,13 @@ export default function App() {
                                     >
                                       Check-in
                                     </DropdownItem>
-  
-                                    
                                   </DropdownMenu>
                                 </Dropdown>
                               );
                             }
-                      
 
                           case 'nama_pegawai_fo':
-                            return item.customer.nama
+                            return item.customer.nama;
 
                           case 'tanggal_check_in':
                           case 'tanggal_check_out':

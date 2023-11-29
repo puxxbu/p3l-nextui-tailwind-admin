@@ -87,6 +87,7 @@ const BookingGroup = () => {
   const [listKamar, setListKamar] = useState([]);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+  const [rangeDay, setRangeDay] = useState(0);
   const [keyValueList, setKeyValueList] = useState<KeyValues>({});
   const [layananList, setLayananList] = useState<KeyValues>({});
   const [nomorRekening, setNomorRekening] = useState('');
@@ -197,6 +198,13 @@ const BookingGroup = () => {
       );
     } else {
       const parsedDataKamar = JSON.parse(dataKamar);
+      const dateStart = new Date(tanggal_check_in);
+      const dateEnd = new Date(tanggal_check_out);
+      console.log(dateStart);
+      const timeDifference = dateEnd.getTime() - dateStart.getTime();
+      const numberOfDays = Math.ceil(timeDifference / (1000 * 3600 * 24));
+      setRangeDay(numberOfDays);
+      console.log(numberOfDays);
       setStartDate(tanggal_check_in || '');
       setEndDate(tanggal_check_out || '');
       setListKamar(parsedDataKamar);
@@ -302,7 +310,7 @@ const BookingGroup = () => {
       detailBookingKamar.push({
         id_jenis_kamar: item.id_jenis_kamar,
         jumlah: keyValueList[item.id_jenis_kamar],
-        sub_total: harga * keyValueList[item.id_jenis_kamar],
+        sub_total: harga * keyValueList[item.id_jenis_kamar] * rangeDay,
       });
     });
 
@@ -439,6 +447,7 @@ const BookingGroup = () => {
             Check-in :{formatDate(startDate)} - Check-out :{' '}
             {formatDate(endDate)}
           </div>
+          <div className="mb-2 ">Jumlah Malam : {rangeDay} </div>
           <div className="mb-2">
             <div className="flex items-center">
               <div className="mr-2">Tamu anak:</div>
@@ -529,7 +538,7 @@ const BookingGroup = () => {
                   </td>
                   <td className="py-4">Rp{harga}</td>
                   <td className="py-4">
-                    Rp{keyValueList[item.id_jenis_kamar] * harga}
+                    Rp{keyValueList[item.id_jenis_kamar] * harga * rangeDay}
                   </td>
                   <td className="py-4">
                     <button onClick={() => handleDeleteKamar(index)}>
