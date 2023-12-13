@@ -59,6 +59,7 @@ const DetailCheckIn = () => {
   const [layananList, setLayananList] = useState<KeyValues>({});
 
   const [pajak, setPajak] = useState(0);
+  const [rangeDay, setRangeDay] = useState(0);
 
   const navigate = useNavigate();
   const [total, setTotal] = useState(0);
@@ -186,6 +187,12 @@ const DetailCheckIn = () => {
   useEffect(() => {
     if (statusBooking === 'success' && dataBooking) {
       // setData(dataBooking.data);
+      const dateStart = new Date(dataBooking.data.tanggal_check_in);
+      const dateEnd = new Date(dataBooking.data.tanggal_check_out);
+      console.log(dateStart);
+      const timeDifference = dateEnd.getTime() - dateStart.getTime();
+      const numberOfDays = Math.ceil(timeDifference / (1000 * 3600 * 24));
+      setRangeDay(numberOfDays);
       setDataKamar([]);
       let total = 0;
       dataBooking.data.detail_booking_kamar.map((item: any) => {
@@ -358,6 +365,7 @@ const DetailCheckIn = () => {
             Check-in : {formatDate(dataBooking?.data.tanggal_check_in || '')} -
             Check-out : {formatDate(dataBooking?.data.tanggal_check_out || '')}
           </div>
+          <div className="mb-2 ">Jumlah Malam : {rangeDay} Malam</div>
           <div className="mb-2 ">Tamu anak : {dataBooking?.data.tamu_anak}</div>
           <div className="mb-2 ">
             Tamu dewasa : {dataBooking?.data.tamu_dewasa}
@@ -416,7 +424,9 @@ const DetailCheckIn = () => {
                 <td className="py-4">{item.jenis_kamar.jenis_kamar}</td>
                 <td className="py-4">{item.jenis_kamar.jenis_bed}</td>
                 <td className="py-4">{item.jumlah}</td>
-                <td className="py-4">Rp{item.sub_total / item.jumlah}</td>
+                <td className="py-4">
+                  Rp{item.sub_total / item.jumlah / rangeDay}
+                </td>
                 <td className="py-4">Rp{item.sub_total}</td>
               </tr>
             ))}

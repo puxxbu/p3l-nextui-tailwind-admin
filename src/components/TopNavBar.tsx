@@ -21,15 +21,17 @@ const TopNavBar = () => {
 
   const navigate = useNavigate();
 
-  const adminRoles = [1001,1002,1003,1004];
+  const adminRoles = [1001, 1002, 1003, 1004];
 
   const { auth } = useAuth();
 
- useEffect(() => {
-  if(adminRoles.includes(auth.role.id_role)){
-    navigate('/admin');
-  }
- });
+  useEffect(() => {
+    if (auth.role === undefined) {
+      navigate('/auth/signin');
+    } else if (adminRoles.includes(auth.role.id_role)) {
+      navigate('/admin');
+    }
+  });
 
   const menuItems = [
     'Profile',
@@ -52,13 +54,12 @@ const TopNavBar = () => {
           className="sm:hidden"
         />
         <NavbarBrand>
-          
           <button onClick={() => navigate('/')}>
             <img
-            src="https://cdn.discordapp.com/attachments/170900821200994304/1173526610239029279/3_2--removebg-preview.png?ex=656446d2&is=6551d1d2&hm=d0bb91fb104875c9f3e2eba1e80d298d243759f869acb3c1d3e710f78b950f06&"
-            alt="Logo Hotel"
-            className="h-auto w-32"
-          />
+              src="https://cdn.discordapp.com/attachments/170900821200994304/1173526610239029279/3_2--removebg-preview.png?ex=656446d2&is=6551d1d2&hm=d0bb91fb104875c9f3e2eba1e80d298d243759f869acb3c1d3e710f78b950f06&"
+              alt="Logo Hotel"
+              className="h-auto w-32"
+            />
           </button>
         </NavbarBrand>
       </NavbarContent>

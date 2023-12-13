@@ -10,10 +10,7 @@ import { useParams } from 'react-router-dom';
 import useAuth from 'src/hooks/useAuth';
 
 import { useReactToPrint } from 'react-to-print';
-import {
-  fetchLaporanDua,
-  fetchLaporanTiga,
-} from 'src/hooks/laporan/laporanController';
+import { fetchLaporanTiga } from 'src/hooks/laporan/laporanController';
 import { useQuery } from '@tanstack/react-query';
 
 const namaBulan = [
@@ -59,7 +56,7 @@ const CetakLaporanTiga = () => {
 
   return (
     <DefaultLayout>
-      <Breadcrumb pageName="Laporan Pendapatan Bulanan" />
+      <Breadcrumb pageName=" Laporan Jumlah Tamu Per Jenis Kamar" />
       <div className="flex justify-end">
         <Button className="m-3" color="primary" onClick={downloadPdf}>
           Cetak PDF
@@ -87,7 +84,7 @@ const CetakLaporanTiga = () => {
 
         <div className="mb-8 border-b-2 border-black pb-8 text-gray-700 dark:border-gray-300  dark:text-white">
           <h2 className="mb-4 text-2xl font-bold">
-            Laporan Pendapatan Bulanan
+            Laporan Jumlah Tamu Per Jenis Kamar
           </h2>
           <div className="mb-2 ">Tahun : {tahun}</div>
           <div className="mb-2 ">

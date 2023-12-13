@@ -303,7 +303,7 @@ const ChartLaporanEmpat: React.FC = () => {
         <div className="mb-4 justify-between gap-4 sm:flex">
           <div>
             <h4 className="text-xl font-semibold text-black dark:text-white">
-              Laporan Jumlah Tamu Per Jenis Kamar
+              Laporan 5 Customer Reservasi Terbanyak
             </h4>
           </div>
           <div>
